@@ -1,0 +1,14 @@
+name: OinkTown-y
+author: ByteKangaroo
+version: 0.1a
+main: com.redstoneoinkcraft.oinktowny.Main
+description: OinkTowny plugin made for Oinkcraft's new towny reboot!
+api-version: 1.13
+commands:
+  oinktowny:
+    description: Base oinktowny command
+    usage: /<command>
+    aliases: [ot]
+permissions:
+  oinktowny.bundle:
+    description: The basic permission to use the OinkTowny bundle commands
