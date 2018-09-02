@@ -2,6 +2,7 @@ package com.redstoneoinkcraft.oinktowny.economy;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -57,6 +58,7 @@ public class BundleManager {
         return Main.getInstance().getBundlesConfig().contains("bundles." + bundleName);
     }
 
+    @SuppressWarnings("deprecation")
     /* In case storing the inventories doesn't work... lol */
     public ArrayList<String> createBundleItems(Player player, String bundleName, boolean override){
         if(bundleExists(bundleName) && !override) {
@@ -66,48 +68,45 @@ public class BundleManager {
         }
 
         // The format is ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL, ]; lore:[Line one, Line two]
-        // TODO: This will be re-written with a StringBuilder at some point.
+        // TODO: This will be re-written with a StringBuilder at some point. Done - Zaph
         ArrayList<String> bundleItems = new ArrayList<String>();
         Inventory playerInv = player.getInventory();
         for(ItemStack item : playerInv.getContents()){
+            StringBuilder builder = new StringBuilder();
             if(item == null) continue; // Make sure the item isn't null
             String formatItemDetails;
             // Get material
-            String formattedMaterial = item.getType().toString() + "; ";
-            System.out.println(formattedMaterial);
+            builder.append(item.getType().toString()).append("; ");
             // Get amount
-            String formattedAmount = item.getAmount() + "; ";
-            System.out.println(formattedAmount);
+            builder.append(item.getAmount()).append("; ");
             // Get name
-            String formattedName = "name:";
+            builder.append("name:");
             if(item.getItemMeta().getDisplayName() != null){
-                formattedName += item.getItemMeta().getDisplayName();
+                builder.append(item.getItemMeta().getDisplayName());
             }
-            formattedName += "; ";
-            System.out.println(formattedName);
+            builder.append("; ");
             // Get enchants
-            String formattedEnchantments = "enchants:[";
+            builder.append("enchants:[");
             if(item.getEnchantments() != null) {
                 Map<Enchantment, Integer> itemEnchantments = item.getEnchantments();
                 for (Enchantment enchant : itemEnchantments.keySet()) {
-                    formattedEnchantments += enchant.getName() + "-" + itemEnchantments.get(enchant) + ", ";
+                    builder.append(enchant.getName()).append("-").append(itemEnchantments.get(enchant)).append(", ");
                 }
             }
-            formattedEnchantments += "]; ";
-            System.out.println(formattedEnchantments);
+            builder.append("]; ");
+
             // Get lore
-            String formattedLore = "lore:";
+            builder.append("lore:");
             if(item.getItemMeta().getLore() != null) {
-                formattedLore += ChatColor.stripColor(item.getItemMeta().getLore().toString());
+                builder.append(ChatColor.stripColor(item.getItemMeta().getLore().toString()));
             }
-            System.out.println(formattedLore);
-            formatItemDetails = formattedMaterial + formattedAmount + formattedName + formattedEnchantments + formattedLore;
+            formatItemDetails = builder.toString();
             bundleItems.add(formatItemDetails);
         }
 
         System.out.println("Voila! The final string would be...");
-        Main.getInstance().getBundlesConfig().addDefault("bundles." + bundleName, new ArrayList<String>());
-        Main.getInstance().saveResource("bundles.yml", true);
+        Main.getInstance().getBundlesConfig().set("bundles." + bundleName, bundleItems);
+        Main.getInstance().saveBundlesConfig();
         try {
             Main.getInstance().getBundlesConfig().save(Main.getInstance().getBundlesFile());
         } catch(IOException e){
