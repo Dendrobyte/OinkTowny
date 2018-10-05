@@ -2,12 +2,14 @@ package com.redstoneoinkcraft.oinktowny.economy;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.IOException;
 import java.util.*;
@@ -30,35 +32,11 @@ public class BundleManager {
         return instance;
     }
 
-    /* Save an inventory for creating a new bundle */
-    public void createNewBundle(Player player, String bundleName){
-        if(Main.getInstance().getBundlesConfig().contains("bundles." + bundleName)){
-            player.sendMessage(prefix + "Sorry, but that bundle already exists!");
-            player.sendMessage(prefix + "Please use " + ChatColor.GOLD + " /oinktowny bundle override <name>");
-            return;
-        }
-        overrideBundle(player, bundleName);
-    }
-
-    /* It would be the same as above, so I'm just putting this in after the check... */
-    public void overrideBundle(Player player, String bundleName){
-        Inventory playerInv = player.getInventory();
-        ArrayList<ItemStack> bundleItems = new ArrayList<ItemStack>();
-        Collections.addAll(bundleItems, playerInv.getContents());
-
-        for(ItemStack itemStack : bundleItems){
-            Main.getInstance().getBundlesConfig().addDefault("bundles." + bundleName, bundleItems);
-        }
-        Main.getInstance().saveResource("bundles.yml", true);
-        player.sendMessage(prefix + "The " + ChatColor.GOLD + ChatColor.BOLD + bundleName + ChatColor.getLastColors(prefix) + " bundle has been created!");
-    }
-
     /* Check to make sure a bundle does not already exist */
     public boolean bundleExists(String bundleName){
         return Main.getInstance().getBundlesConfig().contains("bundles." + bundleName);
     }
 
-    @SuppressWarnings("deprecation")
     /* In case storing the inventories doesn't work... lol */
     public ArrayList<String> createBundleItems(Player player, String bundleName, boolean override){
         if(bundleExists(bundleName) && !override) {
@@ -68,8 +46,7 @@ public class BundleManager {
         }
 
         // The format is ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL, ]; lore:[Line one, Line two]
-        // TODO: This will be re-written with a StringBuilder at some point. Done - Zaph
-        ArrayList<String> bundleItems = new ArrayList<String>();
+        ArrayList<String> bundleItems = new ArrayList<>();
         Inventory playerInv = player.getInventory();
         for(ItemStack item : playerInv.getContents()){
             StringBuilder builder = new StringBuilder();
@@ -117,5 +94,73 @@ public class BundleManager {
         }
         player.sendMessage(prefix + ChatColor.GREEN + "Your bundle, " + ChatColor.GOLD + ChatColor.BOLD + bundleName + "," + ChatColor.GREEN + " has been created!");
         return bundleItems;
+    }
+
+    /* Retrieve and parse the bundle items from a specified bundle */
+    public void getBundle(String bundleName, Player player){
+        ArrayList<ItemStack> bundleItems = new ArrayList<>();
+        if(!bundleExists(bundleName)){
+            player.sendMessage(prefix + "Sorry, it appears that bundle doesn't exist.\n" + prefix + "Please contact a staff member.");
+            return;
+        }
+        List<String> bundleItemList = Main.getInstance().getBundlesConfig().getStringList("bundles." + bundleName);
+
+        // The format is ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL, ]; lore:[Line one, Line two]
+        for(String origin : bundleItemList){
+            String str = origin;
+            System.out.println("Origin: " + str);
+
+            // Get indexes of semicolons
+            int matSemi = str.indexOf(";");
+            int amtSemi = str.indexOf(";", matSemi+1);
+            int nameSemi = str.indexOf(";", amtSemi+1);
+            int enchantSemi = str.indexOf(";", nameSemi+1);
+
+            // Set material
+            String itemMat = str.substring(0, matSemi);
+            System.out.println("Material: " + itemMat);
+
+            // Set amount
+            String itemAmount = str.substring(matSemi+2, amtSemi);
+            System.out.println("Amount: " + itemAmount);
+            int amt = Integer.parseInt(itemAmount);
+
+            ItemStack tempItem = new ItemStack(Material.STONE, amt);
+            ItemMeta tempMeta = tempItem.getItemMeta();
+            // Set name
+            String itemName = str.substring(amtSemi+7, nameSemi);
+            System.out.println("Name: " + itemName);
+            tempMeta.setDisplayName(itemName);
+
+            // Set enchants - enchants:[NAME-LVL, NAME-LVL, ]
+            String itemEnchants = str.substring(nameSemi+11, enchantSemi);
+            int enchantsIndexCheck = 0;
+            int startEnchantIndex = 1; // Start after the first bracket, then move after the comma and sapce
+            while(enchantsIndexCheck != -1){
+                if(!itemEnchants.contains(",")){
+                    enchantsIndexCheck = -1;
+                    break;
+                }
+                String enchantName = itemEnchants.substring(startEnchantIndex, itemEnchants.indexOf("-"));
+                String enchantLevel = itemEnchants.substring(itemEnchants.indexOf("-")+1, itemEnchants.indexOf(","));
+                System.out.println("EName: " + enchantName + "\nELevel: " + enchantLevel);
+                // tempItem.getEnchantments().put(Enchantment.)
+                enchantsIndexCheck = itemEnchants.indexOf(",");
+                if(enchantsIndexCheck == -1) break;
+                startEnchantIndex = enchantsIndexCheck+2;
+            }
+            System.out.println("Enchants: " + itemEnchants);
+
+            // Set lore
+            String itemLore = str.substring(enchantSemi+7);
+            System.out.println("Lore: " + itemLore);
+
+            tempItem.setItemMeta(tempMeta);
+            bundleItems.add(tempItem);
+
+        }
+        for(ItemStack is : bundleItems){
+            player.getInventory().addItem(is);
+        }
     }
 }

@@ -3,6 +3,7 @@ sign-tag: Bundle
 # It is recommended you edit the rest of this configuration IN GAME! /oinktowny bundle <edit/create>
 # It's better than trying to manually edit, but if you still want to dare...
 # The format is: ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL]; lore:[Line one, Line two]
+# SPACES AND SEMICOLONS ARE. EXTREMELY. NECESSARY!!!!
 bundles:
   basic:
     - IRON_SWORD; 1; name:Basic sword; enchants:[DAMAGE_ALL-1, DURABILITY-1, ]; lore:[This sword is mighty, It was used by a god]

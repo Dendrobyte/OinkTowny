@@ -39,12 +39,12 @@ public class BaseCommand implements CommandExecutor {
                 /* Command structure: /oinktowny bundle create/override <name> */
                 if(args.length == 1){
                     player.sendMessage(prefix + "Not enough arguments!");
-                    player.sendMessage(prefix + "Proper usage: " + ChatColor.GOLD + "/oinktowny bundle create/override <name>");
+                    player.sendMessage(prefix + "Proper usage: " + ChatColor.GOLD + "/oinktowny bundle create/override/give <name>");
                     return true;
                 }
                 if(args.length > 3){
                     player.sendMessage(prefix + "Too many arguments!");
-                    player.sendMessage(prefix + "Proper usage: " + ChatColor.GOLD + "/oinktowny bundle create/override <name>");
+                    player.sendMessage(prefix + "Proper usage: " + ChatColor.GOLD + "/oinktowny bundle create/override/give <name>");
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("create")){
@@ -63,6 +63,19 @@ public class BaseCommand implements CommandExecutor {
                     }
                     String bundleName = args[2];
                     manager.createBundleItems(player, bundleName, true);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("give")){
+                    if(args.length == 2){
+                        player.sendMessage(prefix + "Please provide a bundle name!");
+                        return true;
+                    }
+                    String bundleName = args[2];
+                    manager.getBundle(bundleName, player);
+                    return true;
+                }
+                else {
+                    player.sendMessage(prefix + "It apperas something isn't working... \n" + prefix + "Please contact a staff member.");
                     return true;
                 }
             }

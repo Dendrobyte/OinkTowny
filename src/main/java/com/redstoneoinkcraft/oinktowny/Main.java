@@ -53,7 +53,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable(){
         saveConfig();
-        saveResource("bundles.yml", true);
+        saveBundlesConfig();
         getLogger().log(Level.INFO, "OinkTowny-y v" + getDescription().getVersion() + " has successfully been disabled!");
     }
 
