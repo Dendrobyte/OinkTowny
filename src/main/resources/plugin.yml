@@ -1,6 +1,6 @@
-name: OinkTown-y
-author: ByteKangaroo
-version: 0.1a
+name: OinkTowny
+author: Dendrobyte, Mobkinz78
+version: 0.3a
 main: com.redstoneoinkcraft.oinktowny.Main
 description: OinkTowny plugin made for Oinkcraft's new towny reboot!
 api-version: 1.13
@@ -9,6 +9,16 @@ commands:
     description: Base oinktowny command
     usage: /<command>
     aliases: [ot]
+  superpick:
+    description: Super pickaxe for OinkTowny that can't bypass regions
+    usage: /<command
+    aliases: [super]
 permissions:
   oinktowny.bundle:
     description: The basic permission to use the OinkTowny bundle commands
+  oinktowny.superpick:
+    description: The permission to access super pickaxe
+  oinktowny.lootdrop:
+    description: Allows a player to trigger a lootdrop either at their location or a random one
+  oinktowny.claims.x:
+    description: Sets limit for how many claims a player has

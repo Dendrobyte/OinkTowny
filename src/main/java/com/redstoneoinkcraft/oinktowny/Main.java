@@ -1,8 +1,15 @@
 package com.redstoneoinkcraft.oinktowny;
 
-import com.redstoneoinkcraft.oinktowny.economy.InventoryPurchaseListener;
-import com.redstoneoinkcraft.oinktowny.economy.SignClickListener;
+import com.redstoneoinkcraft.oinktowny.bettersleep.SleepListener;
+import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
+import com.redstoneoinkcraft.oinktowny.clans.ClanChatListener;
+import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
+import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
+import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
+import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
+import com.redstoneoinkcraft.oinktowny.regions.SuperpickCommand;
+import com.redstoneoinkcraft.oinktowny.regions.SuperpickListeners;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,12 +29,21 @@ import java.util.logging.Level;
 public class Main extends JavaPlugin {
 
     private static Main instance;
-    private String prefix = "§8(§3OinkTown-y§8)§3 ";
+    private String prefix = "§8(§3OinkTowny§8)§3 ";
 
     /* Custom configurations */
-    // bundlesFile.yml
+    // bundles.yml
     private File bundlesFile;
     private FileConfiguration bundlesConfig;
+    // clans.yml
+    private File clansFile;
+    private FileConfiguration clansConfig;
+    // lootdrops.yml
+    private File lootdropsFile;
+    private FileConfiguration lootdropsConfig;
+    // regions.yml
+    private File regionsFile;
+    private FileConfiguration regionsConfig;
 
 
     @Override
@@ -42,19 +58,36 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
         // Economy events
         Bukkit.getServer().getPluginManager().registerEvents(new SignClickListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new InventoryPurchaseListener(), this);
+        // Region events
+        Bukkit.getServer().getPluginManager().registerEvents(new SuperpickListeners(), this);
+        // Clan events
+        Bukkit.getServer().getPluginManager().registerEvents(new ClanChatListener(), this);
+        // Region events
+        Bukkit.getServer().getPluginManager().registerEvents(new RegionBlockPlaceBreakListener(), this);
+        // Better sleep events
+        Bukkit.getServer().getPluginManager().registerEvents(new SleepListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
+        getCommand("superpick").setExecutor(new SuperpickCommand());
 
-        getLogger().log(Level.INFO, "OinkTown-y v" + getDescription().getVersion() + " has successfully been enabled!");
+        /* Initialize Clan */
+        ClanManager.getInstance().cacheClans();
+
+        /* Begin the lootdrop timer */
+        LootdropManager.getInstance().initializeLootdropTimer();
+
+        /* Initialize regions */
+        RegionsManager.getInstance().cacheRegions();
+
+        // Finish
+        getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been enabled!");
     }
 
     @Override
     public void onDisable(){
         saveConfig();
-        saveBundlesConfig();
-        getLogger().log(Level.INFO, "OinkTowny-y v" + getDescription().getVersion() + " has successfully been disabled!");
+        getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been disabled!");
     }
 
     public static Main getInstance(){
@@ -73,30 +106,79 @@ public class Main extends JavaPlugin {
         // Generate default config.yml
         File configuration = new File(getDataFolder(), "config.yml");
         if(!configuration.exists()){
-            getLogger().log(Level.INFO, "OinkTown-y v" + getDescription().getVersion() + " is creating the configuration...");
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " is creating the configuration...");
             saveDefaultConfig();
-            getLogger().log(Level.INFO, "OinkTown-y v" + getDescription().getVersion() + " configuration has been created!");
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " configuration has been created!");
         } else {
-            getLogger().log(Level.INFO, "OinkTown-y v" + getDescription().getVersion() + " configuration has been loaded.");
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " configuration has been loaded.");
         }
-        // Generate bundlesFile.yml
+        // Generate bundles.yml
         bundlesFile = new File(getDataFolder(), "bundles.yml");
         if(!bundlesFile.exists()){
-            getLogger().log(Level.INFO, "OinkTown-y v" + getDescription().getVersion() + " is creating the bundles.yml...");
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " is creating the bundles.yml...");
             saveResource("bundles.yml", false);
-            getLogger().log(Level.INFO, "OinkTown-y v" + getDescription().getVersion() + " bundles.yml has been created!");
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " bundles.yml has been created!");
         } else {
             bundlesConfig = new YamlConfiguration();
             try {
                 bundlesConfig.load(bundlesFile);
             } catch (IOException | InvalidConfigurationException e){
-                getLogger().log(Level.WARNING, "OinkTowny-y bundles.yml could not be loaded!");
+                getLogger().log(Level.WARNING, "OinkTownyy bundles.yml could not be loaded!");
                 e.printStackTrace();
             }
-            getLogger().log(Level.INFO, "OinkTown-y v" + getDescription().getVersion() + " bundles.yml has been loaded.");
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " bundles.yml has been loaded.");
+        }
+        // Generate clans.yml
+        clansFile = new File(getDataFolder(), "clans.yml");
+        if(!clansFile.exists()){
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " is creating the clans.yml...");
+            saveResource("clans.yml", false);
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " clans.yml has been created!");
+        } else {
+            clansConfig = new YamlConfiguration();
+            try {
+                clansConfig.load(clansFile);
+            } catch (IOException | InvalidConfigurationException e){
+                getLogger().log(Level.WARNING, "OinkTowny clans.yml could not be loaded!");
+                e.printStackTrace();
+            }
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " clans.yml has been loaded.");
+        }
+        // Generate lootdrops.yml
+        lootdropsFile = new File(getDataFolder(), "lootdrops.yml");
+        if(!lootdropsFile.exists()){
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " is creating the lootdrops.yml...");
+            saveResource("lootdrops.yml", false);
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " lootdrops.yml has been created!");
+        } else {
+            lootdropsConfig = new YamlConfiguration();
+            try {
+                lootdropsConfig.load(lootdropsFile);
+            } catch (IOException | InvalidConfigurationException e){
+                getLogger().log(Level.WARNING, "OinkTowny lootdrops.yml could not be loaded!");
+                e.printStackTrace();
+            }
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " lootdrops.yml has been loaded.");
+        }
+        // Generate regions.yml
+        regionsFile = new File(getDataFolder(), "regions.yml");
+        if(!regionsFile.exists()){
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " is creating the regions.yml...");
+            saveResource("regions.yml", false);
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " regions.yml has been created!");
+        } else {
+            regionsConfig = new YamlConfiguration();
+            try {
+                regionsConfig.load(regionsFile);
+            } catch (IOException | InvalidConfigurationException e){
+                getLogger().log(Level.WARNING, "OinkTowny lootdrops.yml could not be loaded!");
+                e.printStackTrace();
+            }
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " regions.yml has been loaded.");
         }
     }
 
+    // Bundles config file methods
     public void saveBundlesConfig(){
         saveResource("bundles.yml", true);
         try {
@@ -109,6 +191,55 @@ public class Main extends JavaPlugin {
     public FileConfiguration getBundlesConfig(){
         return this.bundlesConfig;
     }
-    public File getBundlesFile() { return this.bundlesFile; }
+    private File getBundlesFile() { return this.bundlesFile; }
+
+    // Clans config file methods
+    public void saveClansConfig(){
+        saveResource("clans.yml", true);
+        try {
+            Main.getInstance().getClansConfig().save(getClansFile());
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getClansConfig(){
+        return this.clansConfig;
+    }
+    private File getClansFile() { return this.clansFile; }
+
+    // Lootdrops config file methods
+    public void saveLootdropsConfig(){
+        saveResource("lootdrops.yml", true);
+        try{
+            Main.getInstance().getLootdropsConfig().save(getLootdropsFile());
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getLootdropsConfig() {
+        return this.lootdropsConfig;
+    }
+    private File getLootdropsFile(){
+        return this.lootdropsFile;
+    }
+
+    // Regions config file methods
+    public void saveRegionsConfig(){
+        saveResource("regions.yml", true);
+        try{
+            Main.getInstance().getRegionsConfig().save(getRegionsFile());
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getRegionsConfig() {
+        return this.regionsConfig;
+    }
+    private File getRegionsFile(){
+        return this.regionsFile;
+    }
 
 }

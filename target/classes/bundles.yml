@@ -1,3 +1,4 @@
+# Ensure sign-tag does NOT include the brackets, but do put brackets on the sign!
 sign-tag: Bundle
 
 # It is recommended you edit the rest of this configuration IN GAME! /oinktowny bundle <edit/create>
@@ -6,4 +7,4 @@ sign-tag: Bundle
 # SPACES AND SEMICOLONS ARE. EXTREMELY. NECESSARY!!!!
 bundles:
   basic:
-    - IRON_SWORD; 1; name:Basic sword; enchants:[DAMAGE_ALL-1, DURABILITY-1, ]; lore:[This sword is mighty, It was used by a god]
+    - IRON_SWORD; 1; name:Basic sword; enchants:[]; lore:[This sword is mighty, It was used by a god]

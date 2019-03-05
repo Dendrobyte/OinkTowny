@@ -1,6 +1,11 @@
 package com.redstoneoinkcraft.oinktowny;
 
-import com.redstoneoinkcraft.oinktowny.economy.BundleManager;
+import com.redstoneoinkcraft.oinktowny.bundles.BundleManager;
+import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
+import com.redstoneoinkcraft.oinktowny.economy.TownyTokenManager;
+import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
+import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +21,6 @@ import org.bukkit.entity.Player;
 public class BaseCommand implements CommandExecutor {
 
     String prefix = Main.getInstance().getPrefix();
-    BundleManager manager = BundleManager.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -31,20 +35,35 @@ public class BaseCommand implements CommandExecutor {
                 player.sendMessage(prefix + "No arguments provided! " + ChatColor.GOLD + "/oinktowny help");
                 return true;
             }
+            /* HELP STUFF */
+            if(args[0].equalsIgnoreCase("help")){
+                player.sendMessage(prefix + ChatColor.GOLD + ChatColor.BOLD + "-+OinkTowny Commands+-");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny bundle");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny token");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny claim");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny lootdrop" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny clan");
+                player.sendMessage(ChatColor.GOLD + "To chat with your clan, start your message with " + ChatColor.GOLD + ChatColor.BOLD
+                        + ChatColor.DARK_AQUA + "%");
+                return true;
+            }
+
+            /* BUNDLE STUFF */
+            BundleManager bundleManager = BundleManager.getInstance();
             if(args[0].equalsIgnoreCase("bundle")){
                 if(!player.hasPermission("oinktowny.bundle")){
                     player.sendMessage(prefix + "Sorry, you don't have access to do this." + ChatColor.RED + "oinktowny.bundle");
                     return true;
                 }
-                /* Command structure: /oinktowny bundle create/override <name> */
+                /* Command structure: /oinktowny bundle ... */
                 if(args.length == 1){
-                    player.sendMessage(prefix + "Not enough arguments!");
-                    player.sendMessage(prefix + "Proper usage: " + ChatColor.GOLD + "/oinktowny bundle create/override/give <name>");
-                    return true;
-                }
-                if(args.length > 3){
-                    player.sendMessage(prefix + "Too many arguments!");
-                    player.sendMessage(prefix + "Proper usage: " + ChatColor.GOLD + "/oinktowny bundle create/override/give <name>");
+                    player.sendMessage(prefix + ChatColor.GOLD + ChatColor.BOLD + "-+OinkTowny Bundle Commands+-");
+                    player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny bundle ...");
+                    player.sendMessage(ChatColor.GOLD + "- create <name>" + ChatColor.DARK_AQUA + " - Create a new bundle");
+                    player.sendMessage(ChatColor.GOLD + "- override <name>" + ChatColor.DARK_AQUA + " - Override an existing bundle");
+                    player.sendMessage(ChatColor.GOLD + "- remove <name>" + ChatColor.DARK_AQUA + " - Remove an existing bundle");
+                    player.sendMessage(ChatColor.GOLD + "- give <name>" + ChatColor.DARK_AQUA + " - Give a bundle to yourself");
+                    player.sendMessage(ChatColor.GOLD + "- give <bundle> <player>" + ChatColor.DARK_AQUA + " - Give a bundle to a player");
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("create")){
@@ -53,32 +72,189 @@ public class BaseCommand implements CommandExecutor {
                         return true;
                     }
                     String bundleName = args[2];
-                    manager.createBundleItems(player, bundleName, false);
+                    bundleManager.createBundleItems(player, bundleName, false);
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("override")){
                     if(args.length == 2){
                         player.sendMessage(prefix + "Please provide a bundle name!");
+                        player.sendMessage(bundleManager.listBundles());
                         return true;
                     }
                     String bundleName = args[2];
-                    manager.createBundleItems(player, bundleName, true);
+                    if(bundleManager.bundleExists(bundleName)) {
+                        bundleManager.createBundleItems(player, bundleName, true);
+                        player.sendMessage(prefix + ChatColor.GREEN + "(Bundle override successful)");
+                    } else {
+                        player.sendMessage(prefix + ChatColor.AQUA + "That bundle doesn't exist. Please use " + ChatColor.GOLD + "/ot bundle create <name>");
+                    }
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("give")){
                     if(args.length == 2){
                         player.sendMessage(prefix + "Please provide a bundle name!");
+                        player.sendMessage(bundleManager.listBundles());
                         return true;
                     }
                     String bundleName = args[2];
-                    manager.getBundle(bundleName, player);
+                    if(args.length == 3){
+                        bundleManager.giveBundle(bundleName, player);
+                        return true;
+                    }
+                    if(args.length == 4){
+                        String playerName = args[3];
+                        Player otherPlayer = Bukkit.getPlayer(playerName);
+                        bundleManager.giveBundle(bundleName, otherPlayer);
+                        otherPlayer.sendMessage(prefix + "Successfully gave the " + ChatColor.GOLD + ChatColor.BOLD + bundleName + ChatColor.getLastColors(prefix) + " bundle to " + otherPlayer.getName());
+                        return true;
+                    }
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("remove")){
+                    if(args.length == 2){
+                        player.sendMessage(prefix + "Please provide a bundle name!");
+                        player.sendMessage(bundleManager.listBundles());
+                        return true;
+                    }
+                    String bundleName = args[2];
+                    if(bundleManager.bundleExists(bundleName)) {
+                        bundleManager.removeBundle(bundleName, player);
+                        player.sendMessage(prefix + ChatColor.GREEN + "(Bundle has been eradicated)");
+                    } else {
+                        player.sendMessage(prefix + ChatColor.AQUA + "That bundle doesn't exist.");
+                    }
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("list")){
+                    player.sendMessage(bundleManager.listBundles());
                     return true;
                 }
                 else {
-                    player.sendMessage(prefix + "It apperas something isn't working... \n" + prefix + "Please contact a staff member.");
+                    player.sendMessage(prefix + "Unrecognized argument! \n" + prefix + "To see usages, type " + ChatColor.GOLD + "/ot bundle");
                     return true;
                 }
             }
+
+            /* TOWNYTOKEN STUFF */
+            TownyTokenManager ttManager = TownyTokenManager.getInstance();
+            if(args[0].equalsIgnoreCase("token")){
+                int amt = Integer.parseInt(args[1]);
+                player.getInventory().setItem(0, ttManager.createToken(amt));
+                return true;
+            }
+
+            /* CLAN/CLAN CHAT STUFF */
+            ClanManager cm = ClanManager.getInstance();
+            if(args[0].equalsIgnoreCase("clan")){
+                if(!player.hasPermission("oinktowny.clans")){
+                    player.sendMessage(prefix + "Sorry, you don't have access to do this." + ChatColor.RED + "oinktowny.bundle");
+                    return true;
+                }
+                /* Command structure: /oinktowny clan ... */
+                if(args.length == 1){
+                    player.sendMessage(prefix + ChatColor.GOLD + ChatColor.BOLD + "-+OinkTowny Clan Commands+-");
+                    player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny clan ...");
+                    player.sendMessage(ChatColor.GOLD + "- create");
+                    player.sendMessage(ChatColor.GOLD + "- disband");
+                    player.sendMessage(ChatColor.GOLD + "- invite");
+                    player.sendMessage(ChatColor.GOLD + "- kick");
+                    player.sendMessage(ChatColor.GOLD + "- leave");
+                    player.sendMessage(ChatColor.GOLD + "To chat with your clan, start your message with " + ChatColor.GOLD + ChatColor.BOLD
+                            + ChatColor.DARK_AQUA + "%");
+                    return true;
+                }
+
+                if(args[1].equalsIgnoreCase("create")){
+                    cm.createClan(player);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("disband")){
+                    cm.disbandClan(player);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("invite")){
+                    if(args.length == 2){
+                        player.sendMessage(prefix + "Please enter a player's name!");
+                        return true;
+                    }
+                    String name = args[2];
+                    Player invitee = Bukkit.getServer().getPlayer(name);
+                    if(invitee == null){
+                        player.sendMessage(prefix + "The player " + name + " does not appear to be online.");
+                        return true;
+                    }
+                    cm.inviteToClan(player, invitee);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("accept")){
+                    cm.acceptClanInvite(player);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("deny")){
+                    cm.denyClanInvite(player);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("kick")){
+                    if(args.length == 2){
+                        player.sendMessage(prefix + "Please enter a player's name!");
+                        return true;
+                    }
+                    String name = args[2];
+                    Player kicked = Bukkit.getServer().getPlayer(name);
+                    if(kicked == null){
+                        player.sendMessage(prefix + "The player " + name + " does not appear to be online.");
+                        return true;
+                    }
+                    // TODO: Make it so the player doesn't have to be online
+                    cm.kickPlayer(player, kicked);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("leave")){
+                    cm.leaveClan(player);
+                    return true;
+                }
+            }
+
+            /* LOOT DROP STUFF */
+            LootdropManager lm = LootdropManager.getInstance();
+            if(args[0].equalsIgnoreCase("lootdrop")){
+                if(!player.hasPermission("oinktowny.lootdrop")) {
+                    player.sendMessage(prefix + "This is an admin-only command!");
+                    return true;
+                }
+                if(args.length < 2){
+                    player.sendMessage(prefix + "Please specify drop location. " + ChatColor.GOLD + "/ot lootdrop [random/here]");
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("here")){
+                    lm.dropLootChestPredictably(player);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("random")){
+                    lm.dropLootChestRandom();
+                    player.sendMessage(prefix + "Dropping loot at random location...");
+                    return true;
+                }
+                else {
+                    player.sendMessage(prefix + "Argument for lootdrop location not recognized. " + ChatColor.GOLD + "/ot lootdrop [random/here]");
+                    return true;
+                }
+            }
+
+            /* REGION CLAIMING STUFF */
+            RegionsManager rm = RegionsManager.getInstance();
+            if(args[0].equalsIgnoreCase("claim")){
+                rm.claimChunk(player);
+                return true;
+            }
+            if(args[0].equalsIgnoreCase("unclaim")){
+                rm.unclaimChunk(player);
+                return true;
+            }
+
+            /* DEFAULT MESSAGE */
+            player.sendMessage(prefix + ChatColor.RED + "Argument not recognized! Please see " + ChatColor.GOLD + "/ot help");
+            return true;
         }
         return true;
     }

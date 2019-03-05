@@ -1,0 +1,111 @@
+package com.redstoneoinkcraft.oinktowny.economy;
+
+import com.redstoneoinkcraft.oinktowny.Main;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 8/17/2018
+ * Please do not use or edit without permission! (Being on GitHub counts as permission)
+ * If you have any questions, reach out to me on Twitter! @Mobkinz78
+ * §
+ */
+public class TownyTokenManager {
+
+    private static TownyTokenManager instance = new TownyTokenManager();
+    String prefix = Main.getInstance().getPrefix();
+
+    private TownyTokenManager(){}
+
+    public static TownyTokenManager getInstance(){
+        return instance;
+    }
+
+    private ItemStack townyToken;
+
+    public ItemStack createToken(int amount){
+        // Create initial item
+        townyToken = new ItemStack(Material.EMERALD, amount);
+
+        // Reset name and add unique enchantment
+        ItemMeta tokenMeta = townyToken.getItemMeta();
+        tokenMeta.setDisplayName("" + ChatColor.GREEN + ChatColor.BOLD + "Towny Token");
+        tokenMeta.addEnchant(Enchantment.LUCK, 4, true);
+
+        // Add item lore
+        List<String> tokenLore = new ArrayList<String>();
+        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "You can use this token to...");
+        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "- Trade with players!");
+        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "- Purchase seasonal items!");
+        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "- Purchase item bundles!");
+        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "... and probably more!");
+        tokenMeta.setLore(tokenLore);
+
+        // Set the item meta
+        townyToken.setItemMeta(tokenMeta);
+
+        return townyToken;
+
+    }
+
+    public int getTokenInvSlot(Player player){
+        ItemStack testToken = createToken(1);
+        int itemSlot = -1;
+        ItemStack itemsInInv[] = player.getInventory().getContents();
+        for(int i = 0; i < itemsInInv.length; i++){
+            if(itemsInInv[i] == null) return -1;
+            ItemStack item = itemsInInv[i];
+            if(!item.hasItemMeta()) return -1;
+            if(!item.getEnchantments().keySet().equals(testToken.getEnchantments().keySet())){
+                continue;
+            } else {
+                if(item.getType().equals(testToken.getType()) && item.getItemMeta().getDisplayName().equals(testToken.getItemMeta().getDisplayName())){
+                    // We've definitely got a token
+                    itemSlot = i;
+                    break;
+                }
+            }
+        }
+
+        return itemSlot;
+    }
+
+    public boolean validPurchase(Player player, int amount){
+        int tokenSlot = getTokenInvSlot(player);
+        boolean haveToken = false;
+        if(tokenSlot >= 0) haveToken = true;
+        if(!haveToken){
+            player.sendMessage(prefix + "You don't seem to be carrying any tokens, traveler!");
+            return false;
+        }
+        ItemStack itemsInInv[] = player.getInventory().getContents();
+        int itemInInvAmt = itemsInInv[tokenSlot].getAmount();
+        if(itemInInvAmt < amount){
+            player.sendMessage(prefix + "It appears you don't have enough tokens, traveler!");
+            player.sendMessage(prefix + ChatColor.RED +  "You need " + (amount-itemInInvAmt) + " more tokens to make this purchase.");
+            return false;
+        }
+        return true; // Valid purchase
+    }
+
+    public void makeTransaction(Player player, int amount){
+        int itemSlot = getTokenInvSlot(player);
+        if(itemSlot == -1) { // Just another double check
+            player.sendMessage(prefix + "You don't seem to be carrying any tokens, traveler!");
+            return;
+        }
+        int amountInInv = player.getInventory().getItem(itemSlot).getAmount();
+        player.getInventory().getItem(itemSlot).setAmount(amountInInv-amount);
+        player.sendMessage(prefix + ChatColor.GREEN + ChatColor.BOLD + "Transaction successful!");
+    }
+
+
+}
