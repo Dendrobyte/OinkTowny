@@ -1,6 +1,7 @@
 package com.redstoneoinkcraft.oinktowny;
 
 import com.redstoneoinkcraft.oinktowny.bettersleep.SleepListener;
+import com.redstoneoinkcraft.oinktowny.bundles.PreventItemStealListener;
 import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanChatListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
@@ -58,12 +59,12 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
         // Economy events
         Bukkit.getServer().getPluginManager().registerEvents(new SignClickListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PreventItemStealListener(), this);
         // Region events
         Bukkit.getServer().getPluginManager().registerEvents(new SuperpickListeners(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RegionBlockPlaceBreakListener(), this);
         // Clan events
         Bukkit.getServer().getPluginManager().registerEvents(new ClanChatListener(), this);
-        // Region events
-        Bukkit.getServer().getPluginManager().registerEvents(new RegionBlockPlaceBreakListener(), this);
         // Better sleep events
         Bukkit.getServer().getPluginManager().registerEvents(new SleepListener(), this);
 

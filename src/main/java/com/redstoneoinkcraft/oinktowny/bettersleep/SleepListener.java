@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerBedLeaveEvent;
 public class SleepListener implements Listener {
 
     SleepManager sm = SleepManager.getInstance();
-    String worldName = Main.getInstance().getConfig().getString("world-name");
+    String worldName = "world"; //Main.getInstance().getConfig().getString("world-name");
     String prefix = Main.getInstance().getPrefix();
 
     @EventHandler
@@ -34,7 +34,7 @@ public class SleepListener implements Listener {
         for(Player sleepingPlayer : sm.getAsleepPlayers()){
             sleepingPlayer.sendMessage(prefix + ChatColor.GREEN + player.getName() + " has gone to bed. (" + sm.getPlayersSleeping() + "/" + threshold + ")");
         }
-        sm.getAsleepPlayers().add(player);
+        if(!sm.getAsleepPlayers().contains(player)) sm.getAsleepPlayers().add(player);
         if(sm.getPlayersSleeping() >= threshold){
             event.getPlayer().getWorld().setTime(6000);
             for(Player sleepingPlayer : sm.getAsleepPlayers()){
