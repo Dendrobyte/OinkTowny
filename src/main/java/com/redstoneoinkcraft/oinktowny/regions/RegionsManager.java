@@ -34,6 +34,13 @@ public class RegionsManager {
     private HashMap<UUID, ArrayList<Chunk>> playerChunks = new HashMap<>();
     private HashMap<Chunk, UUID> claimedChunks = new HashMap<>();
 
+    public HashMap<UUID, ArrayList<Chunk>> getPlayerChunks(){
+        return playerChunks;
+    }
+    public HashMap<Chunk, UUID> getClaimedChunks(){
+        return claimedChunks;
+    }
+
     // Methods
     public void claimChunk(Player claimer){
         if(!claimer.getWorld().getName().equalsIgnoreCase(mainInstance.getRegionsConfig().getString("world-name"))){
@@ -41,7 +48,7 @@ public class RegionsManager {
             return;
         }
         Chunk chunk = claimer.getLocation().getChunk();
-        if(isClaimed(chunk)){
+        if(chunkIsClaimed(chunk)){
             claimer.sendMessage(prefix + ChatColor.RED + "This chunk is already claimed!");
             return;
         }
@@ -52,10 +59,10 @@ public class RegionsManager {
         // TODO: This should become dynamic over time... so each player has a different base chunk claim. For now, it'll be teamwork!
         int limit = mainInstance.getRegionsConfig().getInt("base-limit");
         if(claimer.hasPermission("oinktowny.claims.sponsor")) limit += 1;
-        if(claimer.hasPermission("oinktowny.claims.piglet")) limit += 2;
-        if(claimer.hasPermission("oinktowny.claims.boar")) limit += 3;
-        if(claimer.hasPermission("oinktowny.claims.spiderpig")) limit += 5;
-        if(claimer.hasPermission("oinktowny.claims.flyingpig")) limit += 8;
+        if(claimer.hasPermission("oinktowny.claims.piglet")) limit += 1;
+        if(claimer.hasPermission("oinktowny.claims.boar")) limit += 4;
+        if(claimer.hasPermission("oinktowny.claims.spiderpig")) limit += 4;
+        if(claimer.hasPermission("oinktowny.claims.flyingpig")) limit += 6;
         if(claimer.hasPermission("oinktowny.claims.octopig")) limit += 12;
         int currentClaims;
         try {
@@ -173,7 +180,7 @@ public class RegionsManager {
         return isTheirChunk;
     }
 
-    private boolean isClaimed(Chunk chunk){
+    public boolean chunkIsClaimed(Chunk chunk){
         return claimedChunks.keySet().contains(chunk);
     }
 

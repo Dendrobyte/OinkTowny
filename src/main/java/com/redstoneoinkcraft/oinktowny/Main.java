@@ -1,5 +1,9 @@
 package com.redstoneoinkcraft.oinktowny;
 
+import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaClickListener;
+import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaPlayerQuitListener;
+import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaSignListeners;
+import com.redstoneoinkcraft.oinktowny.arenapvp.PreventPVPListener;
 import com.redstoneoinkcraft.oinktowny.bettersleep.SleepListener;
 import com.redstoneoinkcraft.oinktowny.bundles.PreventItemStealListener;
 import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
@@ -31,6 +35,7 @@ public class Main extends JavaPlugin {
 
     private static Main instance;
     private String prefix = "§8(§3OinkTowny§8)§3 ";
+    private String worldName;
 
     /* Custom configurations */
     // bundles.yml
@@ -45,6 +50,9 @@ public class Main extends JavaPlugin {
     // regions.yml
     private File regionsFile;
     private FileConfiguration regionsConfig;
+    // arenas.yml
+    private File arenasFile;
+    private FileConfiguration arenasConfig;
 
 
     @Override
@@ -67,6 +75,11 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new ClanChatListener(), this);
         // Better sleep events
         Bukkit.getServer().getPluginManager().registerEvents(new SleepListener(), this);
+        // PvP Arena events
+        Bukkit.getServer().getPluginManager().registerEvents(new PreventPVPListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ArenaSignListeners(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ArenaPlayerQuitListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ArenaClickListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
@@ -82,6 +95,7 @@ public class Main extends JavaPlugin {
         RegionsManager.getInstance().cacheRegions();
 
         // Finish
+        worldName = getConfig().getString("world-name"); // TODO: Change all world checks to main.worldName
         getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been enabled!");
     }
 
@@ -97,6 +111,10 @@ public class Main extends JavaPlugin {
 
     public String getPrefix(){
         return prefix;
+    }
+
+    public String getWorldName(){
+        return worldName;
     }
 
     // Configuration file methods
@@ -177,6 +195,23 @@ public class Main extends JavaPlugin {
             }
             getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " regions.yml has been loaded.");
         }
+
+        // Generate arenas.yml
+        arenasFile = new File(getDataFolder(), "arenas.yml");
+        if(!arenasFile.exists()){
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " is creating the arenas.yml...");
+            saveResource("arenas.yml", false);
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " arenas.yml has been created!");
+        } else {
+            arenasConfig = new YamlConfiguration();
+            try {
+                arenasConfig.load(arenasFile);
+            } catch (IOException | InvalidConfigurationException e){
+                getLogger().log(Level.WARNING, "OinkTowny arenas.yml could not be loaded!");
+                e.printStackTrace();
+            }
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " arenas.yml has been loaded.");
+        }
     }
 
     // Bundles config file methods
@@ -241,6 +276,23 @@ public class Main extends JavaPlugin {
     }
     private File getRegionsFile(){
         return this.regionsFile;
+    }
+
+    // Arenas config file methods
+    public void saveArenasConfig(){
+        saveResource("arenas.yml", true);
+        try{
+            Main.getInstance().getArenasConfig().save(getArenasFile());
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getArenasConfig() {
+        return this.arenasConfig;
+    }
+    private File getArenasFile(){
+        return this.arenasFile;
     }
 
 }

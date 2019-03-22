@@ -24,6 +24,7 @@ public class SleepListener implements Listener {
     @EventHandler
     public void onPlayerSleep(PlayerBedEnterEvent event){
         if(!event.getBed().getWorld().getName().equalsIgnoreCase(worldName)) return;
+        if(event.getBed().getWorld().getTime() > 0 && event.getBed().getWorld().getTime() < 16000) return; // Day time check
         Player player = event.getPlayer();
         sm.addPlayerSleeping(player);
 
