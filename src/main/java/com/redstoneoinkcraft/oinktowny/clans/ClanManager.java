@@ -206,7 +206,9 @@ public class ClanManager {
             kicker.sendMessage(prefix + "Only the clan leader can do this action.");
             return;
         }
-        clan.getMemberIds().remove(kicked.getUniqueId());
+
+        playerClans.remove(kicked.getUniqueId());
+
         clansConfig.set("player-info." + kicked, null);
         updateConfigPlayerList(kicked);
         kicked.sendMessage(prefix + "You have been kicked from " + Bukkit.getPlayer(clan.getLeaderId()).getName() + "'s clan!");
@@ -230,16 +232,16 @@ public class ClanManager {
 
         ClanObj clan = getPlayerClan(player);
         clan.getMemberIds().remove(player.getUniqueId());
-        clansConfig.set("player-info." + player, null);
+        clansConfig.set("player-info." + player.getUniqueId(), null);
         // Remove player from list
         List<String> playerIDs = clansConfig.getStringList("player-list");
         playerIDs.remove(player.getUniqueId().toString());
         clansConfig.set("player-list", playerIDs);
         mainInstance.saveClansConfig();
 
+        playerClans.remove(player.getUniqueId());
         player.sendMessage(prefix + "You have left " + Bukkit.getPlayer(clan.getLeaderId()).getName() + "'s clan.");
 
-        mainInstance.saveClansConfig();
     }
 
     /* Utility methods */
@@ -281,6 +283,7 @@ public class ClanManager {
     // TODO: Implementation needs to be tested
     private void updateConfigPlayerList(Player player){
         List<String> playerIDs = clansConfig.getStringList("player-list");
+        if(playerIDs.contains(player.getUniqueId().toString())) return;
         playerIDs.add(player.getUniqueId().toString());
         clansConfig.set("player-list", playerIDs);
         mainInstance.saveClansConfig();
@@ -300,17 +303,27 @@ public class ClanManager {
         return null;
     }
 
+    public boolean playerHasClanID(UUID playerID){
+        return playerClans.containsKey(playerID);
+    }
+
+    public ClanObj getPlayerClanID(UUID playerID){
+        if(playerHasClanID(playerID)) return playerClans.get(playerID);
+        // System.out.println("Player does not have a clan!");
+        return null;
+    }
+
     public boolean playerHasClan(Player player){
         return playerClans.containsKey(player.getUniqueId());
     }
 
     public ClanObj getPlayerClan(Player player){
         if(playerHasClan(player)) return playerClans.get(player.getUniqueId());
-        System.out.println("Player does not have a clan!");
+        // System.out.println("Player does not have a clan!");
         return null;
     }
 
-    public boolean playerIsLeader(Player player, ClanObj clan){
+    private boolean playerIsLeader(Player player, ClanObj clan){
         return clan.getLeaderId().equals(player.getUniqueId());
     }
 

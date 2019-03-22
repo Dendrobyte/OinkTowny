@@ -1,7 +1,10 @@
 package com.redstoneoinkcraft.oinktowny.regions;
 
 import com.redstoneoinkcraft.oinktowny.Main;
+import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
+import com.redstoneoinkcraft.oinktowny.clans.ClanObj;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -14,6 +17,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.UUID;
+
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78/Dendrobyte)
  * Please do not use or edit without permission!
@@ -23,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 public class SuperpickListeners implements Listener {
 
     RegionsManager rm = RegionsManager.getInstance();
+    ClanManager cm = ClanManager.getInstance();
     String prefix = Main.getInstance().getPrefix();
 
     @EventHandler // When they leave, remove them from the superpick list
@@ -47,13 +53,25 @@ public class SuperpickListeners implements Listener {
     public void onBlockHit(PlayerInteractEvent event){
         Player player = event.getPlayer();
         // if(!event.getClickedBlock().getWorld().getName().equals(configpath)) return;
-        // TODO: If player is in a region, deny the action.
+        // TODO: This probably triggers the break/place event, but it does use #breakNaturally()... Let's find out if I have to do the region check!
         if(!rm.isSuperpick(player)) return;
+
         if(event.getAction() != Action.LEFT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND) return;
         Material blockType = event.getClickedBlock().getType();
         if(blockType == Material.BEDROCK || blockType == Material.OBSIDIAN) return;
         ItemStack pick = event.getItem();
         if(!pick.getType().toString().contains("PICKAXE")) return;
+
+        // Check clan similarity
+        Chunk eventChunk = event.getClickedBlock().getChunk();
+        if(rm.getClaimedChunks().containsKey(eventChunk)){
+            UUID chunkOwner = rm.getClaimedChunks().get(eventChunk);
+            ClanObj clan = cm.getPlayerClanID(chunkOwner);
+            if(!clan.getMemberIds().contains(player.getUniqueId())){
+                player.sendMessage(prefix + "You can not superpick here. The chunk is claimed.");
+                return;
+            }
+        }
 
         event.getClickedBlock().breakNaturally();
     }

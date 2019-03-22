@@ -1,5 +1,6 @@
 package com.redstoneoinkcraft.oinktowny;
 
+import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaPVPManager;
 import com.redstoneoinkcraft.oinktowny.bundles.BundleManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.economy.TownyTokenManager;
@@ -41,8 +42,9 @@ public class BaseCommand implements CommandExecutor {
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny bundle");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny token");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny claim");
-                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny lootdrop" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny clan");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny lootdrop" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny arena" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
                 player.sendMessage(ChatColor.GOLD + "To chat with your clan, start your message with " + ChatColor.GOLD + ChatColor.BOLD
                         + ChatColor.DARK_AQUA + "%");
                 return true;
@@ -250,6 +252,49 @@ public class BaseCommand implements CommandExecutor {
             if(args[0].equalsIgnoreCase("unclaim")){
                 rm.unclaimChunk(player);
                 return true;
+            }
+
+            /* ARENAS STUFF */
+            ArenaPVPManager apm = ArenaPVPManager.getInstance();
+            if(args[0].equalsIgnoreCase("arena")){
+                if(!player.hasPermission("oinktowny.create")){
+                    player.sendMessage(prefix + "Sorry, this is an admin-only command.");
+                    return true;
+                }
+                /* Command structure: /oinktowny arena ... */
+                if(args.length == 1){
+                    player.sendMessage(prefix + ChatColor.GOLD + ChatColor.BOLD + "-+OinkTowny Arena Commands+-");
+                    player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny arena ...");
+                    player.sendMessage(ChatColor.GOLD + "- create <name>" + ChatColor.DARK_AQUA + " - Create a new arena");
+                    player.sendMessage(ChatColor.GOLD + "- leave" + ChatColor.DARK_AQUA + " - Leave arena creation");
+                    player.sendMessage(ChatColor.GOLD + "- list" + ChatColor.DARK_AQUA + " - See list of existing arenas");
+                    player.sendMessage(ChatColor.GOLD + "- remove <name>" + ChatColor.DARK_AQUA + " - Remove an existing arena");
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("create")){
+                    if(args.length == 2){
+                        player.sendMessage(prefix + "Please enter an arena name!");
+                        return true;
+                    }
+                    apm.initiateArenaCreation(player, args[2]);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("leave")){
+                    apm.quitCreation(player);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("list")){
+                    player.sendMessage(prefix + "Existing arenas: " + apm.getExistingArenas().toString());
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("remove")){
+                    // TODO: Arena removal method
+                    return true;
+                }
+                else {
+                    player.sendMessage(prefix + "Unrecognized argument! \n" + prefix + "To see usages, type " + ChatColor.GOLD + "/ot arena");
+                    return true;
+                }
             }
 
             /* DEFAULT MESSAGE */
