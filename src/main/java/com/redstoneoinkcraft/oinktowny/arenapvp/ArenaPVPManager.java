@@ -1,8 +1,8 @@
 package com.redstoneoinkcraft.oinktowny.arenapvp;
 
 import com.redstoneoinkcraft.oinktowny.Main;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -22,11 +23,16 @@ public class ArenaPVPManager {
 
     private static ArenaPVPManager instance = new ArenaPVPManager();
     private String prefix = Main.getInstance().getPrefix();
+    private String arenaPrefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "TownyArena" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
 
     private ArenaPVPManager(){}
 
     public static ArenaPVPManager getInstance(){
         return instance;
+    }
+
+    public String getArenaPrefix(){
+        return arenaPrefix;
     }
 
     /* Arena creation */
@@ -42,7 +48,7 @@ public class ArenaPVPManager {
     }
 
     private HashMap<Player, ArenaCreationStage> playerCurrentStage = new HashMap<>();
-    private HashMap<Player, ArenaTemplateObj> currentArenaInCreation = new HashMap<>();
+    private HashMap<Player, ArenaObj> currentArenaInCreation = new HashMap<>();
 
     private boolean isInCreation(Player player){
         return playerCurrentStage.containsKey(player);
@@ -58,7 +64,7 @@ public class ArenaPVPManager {
         }
     }
 
-    private boolean arenaExists(String name){
+    public boolean arenaExists(String name){
         return getExistingArenas().contains(name);
     }
 
@@ -73,7 +79,7 @@ public class ArenaPVPManager {
         playerCurrentStage.put(player, ArenaCreationStage.ARENA_LOC);
         player.getInventory().setItem(0, getCreationWand());
         setPlayerStage(player, ArenaCreationStage.ARENA_LOC);
-        currentArenaInCreation.put(player, new ArenaTemplateObj(name));
+        currentArenaInCreation.put(player, new ArenaObj(name));
         player.sendMessage(prefix + "Arena creation has been initiated for arena " + ChatColor.BOLD + name + "!");
         player.sendMessage(prefix + ChatColor.RED + "To leave creation, use /ot arena leave");
         player.sendMessage(prefix + ChatColor.GREEN + "Please use the creation wand to select the " + ChatColor.BOLD + "main arena location.");
@@ -90,14 +96,13 @@ public class ArenaPVPManager {
         playerCurrentStage.put(player, stage);
     }
 
-    public ArenaTemplateObj getPlayerArenaTemplate(Player player){
+    public ArenaObj getPlayerCreationArena(Player player){
         return currentArenaInCreation.get(player);
     }
 
-    // TODO: Get rid of the exception throw- shouldn't throw that so I'm just making sure I don't hit that point... I could always keep it.
     public void finishCreation(Player player) {
         playerCurrentStage.remove(player);
-        player.sendMessage(prefix + "Creating the arena " + ChatColor.BOLD + getPlayerArenaTemplate(player).getName() + "...");
+        player.sendMessage(prefix + "Creating the arena " + ChatColor.BOLD + getPlayerCreationArena(player).getName() + "...");
         writeArenaToConfig(currentArenaInCreation.get(player), Main.getInstance().getArenasConfig());
         player.sendMessage(prefix + ChatColor.GREEN + "Creation successful for " + ChatColor.BOLD + currentArenaInCreation.get(player).getName() + "!");
         currentArenaInCreation.remove(player);
@@ -110,7 +115,7 @@ public class ArenaPVPManager {
         player.sendMessage(prefix + "You have left arena creation! Progress was lost.");
     }
 
-    private void writeArenaToConfig(ArenaTemplateObj arena, FileConfiguration arenasConfig){
+    private void writeArenaToConfig(ArenaObj arena, FileConfiguration arenasConfig){
         String name = arena.getName();
         // Save central loc
         arenasConfig.set("arenas." + name + ".central_loc.x", arena.getArenaLoc().getBlockX());
@@ -133,7 +138,93 @@ public class ArenaPVPManager {
     }
 
     /* Arena join */
+    private ArrayList<ArenaObj> loadedArenas = new ArrayList<>();
+    private HashMap<Player, ArenaObj> playersInArenas = new HashMap<>();
+
+    public boolean isPlayerInArena(Player player){
+        return playersInArenas.containsKey(player);
+    }
+
+    public ArenaObj getPlayerArena(Player player){
+        if(!isPlayerInArena(player)) return null;
+        return playersInArenas.get(player);
+    }
+
+    public void loadArenas(){
+        FileConfiguration arenasConfig = Main.getInstance().getArenasConfig();
+        for(String arenaName : getExistingArenas()){
+            ArenaObj workingArena = new ArenaObj(arenaName);
+            World world = Bukkit.getServer().getWorld(Main.getInstance().getWorldName());
+
+            Location arenaLoc = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".central_loc.x"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.y"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.z"));
+            Location lobby = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".lobby.x"), arenasConfig.getInt("arenas." + arenaName + ".lobby.y"), arenasConfig.getInt("arenas." + arenaName + ".lobby.z"));
+            Location spawn_one = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_one.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.z"));
+            Location spawn_two = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_two.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.z"));
+
+            workingArena.setAllValues(arenaLoc, lobby, spawn_one, spawn_two, ArenaStatus.WAITING);
+
+            loadedArenas.add(workingArena);
+        }
+        Bukkit.getLogger().log(Level.INFO, prefix + "Successfully loaded all PvP arenas!");
+    }
+
+    public ArenaObj getArenaObj(String name){
+        for(ArenaObj arena : loadedArenas){
+            if(arena.getName().equalsIgnoreCase(name)){
+                return arena;
+            }
+        }
+        return null; // This should never happen since the check occurs with sign creation... unless an arena is removed!
+    }
+
+    public void addPlayerToArena(ArenaObj workingArena, Player player, Sign wallSign){
+        if(isPlayerInArena(player)){
+            player.sendMessage(arenaPrefix + "I don't know what sorcery you're using, but you're already in an arena!");
+            return;
+        }
+        if(workingArena.getPlayerOne() == null){
+            workingArena.setPlayerOne(player);
+            workingArena.setArenaSign(wallSign);
+            player.teleport(workingArena.getArenaLoc());
+            player.sendMessage(arenaPrefix + "You have been added to " + workingArena.getName() + ".");
+            player.sendMessage(arenaPrefix + ChatColor.GOLD + "Currently waiting for a second player...");
+        } else {
+            workingArena.setPlayerTwo(player);
+            player.sendMessage(arenaPrefix + "You have been added to " + ChatColor.BOLD + workingArena.getName() + ".");
+            workingArena.getPlayerOne().sendMessage(arenaPrefix + ChatColor.GOLD + "You will be facing " + ChatColor.BOLD + player.getName() + "...");
+            player.sendMessage(arenaPrefix + ChatColor.GOLD + "You will be facing " + ChatColor.BOLD + workingArena.getPlayerOne().getName() + "...");
+            player.teleport(workingArena.getArenaLoc()); // Needs to be before startArena so that the teleport listener doesn't kill everything.
+            startArena(workingArena);
+        }
+        playersInArenas.put(player, workingArena);
+    }
 
     /* Arena play */
+    public void startArena(ArenaObj workingArena){
+        workingArena.setStatus(ArenaStatus.IN_USE);
+        workingArena.getArenaSign().setLine(2, "" + ChatColor.GREEN + ChatColor.BOLD + "IN USE");
+        workingArena.getArenaSign().update();
+        workingArena.sendPlayersMessage(arenaPrefix + ChatColor.GOLD + ChatColor.BOLD + "Both players have joined!" +
+                ChatColor.GRAY + ChatColor.ITALIC + " Initiating timer...");
+        ArenaTimer timer = new ArenaTimer(workingArena);
+        timer.runTaskTimer(Main.getInstance(), 0, 20L);
+    }
+
+    public void endArena(ArenaObj workingArena, Player winner){
+        World towny = Bukkit.getServer().getWorld(Main.getInstance().getWorldName());
+        Player playerOne = workingArena.getPlayerOne();
+        Player playerTwo = workingArena.getPlayerTwo();
+        for(Player players : towny.getPlayers()){
+            players.sendMessage(prefix + ChatColor.GOLD + ChatColor.BOLD + winner.getName() + ChatColor.getLastColors(prefix) + " with "
+                    + workingArena.getPlayerOne().getHealth() + " health remaining won a Towny Arena battle! " + ChatColor.GRAY + ChatColor.ITALIC + "Huzzah!");
+        }
+        playersInArenas.remove(playerOne);
+        playersInArenas.remove(playerTwo);
+        workingArena.resetArena();
+        playerOne.teleport(workingArena.getLobby());
+        playerTwo.teleport(workingArena.getLobby());
+    }
 
 }
+
+

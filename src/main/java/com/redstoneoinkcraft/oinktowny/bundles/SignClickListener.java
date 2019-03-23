@@ -38,7 +38,7 @@ public class SignClickListener implements Listener {
             + Main.getInstance().getBundlesConfig().getString("sign-tag") + ChatColor.DARK_GRAY + ChatColor.BOLD + "]";
 
     @EventHandler
-    public void playerCreatesSign(SignChangeEvent event){
+    public void playerCreatesBundleSign(SignChangeEvent event){
         Block block = event.getBlock();
         if(!(block.getType() == Material.WALL_SIGN)) return;
         if(!event.getLine(0).equals(ChatColor.stripColor(tag))) return;
@@ -89,7 +89,7 @@ public class SignClickListener implements Listener {
      * Line 4 = ""
      */
     @EventHandler
-    public void playerRightClickWallSign(PlayerInteractEvent event){
+    public void playerRightClickBundleWallSign(PlayerInteractEvent event){
         // if(!event.getPlayer().getWorld().getName().equals(worldName)) return;
         if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return; // Ensure it's a right click
         if(!event.getHand().equals(EquipmentSlot.HAND)) return;

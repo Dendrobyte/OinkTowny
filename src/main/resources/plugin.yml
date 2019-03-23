@@ -1,6 +1,6 @@
 name: OinkTowny
 author: Dendrobyte, Mobkinz78
-version: 0.3a
+version: 0.6a
 main: com.redstoneoinkcraft.oinktowny.Main
 description: OinkTowny plugin made for Oinkcraft's new towny reboot!
 api-version: 1.13
@@ -23,4 +23,6 @@ permissions:
   oinktowny.claims.x:
     description: Sets limit for how many claims a player has
   oinktowny.create:
-    description: Allows a player to create an arena or not.
+    description: Allows a player to create an arena
+  oinktowny.arenas:
+    description: Allows a player to create an arena join sign

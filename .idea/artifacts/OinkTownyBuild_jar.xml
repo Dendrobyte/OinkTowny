@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="OinkTownyBuild:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/OinkTownyBuild_jar</output-path>
+    <root id="archive" name="OinkTownyBuild_jar.jar">
+      <element id="module-output" name="OinkTowny" />
+    </root>
+  </artifact>
+</component>
