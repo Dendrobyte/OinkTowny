@@ -1,9 +1,6 @@
 package com.redstoneoinkcraft.oinktowny;
 
-import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaClickListener;
-import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaPlayerQuitListener;
-import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaSignListeners;
-import com.redstoneoinkcraft.oinktowny.arenapvp.PreventPVPListener;
+import com.redstoneoinkcraft.oinktowny.arenapvp.*;
 import com.redstoneoinkcraft.oinktowny.bettersleep.SleepListener;
 import com.redstoneoinkcraft.oinktowny.bundles.PreventItemStealListener;
 import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
@@ -76,14 +73,16 @@ public class Main extends JavaPlugin {
         // Better sleep events
         Bukkit.getServer().getPluginManager().registerEvents(new SleepListener(), this);
         // PvP Arena events
-        Bukkit.getServer().getPluginManager().registerEvents(new PreventPVPListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaSignListeners(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaPlayerQuitListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaClickListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ArenaDamageListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
         getCommand("superpick").setExecutor(new SuperpickCommand());
+
+        worldName = getConfig().getString("world-name"); // TODO: Change all world checks to main.worldName
 
         /* Initialize Clan */
         ClanManager.getInstance().cacheClans();
@@ -94,8 +93,10 @@ public class Main extends JavaPlugin {
         /* Initialize regions */
         RegionsManager.getInstance().cacheRegions();
 
+        /* Load arenas */
+        ArenaPVPManager.getInstance().loadArenas();
+
         // Finish
-        worldName = getConfig().getString("world-name"); // TODO: Change all world checks to main.worldName
         getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been enabled!");
     }
 

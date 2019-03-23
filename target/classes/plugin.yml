@@ -23,4 +23,6 @@ permissions:
   oinktowny.claims.x:
     description: Sets limit for how many claims a player has
   oinktowny.create:
-    description: Allows a player to create an arena or not.
+    description: Allows a player to create an arena
+  oinktowny.arenas:
+    description: Allows a player to create an arena join sign
