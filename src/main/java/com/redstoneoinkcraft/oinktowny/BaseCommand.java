@@ -3,6 +3,7 @@ package com.redstoneoinkcraft.oinktowny;
 import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaPVPManager;
 import com.redstoneoinkcraft.oinktowny.bundles.BundleManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
+import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.economy.TownyTokenManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
@@ -297,6 +298,24 @@ public class BaseCommand implements CommandExecutor {
                 }
             }
 
+            /* ENCHANTMENT STUFF */
+            EnchantmentManager em = EnchantmentManager.getInstance();
+            if(args[0].equalsIgnoreCase("enchant")){
+                if(args.length < 3) {
+                    player.sendMessage(prefix + "You need 3 args");
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("jump")){
+                    em.enchantItem(player, EnchantmentManager.JUMP_BOOST, Integer.parseInt(args[2]));
+                }
+                if(args[1].equalsIgnoreCase("glow")){
+                    em.enchantItem(player, EnchantmentManager.GLOW_STRIKE, Integer.parseInt(args[2]));
+                }
+                if(args[1].equalsIgnoreCase("convert")){
+                    em.enchantItem(player, EnchantmentManager.CONVERSION, Integer.parseInt(args[2]));
+                }
+                return true;
+            }
             /* DEFAULT MESSAGE */
             player.sendMessage(prefix + ChatColor.RED + "Argument not recognized! Please see " + ChatColor.GOLD + "/ot help");
             return true;

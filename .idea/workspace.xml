@@ -7,19 +7,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaDamageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaTimer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentFramework.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantDmgConversion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantGlowEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantJumpBoost.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantAnvilMaintance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantTimer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPVPManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPVPManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPlayerQuitListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPlayerQuitListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaSignListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaSignListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaTemplateObj.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaObj.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/PreventPVPListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/SignClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/SignClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -128,16 +129,17 @@
     <session id="-1565149269">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="32" />
+          <entry key="project.closed" value="36" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.13" value="4" />
+          <entry key="project.open.time.12" value="2" />
+          <entry key="project.open.time.13" value="5" />
           <entry key="project.open.time.14" value="4" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.16" value="3" />
           <entry key="project.open.time.18" value="2" />
           <entry key="project.open.time.19" value="1" />
-          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.20" value="1" />
           <entry key="project.open.time.21" value="2" />
           <entry key="project.open.time.22" value="3" />
@@ -150,7 +152,7 @@
           <entry key="project.open.time.59" value="1" />
           <entry key="project.open.time.61" value="1" />
           <entry key="project.open.time.66" value="1" />
-          <entry key="project.opened" value="37" />
+          <entry key="project.opened" value="41" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -164,10 +166,10 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="74025" />
-          <entry key="PLAIN_TEXT" value="313" />
+          <entry key="JAVA" value="84910" />
+          <entry key="PLAIN_TEXT" value="416" />
           <entry key="XML" value="8" />
-          <entry key="YAML" value="2062" />
+          <entry key="YAML" value="2063" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -183,10 +185,10 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="2" />
-          <entry key="JAVA" value="67" />
+          <entry key="JAVA" value="98" />
           <entry key="PLAIN_TEXT" value="5" />
           <entry key="XML" value="16" />
-          <entry key="YAML" value="20" />
+          <entry key="YAML" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
@@ -200,70 +202,70 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaObj.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="119" column="37" lean-forward="true" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
+            <state relative-caret-position="4947">
+              <caret line="303" column="37" selection-start-line="303" selection-start-column="37" selection-end-line="303" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1377">
+              <caret line="103" column="46" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#498#499#0" expanded="true" />
-                <element signature="e#525#526#0" expanded="true" />
-                <element signature="e#887#888#0" expanded="true" />
-                <element signature="e#923#924#0" expanded="true" />
-                <element signature="e#1043#1044#0" expanded="true" />
-                <element signature="e#1077#1078#0" expanded="true" />
-                <element signature="e#1127#1128#0" expanded="true" />
-                <element signature="e#1161#1162#0" expanded="true" />
-                <element signature="e#1254#1255#0" expanded="true" />
-                <element signature="e#1293#1294#0" expanded="true" />
-                <element signature="e#1397#1398#0" expanded="true" />
-                <element signature="e#1421#1422#0" expanded="true" />
-                <element signature="e#1226#1227#0" expanded="true" />
-                <element signature="e#1259#1260#0" expanded="true" />
-                <element signature="e#1548#1549#0" expanded="true" />
-                <element signature="e#1582#1583#0" expanded="true" />
-                <element signature="e#1628#1629#0" expanded="true" />
-                <element signature="e#1660#1661#0" expanded="true" />
-                <element signature="e#1810#1811#0" expanded="true" />
-                <element signature="e#1831#1832#0" expanded="true" />
-                <element signature="e#2021#2022#0" expanded="true" />
-                <element signature="e#2044#2045#0" expanded="true" />
+                <element signature="method#createConfig#0;class#Main#0" />
+                <element signature="method#saveBundlesConfig#0;class#Main#0" />
+                <element signature="method#saveClansConfig#0;class#Main#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1173">
+              <caret line="84" column="17" selection-start-line="84" selection-start-column="17" selection-end-line="84" selection-end-column="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantGlowEntity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="19" column="5" lean-forward="true" selection-start-line="17" selection-start-column="4" selection-end-line="19" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="621">
+              <caret line="39" column="114" lean-forward="true" selection-start-line="37" selection-start-column="4" selection-end-line="39" selection-end-column="114" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPVPManager.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentFramework.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="686">
-              <caret line="216" column="49" lean-forward="true" selection-start-line="216" selection-start-column="49" selection-end-line="216" selection-end-column="49" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1102#1103#0" expanded="true" />
-                <element signature="e#1136#1137#0" expanded="true" />
-                <element signature="e#1559#1560#0" expanded="true" />
-                <element signature="e#1594#1595#0" expanded="true" />
-                <element signature="e#1811#1812#0" expanded="true" />
-                <element signature="e#1872#1873#0" expanded="true" />
-                <element signature="e#2384#2385#0" expanded="true" />
-                <element signature="e#2441#2442#0" expanded="true" />
-                <element signature="e#3683#3684#0" expanded="true" />
-                <element signature="e#3736#3737#0" expanded="true" />
-                <element signature="e#3796#3797#0" expanded="true" />
-                <element signature="e#3853#3854#0" expanded="true" />
-                <element signature="e#6531#6532#0" expanded="true" />
-                <element signature="e#6589#6590#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaSignListeners.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="621">
-              <caret line="71" column="16" lean-forward="true" selection-start-line="71" selection-start-column="12" selection-end-line="71" selection-end-column="16" />
+            <state relative-caret-position="408">
+              <caret line="26" column="54" lean-forward="true" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -272,48 +274,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaTimer.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantDmgConversion.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="158" lean-forward="true" selection-start-line="30" selection-start-column="158" selection-end-line="30" selection-end-column="158" />
+            <state relative-caret-position="170">
+              <caret line="15" column="62" selection-start-line="15" selection-start-column="62" selection-end-line="15" selection-end-column="62" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#438#439#0" expanded="true" />
-                <element signature="e#485#486#0" expanded="true" />
+                <element signature="e#650#651#0" expanded="true" />
+                <element signature="e#724#725#0" expanded="true" />
+                <element signature="e#1379#1380#0" expanded="true" />
+                <element signature="e#1406#1407#0" expanded="true" />
+                <element signature="e#1460#1461#0" expanded="true" />
+                <element signature="e#1488#1489#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaDamageListener.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantJumpBoost.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="519">
-              <caret line="37" column="41" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
+            <state relative-caret-position="170">
+              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPlayerQuitListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="23" column="57" selection-start-line="23" selection-start-column="57" selection-end-line="23" selection-end-column="57" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/arenas.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="7" selection-start-column="7" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -323,8 +308,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Singleton" />
         <option value="Enum" />
+        <option value="Singleton" />
         <option value="Class" />
       </list>
     </option>
@@ -350,14 +335,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/economy/BundleManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BundleCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/economy/TownyTokenItem.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/economy/TownyTokenManager.java" />
-        <option value="$PROJECT_DIR$/.idea/.name" />
-        <option value="$PROJECT_DIR$/.idea/compiler.xml" />
-        <option value="$PROJECT_DIR$/.idea/artifacts/OinkTowny_jar.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/bundles.yml" />
         <option value="$PROJECT_DIR$/src/main/resources/clans.yml" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/clans/ClanObj.java" />
@@ -381,20 +358,34 @@
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaCreationStages.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaTemplateObj.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/PreventItemStealListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" />
         <option value="$PROJECT_DIR$/src/main/resources/arenas.yml" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/SignClickListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaClickListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaStatus.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/PreventPVPListener.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/plugin.yml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaSignListeners.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaObj.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaDamageListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaTimer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPlayerQuitListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPVPManager.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentConstants.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantAnvilMaintance.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantJumpBoost.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantListeners.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantTimer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantFrameworks/EnchantmentGlowStrikeFramework.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantFrameworks/EnchantmentJumpBoostFramework.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantFrameworks/EnchantmentConversionFramework.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantGlowEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantJumpBoost.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantDmgConversion.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentFramework.java" />
       </list>
     </option>
   </component>
@@ -425,7 +416,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -466,7 +457,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="oinktowny" type="462c0819:PsiDirectoryNode" />
-              <item name="arenapvp" type="462c0819:PsiDirectoryNode" />
+              <item name="customenchants" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="OinkTowny" type="b2602c69:ProjectViewProjectNode" />
@@ -475,7 +466,8 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="oinktowny" type="462c0819:PsiDirectoryNode" />
-              <item name="bettersleep" type="462c0819:PsiDirectoryNode" />
+              <item name="customenchants" type="462c0819:PsiDirectoryNode" />
+              <item name="enchants" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="OinkTowny" type="b2602c69:ProjectViewProjectNode" />
@@ -484,65 +476,14 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="oinktowny" type="462c0819:PsiDirectoryNode" />
-              <item name="bundles" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OinkTowny" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OinkTowny - Plugin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="oinktowny" type="462c0819:PsiDirectoryNode" />
-              <item name="clans" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OinkTowny" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OinkTowny - Plugin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="oinktowny" type="462c0819:PsiDirectoryNode" />
-              <item name="economy" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OinkTowny" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OinkTowny - Plugin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="oinktowny" type="462c0819:PsiDirectoryNode" />
-              <item name="listeners" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OinkTowny" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OinkTowny - Plugin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="oinktowny" type="462c0819:PsiDirectoryNode" />
-              <item name="lootdrops" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OinkTowny" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OinkTowny - Plugin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="oinktowny" type="462c0819:PsiDirectoryNode" />
-              <item name="regions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OinkTowny" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OinkTowny - Plugin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="customenchants" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -553,11 +494,16 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://F:/Oinkcraft Files/OinkTowny Files/OinkTowny - Plugin/src/main/resources/plugin.yml" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553313207721" />
-    <property name="last_opened_file_path" value="F:/Misc Programming/MC TESTING SERVER (1.13.2)/plugins" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553395609989" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/EnchantmentSolution/EnchantmentSolution" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.redstoneoinkcraft.oinktowny.customenchants.EnchantFrameworks" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -622,7 +568,11 @@
       <workItem from="1553133093847" duration="1270000" />
       <workItem from="1553199916712" duration="8979000" />
       <workItem from="1553301624506" duration="86000" />
-      <workItem from="1553302042680" duration="9993000" />
+      <workItem from="1553302042680" duration="10129000" />
+      <workItem from="1553346862835" duration="875000" />
+      <workItem from="1553358433167" duration="16217000" />
+      <workItem from="1553395910214" duration="428000" />
+      <workItem from="1553397628701" duration="860000" />
     </task>
     <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
       <created>1538704636495</created>
@@ -652,16 +602,31 @@
       <option name="project" value="LOCAL" />
       <updated>1553217228178</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="ArenaPVP done. Build jar now included in commits.">
+      <created>1553313254763</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1553313254763</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Updating alpha version real quick">
+      <created>1553313278113</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1553313278113</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113622000" />
+    <option name="totallyTimeSpent" value="132138000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1633" height="1053" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3168254" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2215873" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -678,9 +643,9 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32929516" />
       <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50031745" side_tool="true" weight="0.19713657" />
       <window_info anchor="bottom" id="Regex Tester" order="11" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.19713657" />
+      <window_info active="true" anchor="bottom" id="Messages" order="12" sideWeight="0.49968255" visible="true" weight="0.19713657" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -703,85 +668,11 @@
     <MESSAGE value="Added a crap load of things... Updating for safety lmao." />
     <MESSAGE value="Items no longer can be stolen, emerald block crafting listener added. Better Sleep version also added." />
     <MESSAGE value="Arena creation complete. Skeleton for joining and fighting set up, just need to fill in the meat (tomorrow)." />
-    <option name="LAST_COMMIT_MESSAGE" value="Arena creation complete. Skeleton for joining and fighting set up, just need to fill in the meat (tomorrow)." />
+    <MESSAGE value="ArenaPVP done. Build jar now included in commits." />
+    <MESSAGE value="Updating alpha version real quick" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updating alpha version real quick" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/org/spigotmc/spigot-api/1.13-R0.1-SNAPSHOT/spigot-api-1.13-R0.1-SNAPSHOT.jar!/org/bukkit/configuration/file/FileConfiguration.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/spigotmc/spigot-api/1.13-R0.1-SNAPSHOT/spigot-api-1.13-R0.1-SNAPSHOT.jar!/org/bukkit/configuration/MemoryConfiguration.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="24" column="21" lean-forward="true" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/spigotmc/spigot-api/1.13-R0.1-SNAPSHOT/spigot-api-1.13-R0.1-SNAPSHOT.jar!/org/bukkit/configuration/Configuration.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="10" column="9" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/economy/InventoryPurchaseListener.java" />
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4760" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/vcs.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/uiDesigner.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1351" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="13" selection-start-column="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OinkTowny.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/compiler.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/.name">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="9" selection-start-column="9" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/artifacts/OinkTowny_jar.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="38" selection-start-line="3" selection-start-column="38" selection-end-line="3" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/clans.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -877,9 +768,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="38" column="55" selection-start-line="38" selection-start-column="55" selection-end-line="38" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -939,24 +827,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="282" column="44" selection-start-line="282" selection-start-column="44" selection-end-line="282" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaCreationStage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="15" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/arenas.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="7" selection-start-column="7" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -971,22 +845,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="417">
           <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/PreventPVPListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/PreventPVPListener.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaStatus.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -994,88 +856,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaObj.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1292">
+          <caret line="119" column="37" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPVPManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3111">
+          <caret line="210" column="5" selection-start-line="210" selection-start-column="5" selection-end-line="210" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="51" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
+        <state relative-caret-position="34">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaSignListeners.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="808">
+          <caret line="71" column="16" selection-start-line="71" selection-start-column="12" selection-end-line="71" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaTimer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="158" lean-forward="true" selection-start-line="30" selection-start-column="158" selection-end-line="30" selection-end-column="158" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#438#439#0" expanded="true" />
-            <element signature="e#485#486#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="83" lean-forward="true" selection-start-line="83" selection-end-line="83" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4627#4628#0" expanded="true" />
-            <element signature="e#4658#4659#0" expanded="true" />
-            <element signature="e#4690#4691#0" expanded="true" />
-            <element signature="e#4719#4720#0" expanded="true" />
-            <element signature="e#4754#4755#0" expanded="true" />
-            <element signature="e#4786#4787#0" expanded="true" />
-            <element signature="method#createConfig#0;class#Main#0" />
-            <element signature="method#saveBundlesConfig#0;class#Main#0" />
-            <element signature="e#10400#10401#0" expanded="true" />
-            <element signature="e#10441#10442#0" expanded="true" />
-            <element signature="method#saveClansConfig#0;class#Main#0" />
-            <element signature="e#10827#10828#0" expanded="true" />
-            <element signature="e#10866#10867#0" expanded="true" />
-            <element signature="e#11272#11273#0" expanded="true" />
-            <element signature="e#11315#11316#0" expanded="true" />
-            <element signature="e#11352#11353#0" expanded="true" />
-            <element signature="e#11393#11394#0" expanded="true" />
-            <element signature="e#11728#11729#0" expanded="true" />
-            <element signature="e#11769#11770#0" expanded="true" />
-            <element signature="e#11804#11805#0" expanded="true" />
-            <element signature="e#11843#11844#0" expanded="true" />
-            <element signature="e#12172#12173#0" expanded="true" />
-            <element signature="e#12212#12213#0" expanded="true" />
-            <element signature="e#12246#12247#0" expanded="true" />
-            <element signature="e#12284#12285#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaObj.java">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
-          <caret line="119" column="37" lean-forward="true" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
+          <caret line="30" column="158" selection-start-line="30" selection-start-column="158" selection-end-line="30" selection-end-column="158" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#498#499#0" expanded="true" />
-            <element signature="e#525#526#0" expanded="true" />
-            <element signature="e#887#888#0" expanded="true" />
-            <element signature="e#923#924#0" expanded="true" />
-            <element signature="e#1043#1044#0" expanded="true" />
-            <element signature="e#1077#1078#0" expanded="true" />
-            <element signature="e#1127#1128#0" expanded="true" />
-            <element signature="e#1161#1162#0" expanded="true" />
-            <element signature="e#1254#1255#0" expanded="true" />
-            <element signature="e#1293#1294#0" expanded="true" />
-            <element signature="e#1397#1398#0" expanded="true" />
-            <element signature="e#1421#1422#0" expanded="true" />
-            <element signature="e#1226#1227#0" expanded="true" />
-            <element signature="e#1259#1260#0" expanded="true" />
-            <element signature="e#1548#1549#0" expanded="true" />
-            <element signature="e#1582#1583#0" expanded="true" />
-            <element signature="e#1628#1629#0" expanded="true" />
-            <element signature="e#1660#1661#0" expanded="true" />
-            <element signature="e#1810#1811#0" expanded="true" />
-            <element signature="e#1831#1832#0" expanded="true" />
-            <element signature="e#2021#2022#0" expanded="true" />
-            <element signature="e#2044#2045#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1092,7 +915,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPlayerQuitListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
+        <state relative-caret-position="289">
           <caret line="23" column="57" selection-start-line="23" selection-start-column="57" selection-end-line="23" selection-end-column="57" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1100,36 +923,118 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaSignListeners.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/arenas.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="71" column="16" lean-forward="true" selection-start-line="71" selection-start-column="12" selection-end-line="71" selection-end-column="16" />
+        <state>
+          <caret column="7" selection-start-column="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentConstants.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchantlisteners/EnchantListenerJumpBoost.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantAnvilMaintance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantTimer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" column="9" lean-forward="true" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPVPManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantFrameworks.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantFrameworks/EnchantmentConversionFramework.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantFrameworks/EnchantmentGlowStrikeFramework.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="686">
-          <caret line="216" column="49" lean-forward="true" selection-start-line="216" selection-start-column="49" selection-end-line="216" selection-end-column="49" />
+        <state relative-caret-position="4947">
+          <caret line="303" column="37" selection-start-line="303" selection-start-column="37" selection-end-line="303" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="103" column="46" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1102#1103#0" expanded="true" />
-            <element signature="e#1136#1137#0" expanded="true" />
-            <element signature="e#1559#1560#0" expanded="true" />
-            <element signature="e#1594#1595#0" expanded="true" />
-            <element signature="e#1811#1812#0" expanded="true" />
-            <element signature="e#1872#1873#0" expanded="true" />
-            <element signature="e#2384#2385#0" expanded="true" />
-            <element signature="e#2441#2442#0" expanded="true" />
-            <element signature="e#3683#3684#0" expanded="true" />
-            <element signature="e#3736#3737#0" expanded="true" />
-            <element signature="e#3796#3797#0" expanded="true" />
-            <element signature="e#3853#3854#0" expanded="true" />
-            <element signature="e#6531#6532#0" expanded="true" />
-            <element signature="e#6589#6590#0" expanded="true" />
+            <element signature="method#createConfig#0;class#Main#0" />
+            <element signature="method#saveBundlesConfig#0;class#Main#0" />
+            <element signature="method#saveClansConfig#0;class#Main#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="84" column="17" selection-start-line="84" selection-start-column="17" selection-end-line="84" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantDmgConversion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="15" column="62" selection-start-line="15" selection-start-column="62" selection-end-line="15" selection-end-column="62" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#650#651#0" expanded="true" />
+            <element signature="e#724#725#0" expanded="true" />
+            <element signature="e#1379#1380#0" expanded="true" />
+            <element signature="e#1406#1407#0" expanded="true" />
+            <element signature="e#1460#1461#0" expanded="true" />
+            <element signature="e#1488#1489#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantJumpBoost.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="39" column="114" lean-forward="true" selection-start-line="37" selection-start-column="4" selection-end-line="39" selection-end-column="114" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantGlowEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="19" column="5" lean-forward="true" selection-start-line="17" selection-start-column="4" selection-end-line="19" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentFramework.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="26" column="54" lean-forward="true" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1140,7 +1045,7 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>OinkTowny:jar</last-edited>
+          <last-edited>OinkTownyBuild:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

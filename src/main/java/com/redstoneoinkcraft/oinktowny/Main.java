@@ -6,6 +6,8 @@ import com.redstoneoinkcraft.oinktowny.bundles.PreventItemStealListener;
 import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanChatListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
+import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
+import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
@@ -77,6 +79,8 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaPlayerQuitListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaDamageListener(), this);
+        // Enchantments
+        Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
@@ -96,6 +100,8 @@ public class Main extends JavaPlugin {
         /* Load arenas */
         ArenaPVPManager.getInstance().loadArenas();
 
+        /* Register enchantments */
+        EnchantmentManager.registerEnchants();
         // Finish
         getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been enabled!");
     }
