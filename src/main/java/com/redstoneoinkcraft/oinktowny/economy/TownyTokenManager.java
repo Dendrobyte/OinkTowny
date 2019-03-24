@@ -61,9 +61,9 @@ public class TownyTokenManager {
         int itemSlot = -1;
         ItemStack itemsInInv[] = player.getInventory().getContents();
         for(int i = 0; i < itemsInInv.length; i++){
-            if(itemsInInv[i] == null) return -1;
+            if(itemsInInv[i] == null) continue;
             ItemStack item = itemsInInv[i];
-            if(!item.hasItemMeta()) return -1;
+            if(!item.hasItemMeta()) continue;
             if(!item.getEnchantments().keySet().equals(testToken.getEnchantments().keySet())){
                 continue;
             } else {
