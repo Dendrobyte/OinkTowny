@@ -3,17 +3,22 @@ package com.redstoneoinkcraft.oinktowny.customenchants.utils;
 import com.google.common.collect.Sets;
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
@@ -49,8 +54,6 @@ public class EnchantListeners implements Listener {
                         if (boots.getEnchantments().containsKey(EnchantmentManager.JUMP_BOOST)) {
                             int level = boots.getEnchantments().get(EnchantmentManager.JUMP_BOOST);
                             player.setVelocity(player.getVelocity().setY(player.getVelocity().getY() + ((double)level/8)));
-                            //player.setVelocity(new Vector(player.getVelocity().getX(), player.getVelocity().getY()+level, player.getVelocity().getZ()));
-                            player.sendMessage("Jumping with jump boost!");
                         }
                     } catch(NullPointerException e){
                         // I hate doing this, but I have no idea why I can't cancel the check earlier.
@@ -77,12 +80,21 @@ public class EnchantListeners implements Listener {
             /* Conversion Enchantment - Converts damage to health */
             Player player = (Player) damaged;
             ItemStack chestplate = player.getInventory().getChestplate();
-            if(chestplate.getEnchantments().containsKey(EnchantmentManager.CONVERSION)){
-                boolean converts = em.calculateConversion(chestplate.getEnchantments().get(EnchantmentManager.CONVERSION));
-                if(converts){
-                    event.setCancelled(true);
-                    player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 4.0f, 1.0f);
+            try {
+                if (chestplate.getEnchantments().containsKey(EnchantmentManager.CONVERSION)) {
+                    boolean converts = em.calculateConversion(chestplate.getEnchantments().get(EnchantmentManager.CONVERSION));
+                    if (converts) {
+                        event.setCancelled(true);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2.0f, 4.0f);
+                        if (player.getHealth() + damage >= 20.0) {
+                            player.setHealth(20.0);
+                        } else {
+                            player.setHealth(player.getHealth() + damage);
+                        }
+                    }
                 }
+            } catch(NullPointerException e){
+                // I hate doing this, but I have no idea why I can't cancel the check earlier.
             }
         }
 
@@ -96,6 +108,37 @@ public class EnchantListeners implements Listener {
                 EnchantTimer et = new EnchantTimer(10, damaged);
                 et.runTaskTimer(Main.getInstance(), 0, 20L);
             }
+        }
+    }
+
+    private ArrayList<Arrow> explosiveArrows = new ArrayList<>();
+    @EventHandler
+    public void enchantOnArrowShoot(EntityShootBowEvent event){
+        ItemStack bow = event.getBow();
+        if(!(event.getProjectile() instanceof Arrow)) return;
+        Arrow arrow = (Arrow) event.getProjectile();
+        /* Explosive Arrows Enchantment Pt. 2*/
+        try {
+            if (bow.getEnchantments().containsKey(EnchantmentManager.EXPLOSIVE_ARROWS)) {
+                explosiveArrows.add(arrow);
+            }
+        } catch(NullPointerException e){
+            // I hate doing this, but I have no idea why I can't cancel the check earlier.
+        }
+    }
+
+    @EventHandler
+    public void enchantOnArrowHit(ProjectileHitEvent event){
+        /* Projectile is an arrow */
+        if(event.getEntity() instanceof Arrow){
+            Arrow arrow = (Arrow) event.getEntity();
+            /* Explosive Arrows Enchantment Pt. 1*/
+            if (explosiveArrows.contains(arrow)) {
+                explosiveArrows.remove(arrow);
+                Location loc = arrow.getLocation();
+                loc.getWorld().createExplosion(loc.getBlockX(), loc.getY(), loc.getZ(), 2.0f, false, false);
+            }
+
         }
     }
 }

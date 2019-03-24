@@ -47,12 +47,12 @@ public class EnchantDmgConversion extends EnchantmentFramework {
 
     @Override
     public NamespacedKey getKey() {
-        return null;
+        return key;
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Conversion";
     }
 
     @Override

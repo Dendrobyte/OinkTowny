@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerBedLeaveEvent;
 public class SleepListener implements Listener {
 
     SleepManager sm = SleepManager.getInstance();
-    String worldName = "world"; //Main.getInstance().getConfig().getString("world-name");
+    String worldName = Main.getInstance().getWorldName();
     String prefix = Main.getInstance().getPrefix();
 
     @EventHandler

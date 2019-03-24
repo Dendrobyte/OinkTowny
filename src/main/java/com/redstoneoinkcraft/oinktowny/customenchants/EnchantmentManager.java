@@ -1,6 +1,7 @@
 package com.redstoneoinkcraft.oinktowny.customenchants;
 
 import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantDmgConversion;
+import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantExplosiveArrow;
 import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantGlowEntity;
 import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantJumpBoost;
 import org.bukkit.Bukkit;
@@ -35,14 +36,16 @@ public class EnchantmentManager {
     /* Constants
      * Note: All constant names are the namespace passed in in the class.
      */
-    public static final EnchantmentFramework GLOW_STRIKE = new EnchantGlowEntity();
     public static final EnchantmentFramework JUMP_BOOST = new EnchantJumpBoost();
+    public static final EnchantmentFramework GLOW_STRIKE = new EnchantGlowEntity();
     public static final EnchantmentFramework CONVERSION = new EnchantDmgConversion(); // Converts damage to health
+    public static final EnchantmentFramework EXPLOSIVE_ARROWS = new EnchantExplosiveArrow();
 
     public static void registerEnchants(){
-        registerCustomEnchantment(GLOW_STRIKE);
         registerCustomEnchantment(JUMP_BOOST);
+        registerCustomEnchantment(GLOW_STRIKE);
         registerCustomEnchantment(CONVERSION);
+        registerCustomEnchantment(EXPLOSIVE_ARROWS);
         Bukkit.getLogger().log(Level.INFO, "[OinkTowny] All enchantments have been loaded!");
     }
     /* Register and inject all enchantments to the server, the return is the result of the registration */
@@ -57,7 +60,7 @@ public class EnchantmentManager {
             System.out.println("1: " + enchantment);
             Enchantment.registerEnchantment(enchantment);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            Bukkit.getLogger().log(Level.WARNING, "[OinKTowny] Enchants: Field value failure... but it still works? (o. o)");
+            Bukkit.getLogger().log(Level.WARNING, "[OinKTowny] Enchants: Field value failure! Did you reload the server?");
             e.printStackTrace();
         } catch (IllegalStateException e) {
             Bukkit.getLogger().log(Level.WARNING, "[OinKTowny] Enchants: Not accepting new values!");

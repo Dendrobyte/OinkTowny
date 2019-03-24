@@ -314,6 +314,9 @@ public class BaseCommand implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("convert")){
                     em.enchantItem(player, EnchantmentManager.CONVERSION, Integer.parseInt(args[2]));
                 }
+                if(args[1].equalsIgnoreCase("explode")){
+                    em.enchantItem(player, EnchantmentManager.EXPLOSIVE_ARROWS, Integer.parseInt(args[2]));
+                }
                 return true;
             }
             /* DEFAULT MESSAGE */

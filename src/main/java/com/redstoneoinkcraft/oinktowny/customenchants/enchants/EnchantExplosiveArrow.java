@@ -2,6 +2,7 @@ package com.redstoneoinkcraft.oinktowny.customenchants.enchants;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -13,15 +14,15 @@ import org.bukkit.inventory.ItemStack;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public class EnchantGlowEntity extends EnchantmentFramework {
+public class EnchantExplosiveArrow extends EnchantmentFramework {
 
-    public EnchantGlowEntity(){
-        super(new NamespacedKey(Main.getInstance(), "GLOW_STRIKE"));
+    public EnchantExplosiveArrow(){
+        super(new NamespacedKey(Main.getInstance(), "EXPLOSIVE_ARROWS"));
     }
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return item.getType().toString().contains("SWORD");
+        return item.getType().equals(Material.BOW);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class EnchantGlowEntity extends EnchantmentFramework {
 
     @Override
     public EnchantmentTarget getItemTarget() {
-        return EnchantmentTarget.WEAPON;
+        return EnchantmentTarget.BOW;
     }
 
     @Override
@@ -41,12 +42,7 @@ public class EnchantGlowEntity extends EnchantmentFramework {
 
     @Override
     public String getName() {
-        return "Glow Strike";
-    }
-
-    @Override
-    public NamespacedKey getKey(){
-        return key;
+        return "Explosive Arrows";
     }
 
     @Override
@@ -56,7 +52,7 @@ public class EnchantGlowEntity extends EnchantmentFramework {
 
     @Override
     public boolean staysAfterAnvil() {
-        return true;
+        return false;
     }
 
     @Override

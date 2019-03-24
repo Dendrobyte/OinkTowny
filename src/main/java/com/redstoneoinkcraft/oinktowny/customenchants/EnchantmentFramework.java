@@ -43,6 +43,8 @@ public abstract class EnchantmentFramework extends Enchantment {
             modified += result.substring(index+2);
             result = modified;
         }
+        // In case there are no underscores, capitalize first letter
+        result = result.substring(0, 1).toUpperCase() + result.substring(1);
         return result;
     }
 

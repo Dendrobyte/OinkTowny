@@ -43,7 +43,7 @@ public class RegionsManager {
 
     // Methods
     public void claimChunk(Player claimer){
-        if(!claimer.getWorld().getName().equalsIgnoreCase(mainInstance.getRegionsConfig().getString("world-name"))){
+        if(!claimer.getWorld().getName().equalsIgnoreCase(mainInstance.getWorldName())){
             claimer.sendMessage(prefix + "Claims are not enabled in this world!");
             return;
         }
@@ -84,7 +84,7 @@ public class RegionsManager {
     }
 
     public void unclaimChunk(Player claimer){
-        if(!claimer.getWorld().getName().equalsIgnoreCase(mainInstance.getRegionsConfig().getString("world-name"))){
+        if(!claimer.getWorld().getName().equalsIgnoreCase(mainInstance.getWorldName())){
             claimer.sendMessage(prefix + "Claims are not enabled in this world!");
             return;
         }
@@ -94,6 +94,11 @@ public class RegionsManager {
     // Util methods
     public void cacheRegions(){
         // Load chunks into their respective HashMaps
+        if(mainInstance.getRegionsConfig().getConfigurationSection("chunks").getKeys(false).isEmpty()){
+            System.out.println(prefix + "No regions to cache.");
+            mainInstance.saveRegionsConfig();
+            return;
+        }
         for(String key : mainInstance.getRegionsConfig().getConfigurationSection("chunks").getKeys(false)){
             List<String> chunksPerUUID = mainInstance.getRegionsConfig().getStringList("chunks." + key);
             UUID playerID = UUID.fromString(key);

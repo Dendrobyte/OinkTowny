@@ -64,7 +64,7 @@ public class Main extends JavaPlugin {
 
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
-        // Economy events
+        // Bundle events
         Bukkit.getServer().getPluginManager().registerEvents(new SignClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PreventItemStealListener(), this);
         // Region events
@@ -86,7 +86,7 @@ public class Main extends JavaPlugin {
         getCommand("oinktowny").setExecutor(new BaseCommand());
         getCommand("superpick").setExecutor(new SuperpickCommand());
 
-        worldName = getConfig().getString("world-name"); // TODO: Change all world checks to main.worldName
+        worldName = getConfig().getString("world-name");
 
         /* Initialize Clan */
         ClanManager.getInstance().cacheClans();
@@ -108,7 +108,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable(){
-        saveConfig();
+        //saveConfig();
         getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been disabled!");
     }
 
