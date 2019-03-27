@@ -21,32 +21,18 @@ public class ArenaPlayerQuitListener implements Listener {
     @EventHandler
     public void arenaPlayerQuitServer(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        prematurelyEndArena(player, "Bye bye, you lose :(");
+        apm.prematurelyEndArena(player, "Bye bye, you lose :(");
     }
 
     @EventHandler
     public void arenaPlayerTeleportOut(PlayerTeleportEvent event){
         Player player = event.getPlayer();
-        prematurelyEndArena(player, "You teleported away, thus forfeiting the match!");
+        apm.prematurelyEndArena(player, "You teleported away, thus forfeiting the match!");
     }
 
     @EventHandler
     public void arenaPlayerActuallyDies(PlayerDeathEvent event){
         Player player = event.getEntity();
-        prematurelyEndArena(player, "How did you manage... whatever, you died, so you lost.");
-    }
-
-    private void prematurelyEndArena(Player player, String msg){
-        if(!apm.isPlayerInArena(player)) return;
-        ArenaObj workingArena = apm.getPlayerArena(player);
-        if(workingArena.getStatus() == ArenaStatus.IN_USE){
-            Player winner;
-            if(player == workingArena.getPlayerOne()) winner = workingArena.getPlayerTwo();
-            else winner = workingArena.getPlayerOne();
-            apm.endArena(workingArena, winner);
-            player.sendMessage(apm.getArenaPrefix() + msg);
-        } else {
-            workingArena.resetArena();
-        }
+        apm.prematurelyEndArena(player, "How did you manage... whatever, you died, so you lost.");
     }
 }

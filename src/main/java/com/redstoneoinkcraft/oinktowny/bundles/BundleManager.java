@@ -56,11 +56,11 @@ public class BundleManager {
     }
 
     /* In case storing the inventories doesn't work... lol */
-    public ArrayList<String> createBundleItems(Player player, String bundleName, boolean override){
+    public void createBundleItems(Player player, String bundleName, boolean override){
         if(bundleExists(bundleName) && !override) {
             player.sendMessage(prefix + "Sorry, but that bundle already exists!");
             player.sendMessage(prefix + "Please use " + ChatColor.GOLD + " /oinktowny bundle override <name>");
-            return null;
+            return;
         }
 
         // The format is ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL, ]; lore:[Line one, Line two]
@@ -102,10 +102,14 @@ public class BundleManager {
             bundleItems.add(formatItemDetails);
         }
 
+        if(bundleItems.isEmpty()){
+            player.sendMessage(prefix + "There is nothing in your inventory!");
+            return;
+        }
+
         Main.getInstance().getBundlesConfig().set("bundles." + bundleName, bundleItems);
         Main.getInstance().saveBundlesConfig();
         player.sendMessage(prefix + ChatColor.GREEN + "Your bundle, " + ChatColor.GOLD + ChatColor.BOLD + bundleName + "," + ChatColor.GREEN + " has been created!");
-        return bundleItems;
     }
 
     /* Retrieve and parse the bundle items from a specified bundle */

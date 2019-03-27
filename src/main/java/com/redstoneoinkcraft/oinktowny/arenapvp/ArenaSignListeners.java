@@ -28,7 +28,7 @@ public class ArenaSignListeners implements Listener {
     @EventHandler
     public void arenaSignCreation(SignChangeEvent event){
         Block block = event.getBlock();
-        if(!(block.getType() == Material.WALL_SIGN)) return;
+        if(!(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN)) return;
         if(!event.getLine(0).equals(ChatColor.stripColor(tag))) return;
         String line2 = event.getLine(1); // Arena name
 
@@ -39,6 +39,7 @@ public class ArenaSignListeners implements Listener {
         }
         if(!apm.arenaExists(line2)){
             resetLineOne(event, "That arena does not appear to exist!");
+            return;
         }
         event.setLine(0, tag);
         event.setLine(2, "" + ChatColor.WHITE + ChatColor.BOLD + "WAITING");
@@ -61,15 +62,15 @@ public class ArenaSignListeners implements Listener {
             wallSign.setLine(0, ChatColor.DARK_RED + "[TownyArena]");
             wallSign.setLine(1, "" + ChatColor.DARK_RED + ChatColor.BOLD + "BROKEN");
             wallSign.update();
+            return;
+        }
+        if(workingArena.getStatus() == ArenaStatus.WAITING){
+            apm.addPlayerToArena(workingArena, player, wallSign);
         }
         if(workingArena.getStatus() == ArenaStatus.IN_USE){
             player.sendMessage(prefix + "That arena is currently in use by " + workingArena.getPlayerOne().getName()
                      + " and " + workingArena.getPlayerTwo().getName() + ".");
             return;
-        }
-
-        if(workingArena.getStatus() == ArenaStatus.WAITING){
-            apm.addPlayerToArena(workingArena, player, wallSign);
         }
     }
 
@@ -78,5 +79,4 @@ public class ArenaSignListeners implements Listener {
         String line1 = "" + ChatColor.DARK_RED + ChatColor.BOLD + ChatColor.stripColor(tag);
         event.setLine(0, line1);
     }
-
 }

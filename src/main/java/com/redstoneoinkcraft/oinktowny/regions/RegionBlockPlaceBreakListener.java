@@ -49,11 +49,17 @@ public class RegionBlockPlaceBreakListener implements Listener {
 
         // If the player is not in a clan, or the chunk owner has no clan, cancel the event
         ClanObj eventPlayerClan = cm.getPlayerClanID(editor.getUniqueId());
+        // ChunkOwner shouldn't be false, since we've reached this block- where the chunk is definitely claimed
         UUID chunkOwnerID = rm.getClaimedChunks().get(eventChunk);
-        ClanObj chunkOwnerClan = cm.getPlayerClanID(chunkOwnerID);
-        if(eventPlayerClan == null || chunkOwnerClan == null){
-            return false;
+        // If the player has no clan, check if it's their chunk.
+        if(eventPlayerClan == null){
+            if(chunkOwnerID.equals(editor.getUniqueId())){
+                return true;
+            } else {
+                return false; // Not the claim owner
+            }
         }
+        ClanObj chunkOwnerClan = cm.getPlayerClanID(chunkOwnerID);
 
         // If both players do have a clan, see if they're equal and continue
         // Since the claim isn't necessarily the leader's claim, we check if the clans are equal

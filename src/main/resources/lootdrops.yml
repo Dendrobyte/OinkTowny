@@ -16,7 +16,6 @@ tier3:
 # y bound exists because the item will pick some air block above level 40 and below level 80 with a block below it and no block above it.
 x-bound: 100
 z-bound: 100
-world-name: world
 
 # How many MINUTES between each crate drop?
 drop-interval: 70

@@ -1,7 +1,10 @@
 package com.redstoneoinkcraft.oinktowny.arenapvp;
 
+import com.redstoneoinkcraft.oinktowny.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
@@ -19,9 +22,11 @@ public class ArenaObj {
     private Player playerOne, playerTwo;
     private boolean canHitEachOther = false;
     private Sign arenaSign;
+    private World world;
 
     public ArenaObj(String name){
         this.name = name;
+        this.world = Bukkit.getServer().getWorld(Main.getInstance().getWorldName());
     }
 
     public String getName(){

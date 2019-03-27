@@ -60,7 +60,8 @@ public class SuperpickListeners implements Listener {
         Material blockType = event.getClickedBlock().getType();
         if(blockType == Material.BEDROCK || blockType == Material.OBSIDIAN) return;
         ItemStack pick = event.getItem();
-        if(!pick.getType().toString().contains("PICKAXE")) return;
+        if(pick == null) return;
+        if (!pick.getType().toString().contains("PICKAXE")) return;
 
         // Check clan similarity
         Chunk eventChunk = event.getClickedBlock().getChunk();
