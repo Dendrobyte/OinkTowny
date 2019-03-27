@@ -93,7 +93,6 @@ public class EnchantmentManager {
     public boolean calculateConversion(int level){
         Random rand = new Random();
         int odds = rand.nextInt(100);
-        System.out.println("ODDS: " + odds);
         if(level == 1){
             return odds > 0 && odds < 11;
         }

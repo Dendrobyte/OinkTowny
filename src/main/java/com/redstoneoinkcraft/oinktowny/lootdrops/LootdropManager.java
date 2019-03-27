@@ -28,7 +28,7 @@ public class LootdropManager {
     // Get the bounds from the configuration file, make sure they're positive
     private int x_1 = Math.abs(mainInstance.getLootdropsConfig().getInt("x-bound"));
     private int z_1 = Math.abs(mainInstance.getLootdropsConfig().getInt("z-bound"));
-    World townyWorld = Bukkit.getServer().getWorld(mainInstance.getLootdropsConfig().getString("world-name"));
+    private World townyWorld = Bukkit.getServer().getWorld(mainInstance.getWorldName());
     // In case someone puts the values in as negative... [they should really be positive though]
     private int x_2 = x_1 * -1;
     private int z_2 = z_1 * -1;
@@ -45,36 +45,23 @@ public class LootdropManager {
         int resultX = random.nextInt(x_1);
         int resultZ = random.nextInt(z_1);
         int resultY = generateRandomY(resultX, resultZ);
-        Bukkit.getPlayer("Mobkinz78").teleport(new Location(townyWorld, resultX, resultY, resultZ));
         return new Location(townyWorld, resultX, resultY, resultZ);
     }
 
     // Generate a working y value to place a chest
-    // TODO: Find a y value on the ground instead of guessing via random check
     private int generateRandomY(int x, int z){
-        Random random = new Random();
-        boolean isValid = false;
-        int counter = 0;
-        int returnY = 67;
-        while(!isValid){
-            if(counter == 40){
-                isValid = true; // Just to break out of the while loop
-                System.out.println("2: Y value not generated- 67 returned as default");
+        int height = townyWorld.getMaxHeight();
+        while(height != 0){
+            // Check if the block below is not air starting at the top of the world, that should do it.
+            if(!(new Location(townyWorld, x, height-1, z).getBlock().getType().equals(Material.AIR))){
+                height -= 1;
             } else {
-                int yLoc = random.nextInt(40) + 40; // Limited to certain altitudes
-                Location below = new Location(townyWorld, x, yLoc - 1, z);
-                Location above = new Location(townyWorld, x, yLoc + 1, z);
-                if (below.getBlock().getType().equals(Material.AIR) ||
-                        !above.getBlock().getType().equals(Material.AIR)) { // Nesting these ifs for readability
-                    counter++;
-                } else {
-                    returnY = yLoc;
-                    isValid = true;
-                }
+                // We have a block below where we want to put the chest!
+                return height;
             }
         }
-
-        return returnY;
+        System.out.println("It goes all the way down to... the void...");
+        return 67; // Return sea level because why not- I don't want to deal with this
     }
 
     // Generate values based on player location, then pass into drop loot location
@@ -88,10 +75,11 @@ public class LootdropManager {
     }
 
     // Drop loot randomly
-    public void dropLootChestRandom(){
+    public Location dropLootChestRandom(){
         Location dropLoc = generateRandomDropLocation();
         dropLootChest(dropLoc);
         broadcastDrop(dropLoc);
+        return dropLoc;
     }
 
     // Drop loot predictably (mainly serves debug purposes)

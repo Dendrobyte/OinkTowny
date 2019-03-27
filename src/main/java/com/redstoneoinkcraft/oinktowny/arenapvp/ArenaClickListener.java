@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -24,7 +25,9 @@ public class ArenaClickListener implements Listener {
     @EventHandler // Arena creation
     public void checkArenaCreation(PlayerInteractEvent event) {
         ItemStack itemInHand = event.getItem();
+        if(event.getClickedBlock() == null) return;
         if(itemInHand == null || !itemInHand.equals(creationWand)) return;
+        if(event.getHand() == EquipmentSlot.OFF_HAND) return;
         Player player = event.getPlayer();
         ArenaCreationStage playerStage = apm.getPlayerStage(player);
         if(playerStage == null){
@@ -55,7 +58,6 @@ public class ArenaClickListener implements Listener {
             apm.finishCreation(player);
         }
         event.setCancelled(true);
-        return;
     }
 
 }

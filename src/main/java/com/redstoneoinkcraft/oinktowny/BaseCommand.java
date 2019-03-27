@@ -9,6 +9,7 @@ import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -234,8 +235,10 @@ public class BaseCommand implements CommandExecutor {
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("random")){
-                    lm.dropLootChestRandom();
+                    Location loc = lm.dropLootChestRandom();
                     player.sendMessage(prefix + "Dropping loot at random location...");
+                    player.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "ALPHA TEST: " + ChatColor.GOLD + "Teleporting you to that location...");
+                    player.teleport(loc);
                     return true;
                 }
                 else {
@@ -267,9 +270,11 @@ public class BaseCommand implements CommandExecutor {
                     player.sendMessage(prefix + ChatColor.GOLD + ChatColor.BOLD + "-+OinkTowny Arena Commands+-");
                     player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny arena ...");
                     player.sendMessage(ChatColor.GOLD + "- create <name>" + ChatColor.DARK_AQUA + " - Create a new arena");
-                    player.sendMessage(ChatColor.GOLD + "- leave" + ChatColor.DARK_AQUA + " - Leave arena creation");
+                    player.sendMessage(ChatColor.GOLD + "- quit" + ChatColor.DARK_AQUA + " - Quit arena creation");
                     player.sendMessage(ChatColor.GOLD + "- list" + ChatColor.DARK_AQUA + " - See list of existing arenas");
                     player.sendMessage(ChatColor.GOLD + "- remove <name>" + ChatColor.DARK_AQUA + " - Remove an existing arena");
+                    player.sendMessage(ChatColor.GOLD + "- leave" + ChatColor.DARK_AQUA + " - Leave the arena you are in");
+                    player.sendMessage(ChatColor.GOLD + "- teleport <name> " + ChatColor.DARK_AQUA + " - Teleport to an arena");
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("create")){
@@ -280,15 +285,37 @@ public class BaseCommand implements CommandExecutor {
                     apm.initiateArenaCreation(player, args[2]);
                     return true;
                 }
-                if(args[1].equalsIgnoreCase("leave")){
+                if(args[1].equalsIgnoreCase("quit")){
+                    if(!apm.isCreating(player)){
+                        player.sendMessage(prefix + "You aren't in arena creation.");
+                        return true;
+                    }
                     apm.quitCreation(player);
                     return true;
+                }
+                if(args[1].equalsIgnoreCase("leave")){ // Relatively safe to assume they are the only ones in
+                    if(!apm.isPlayerInArena(player)) {
+                        player.sendMessage(prefix + "You need to be in an arena to leave one...");
+                        return true;
+                    }
+                    apm.prematurelyEndArena(player, "You have left the arena!");
+                    return true;
+
                 }
                 if(args[1].equalsIgnoreCase("list")){
                     player.sendMessage(prefix + "Existing arenas: " + apm.getExistingArenas().toString());
                     return true;
                 }
+                if(args[1].equalsIgnoreCase("teleport")){
+                    if(args[2] == null){
+                        player.sendMessage(prefix + "Please provide an arena name!");
+                        return true;
+                    }
+                    apm.teleportPlayer(player, args[2]);
+                    return true;
+                }
                 if(args[1].equalsIgnoreCase("remove")){
+                    player.sendMessage(prefix + "not working yet, sorry");
                     // TODO: Arena removal method
                     return true;
                 }

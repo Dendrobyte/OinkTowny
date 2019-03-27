@@ -106,7 +106,7 @@ public class RegionsManager {
                 int dataX = Integer.parseInt(info.substring(0, info.indexOf(":")));
                 int dataZ = Integer.parseInt(info.substring(info.indexOf(":")+1));
 
-                Chunk chunkToAdd = Bukkit.getServer().getWorld(mainInstance.getRegionsConfig().getString("world-name")).getChunkAt(dataX, dataZ);
+                Chunk chunkToAdd = Bukkit.getServer().getWorld(mainInstance.getWorldName()).getChunkAt(dataX, dataZ);
                 if(!playerChunks.keySet().contains(playerID)) playerChunks.put(playerID, new ArrayList<Chunk>());
                 playerChunks.get(playerID).add(chunkToAdd);
                 claimedChunks.put(chunkToAdd, playerID);

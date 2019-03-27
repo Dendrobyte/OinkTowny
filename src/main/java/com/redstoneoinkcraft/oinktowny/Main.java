@@ -62,6 +62,9 @@ public class Main extends JavaPlugin {
         // Create config
         createConfig();
 
+        // Set the main world name to retrieve from various functions
+        worldName = getConfig().getString("world-name");
+
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
         // Bundle events
@@ -85,8 +88,6 @@ public class Main extends JavaPlugin {
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
         getCommand("superpick").setExecutor(new SuperpickCommand());
-
-        worldName = getConfig().getString("world-name");
 
         /* Initialize Clan */
         ClanManager.getInstance().cacheClans();

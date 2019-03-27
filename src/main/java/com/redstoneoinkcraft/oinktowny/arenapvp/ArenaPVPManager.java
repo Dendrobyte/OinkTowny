@@ -36,19 +36,24 @@ public class ArenaPVPManager {
     }
 
     /* Arena creation */
+    private HashMap<Player, ArenaCreationStage> playerCurrentStage = new HashMap<>();
+    private HashMap<Player, ArenaObj> currentArenaInCreation = new HashMap<>();
+    private ArrayList<ArenaObj> loadedArenas = new ArrayList<>();
+
+    public boolean isCreating(Player player){
+        return(playerCurrentStage.containsKey(player));
+    }
+
     ItemStack creationWand = new ItemStack(Material.STICK, 1);
     {
         ItemMeta creationWandMeta = creationWand.getItemMeta();
         creationWandMeta.setDisplayName("" + ChatColor.GREEN + ChatColor.BOLD + "Towny Arena Creation Wand");
-        creationWandMeta.addEnchant(Enchantment.SWEEPING_EDGE, 10, false);
+        creationWandMeta.addEnchant(Enchantment.SWEEPING_EDGE, 10, true);
         creationWand.setItemMeta(creationWandMeta);
     }
     public ItemStack getCreationWand(){
         return creationWand;
     }
-
-    private HashMap<Player, ArenaCreationStage> playerCurrentStage = new HashMap<>();
-    private HashMap<Player, ArenaObj> currentArenaInCreation = new HashMap<>();
 
     private boolean isInCreation(Player player){
         return playerCurrentStage.containsKey(player);
@@ -62,6 +67,14 @@ public class ArenaPVPManager {
             npe.add("No existing arenas found");
             return npe;
         }
+    }
+
+    public ArrayList<String> getLoadedArenas(){
+        ArrayList<String> arenas = new ArrayList<>(); // Bad naming
+        for(ArenaObj arena : loadedArenas){
+            arenas.add(arena.getName());
+        }
+        return arenas;
     }
 
     public boolean arenaExists(String name){
@@ -82,7 +95,7 @@ public class ArenaPVPManager {
         currentArenaInCreation.put(player, new ArenaObj(name));
         player.sendMessage(prefix + "Arena creation has been initiated for arena " + ChatColor.BOLD + name + "!");
         player.sendMessage(prefix + ChatColor.RED + "To leave creation, use /ot arena leave");
-        player.sendMessage(prefix + ChatColor.GREEN + "Please use the creation wand to select the " + ChatColor.BOLD + "main arena location.");
+        player.sendMessage(prefix + ChatColor.GREEN + "Please use the creation wand (the stick) to select the " + ChatColor.BOLD + " center (or close to it) of the arena.");
     }
 
     public ArenaCreationStage getPlayerStage(Player player){
@@ -137,8 +150,17 @@ public class ArenaPVPManager {
         Main.getInstance().saveArenasConfig();
     }
 
+    public void teleportPlayer(Player player, String arenaName){
+        if(!arenaExists(arenaName)){
+            player.sendMessage(prefix + "That arena doesn't exist!");
+            return;
+        }
+        Location loc = getArenaObj(arenaName).getArenaLoc();
+        player.teleport(loc);
+        player.sendMessage(prefix + "Teleporting to " + arenaName + "...");
+    }
+
     /* Arena join */
-    private ArrayList<ArenaObj> loadedArenas = new ArrayList<>();
     private HashMap<Player, ArenaObj> playersInArenas = new HashMap<>();
 
     public boolean isPlayerInArena(Player player){
@@ -165,7 +187,7 @@ public class ArenaPVPManager {
 
             loadedArenas.add(workingArena);
         }
-        Bukkit.getLogger().log(Level.INFO, prefix + "Successfully loaded all PvP arenas!");
+        Bukkit.getLogger().log(Level.INFO, prefix + "Successfully loaded all PvP arenas! " + getLoadedArenas().toString());
     }
 
     public ArenaObj getArenaObj(String name){
@@ -223,6 +245,20 @@ public class ArenaPVPManager {
         workingArena.resetArena();
         playerOne.teleport(workingArena.getLobby());
         playerTwo.teleport(workingArena.getLobby());
+    }
+
+    public void prematurelyEndArena(Player player, String msg){
+        if(!isPlayerInArena(player)) return;
+        ArenaObj workingArena = getPlayerArena(player);
+        if(workingArena.getStatus() == ArenaStatus.IN_USE){
+            Player winner;
+            if(player == workingArena.getPlayerOne()) winner = workingArena.getPlayerTwo();
+            else winner = workingArena.getPlayerOne();
+            endArena(workingArena, winner);
+            player.sendMessage(getArenaPrefix() + msg);
+        } else {
+            workingArena.resetArena();
+        }
     }
 
 }
