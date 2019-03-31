@@ -55,15 +55,15 @@ public class ArenaSignListeners implements Listener {
         Sign wallSign = (Sign) clickedBlock.getState();
         if(!wallSign.getLine(0).equals(tag)) return; // Ensure the sign has the proper tag on top - Defined at the top of the class
         Player player = event.getPlayer();
-
-        ArenaObj workingArena = apm.getArenaObj(wallSign.getLine(1));
-        if(workingArena == null){
+        String line2 = wallSign.getLine(1);
+        if(!apm.arenaExists(line2)){
             player.sendMessage(prefix + ChatColor.RED + "That arena no longer exists, or never did!");
             wallSign.setLine(0, ChatColor.DARK_RED + "[TownyArena]");
             wallSign.setLine(1, "" + ChatColor.DARK_RED + ChatColor.BOLD + "BROKEN");
             wallSign.update();
             return;
         }
+        ArenaObj workingArena = apm.getArenaObj(line2);
         if(workingArena.getStatus() == ArenaStatus.WAITING){
             apm.addPlayerToArena(workingArena, player, wallSign);
         }

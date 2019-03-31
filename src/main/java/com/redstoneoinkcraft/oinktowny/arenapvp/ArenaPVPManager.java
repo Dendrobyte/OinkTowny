@@ -148,6 +148,9 @@ public class ArenaPVPManager {
         arenasConfig.set("arenas." + name + ".spawn_two.z", arena.getSpawn_two().getBlockZ());
 
         Main.getInstance().saveArenasConfig();
+
+        // Load arena
+        loadSingleArena(name);
     }
 
     public void teleportPlayer(Player player, String arenaName){
@@ -172,20 +175,24 @@ public class ArenaPVPManager {
         return playersInArenas.get(player);
     }
 
-    public void loadArenas(){
+    public void loadSingleArena(String arenaName){
         FileConfiguration arenasConfig = Main.getInstance().getArenasConfig();
+        ArenaObj workingArena = new ArenaObj(arenaName);
+        World world = Bukkit.getServer().getWorld(Main.getInstance().getWorldName());
+
+        Location arenaLoc = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".central_loc.x"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.y"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.z"));
+        Location lobby = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".lobby.x"), arenasConfig.getInt("arenas." + arenaName + ".lobby.y"), arenasConfig.getInt("arenas." + arenaName + ".lobby.z"));
+        Location spawn_one = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_one.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.z"));
+        Location spawn_two = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_two.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.z"));
+
+        workingArena.setAllValues(arenaLoc, lobby, spawn_one, spawn_two, ArenaStatus.WAITING);
+
+        loadedArenas.add(workingArena);
+    }
+
+    public void loadArenas(){
         for(String arenaName : getExistingArenas()){
-            ArenaObj workingArena = new ArenaObj(arenaName);
-            World world = Bukkit.getServer().getWorld(Main.getInstance().getWorldName());
-
-            Location arenaLoc = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".central_loc.x"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.y"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.z"));
-            Location lobby = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".lobby.x"), arenasConfig.getInt("arenas." + arenaName + ".lobby.y"), arenasConfig.getInt("arenas." + arenaName + ".lobby.z"));
-            Location spawn_one = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_one.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.z"));
-            Location spawn_two = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_two.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.z"));
-
-            workingArena.setAllValues(arenaLoc, lobby, spawn_one, spawn_two, ArenaStatus.WAITING);
-
-            loadedArenas.add(workingArena);
+            loadSingleArena(arenaName);
         }
         Bukkit.getLogger().log(Level.INFO, prefix + "Successfully loaded all PvP arenas! " + getLoadedArenas().toString());
     }
@@ -257,7 +264,10 @@ public class ArenaPVPManager {
             endArena(workingArena, winner);
             player.sendMessage(getArenaPrefix() + msg);
         } else {
+            playersInArenas.remove(player);
             workingArena.resetArena();
+            player.teleport(workingArena.getLobby());
+            player.sendMessage(getArenaPrefix() + msg);
         }
     }
 

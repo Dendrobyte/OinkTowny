@@ -50,10 +50,10 @@ public class LootdropManager {
 
     // Generate a working y value to place a chest
     private int generateRandomY(int x, int z){
-        int height = townyWorld.getMaxHeight();
+        int height = townyWorld.getMaxHeight()-1;
         while(height != 0){
             // Check if the block below is not air starting at the top of the world, that should do it.
-            if(!(new Location(townyWorld, x, height-1, z).getBlock().getType().equals(Material.AIR))){
+            if(new Location(townyWorld, x, height-1, z).getBlock().getType().equals(Material.AIR)){
                 height -= 1;
             } else {
                 // We have a block below where we want to put the chest!
@@ -68,7 +68,9 @@ public class LootdropManager {
 
     // Drop loot
     public void dropLootChest(Location location){
+        System.out.println("1: " + location.getBlock());
         location.getBlock().setType(Material.CHEST);
+        location.getBlock().getState().update();
         Chest chest = (Chest) location.getBlock().getState();
         Inventory chestInv = chest.getBlockInventory();
         fillLootContents(chestInv);
@@ -155,6 +157,7 @@ public class LootdropManager {
     public void initializeLootdropTimer(){
         LootDropTimer ldt = new LootDropTimer(mainInstance.getLootdropsConfig().getInt("drop-interval"));
         ldt.runTaskTimer(mainInstance, 0L, 20L);
+        System.out.println(prefix + "Lootdrop timer has been successfully initialized!");
     }
 
 }

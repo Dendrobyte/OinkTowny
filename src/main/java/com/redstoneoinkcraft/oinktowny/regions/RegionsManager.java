@@ -94,7 +94,9 @@ public class RegionsManager {
     // Util methods
     public void cacheRegions(){
         // Load chunks into their respective HashMaps
-        if(mainInstance.getRegionsConfig().getConfigurationSection("chunks").getKeys(false).isEmpty()){
+        try {
+            mainInstance.getRegionsConfig().getConfigurationSection("chunks").getKeys(false);
+        } catch(NullPointerException e){
             System.out.println(prefix + "No regions to cache.");
             mainInstance.saveRegionsConfig();
             return;
