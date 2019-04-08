@@ -1,6 +1,7 @@
 package com.redstoneoinkcraft.oinktowny.bundles;
 
 import com.redstoneoinkcraft.oinktowny.Main;
+import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -146,17 +147,27 @@ public class BundleManager {
             // Set enchants - enchants:[NAME-LVL, NAME-LVL, ]
             String itemEnchants = str.substring(nameSemi+11, enchantSemi);
             int enchantsIndexCheck = 0;
-            int startEnchantIndex = 1; // Start after the first bracket, then move after the comma and sapce
+            int startEnchantIndex = 1; // Start after the first bracket, then move after the comma and space
             while(enchantsIndexCheck != -1){
                 if(!itemEnchants.contains(",")){
                     break;
                 }
-                String enchantName = itemEnchants.substring(startEnchantIndex+10, itemEnchants.indexOf("-")); // +10 accounts for 'minecraft:'
+                String enchantType = itemEnchants.substring(startEnchantIndex, startEnchantIndex+9).equalsIgnoreCase("minecraft") ? "minecraft" : "oinktowny";
+                String enchantName = itemEnchants.substring(startEnchantIndex+10, itemEnchants.indexOf("-")); // +10 accounts for 'minecraft:' and 'oinktowny:'
                 String enchantLevel = itemEnchants.substring(itemEnchants.indexOf("-")+1, itemEnchants.indexOf(","));
                 int enchantLevelInt;
                 try {
                     enchantLevelInt = Integer.parseInt(enchantLevel);
-                    Enchantment itemEnchant = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantName.toLowerCase()));
+                    Enchantment itemEnchant;
+                    if(enchantType.equalsIgnoreCase("minecraft")) {
+                        System.out.println("It's a minecraft enchantment!");
+                        itemEnchant = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantName.toLowerCase()));
+                    } else {
+                        System.out.println("It's an oinkcraft enchantment!");
+                        itemEnchant = EnchantmentFramework.getByCustomKey(enchantName.toLowerCase());
+                    }
+                    System.out.println("The name is: " + enchantName.toLowerCase());
+                    System.out.println("The enchantment is: " + itemEnchant.toString());
                     if(itemEnchant != null){
                         tempMeta.addEnchant(itemEnchant, enchantLevelInt, true);
                     }

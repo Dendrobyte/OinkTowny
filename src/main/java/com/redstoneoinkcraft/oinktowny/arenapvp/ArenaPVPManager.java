@@ -214,7 +214,7 @@ public class ArenaPVPManager {
         if(workingArena.getPlayerOne() == null){
             workingArena.setPlayerOne(player);
             workingArena.setArenaSign(wallSign);
-            player.teleport(workingArena.getArenaLoc());
+            player.teleport(workingArena.getLobby());
             player.sendMessage(arenaPrefix + "You have been added to " + workingArena.getName() + ".");
             player.sendMessage(arenaPrefix + ChatColor.GOLD + "Currently waiting for a second player...");
         } else {
@@ -222,7 +222,7 @@ public class ArenaPVPManager {
             player.sendMessage(arenaPrefix + "You have been added to " + ChatColor.BOLD + workingArena.getName() + ".");
             workingArena.getPlayerOne().sendMessage(arenaPrefix + ChatColor.GOLD + "You will be facing " + ChatColor.BOLD + player.getName() + "...");
             player.sendMessage(arenaPrefix + ChatColor.GOLD + "You will be facing " + ChatColor.BOLD + workingArena.getPlayerOne().getName() + "...");
-            player.teleport(workingArena.getArenaLoc()); // Needs to be before startArena so that the teleport listener doesn't kill everything.
+            player.teleport(workingArena.getLobby()); // Needs to be before startArena so that the teleport listener doesn't kill everything.
             startArena(workingArena);
         }
         playersInArenas.put(player, workingArena);
@@ -255,15 +255,18 @@ public class ArenaPVPManager {
     }
 
     public void prematurelyEndArena(Player player, String msg){
-        if(!isPlayerInArena(player)) return;
         ArenaObj workingArena = getPlayerArena(player);
         if(workingArena.getStatus() == ArenaStatus.IN_USE){
+            // Do nothing
+            return;
+        }
+        if(workingArena.getStatus() == ArenaStatus.RUNNING){
             Player winner;
             if(player == workingArena.getPlayerOne()) winner = workingArena.getPlayerTwo();
             else winner = workingArena.getPlayerOne();
             endArena(workingArena, winner);
             player.sendMessage(getArenaPrefix() + msg);
-        } else {
+        } else { // If it's just waiting then we're fine to have the player leave
             playersInArenas.remove(player);
             workingArena.resetArena();
             player.teleport(workingArena.getLobby());

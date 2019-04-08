@@ -42,7 +42,7 @@ public class EnchantExplosiveArrow extends EnchantmentFramework {
 
     @Override
     public String getName() {
-        return "Explosive Arrows";
+        return "EXPLOSIVE_ARROWS";
     }
 
     @Override

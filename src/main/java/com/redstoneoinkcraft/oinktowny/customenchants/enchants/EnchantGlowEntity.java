@@ -41,7 +41,7 @@ public class EnchantGlowEntity extends EnchantmentFramework {
 
     @Override
     public String getName() {
-        return "Glow Strike";
+        return "GLOW_STRIKE";
     }
 
     @Override

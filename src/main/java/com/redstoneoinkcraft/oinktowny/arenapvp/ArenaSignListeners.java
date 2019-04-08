@@ -66,8 +66,9 @@ public class ArenaSignListeners implements Listener {
         ArenaObj workingArena = apm.getArenaObj(line2);
         if(workingArena.getStatus() == ArenaStatus.WAITING){
             apm.addPlayerToArena(workingArena, player, wallSign);
+            return;
         }
-        if(workingArena.getStatus() == ArenaStatus.IN_USE){
+        if(workingArena.getStatus() != ArenaStatus.WAITING){
             player.sendMessage(prefix + "That arena is currently in use by " + workingArena.getPlayerOne().getName()
                      + " and " + workingArena.getPlayerTwo().getName() + ".");
             return;

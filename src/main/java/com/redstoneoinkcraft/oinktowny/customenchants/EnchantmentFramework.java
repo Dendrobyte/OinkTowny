@@ -20,6 +20,13 @@ public abstract class EnchantmentFramework extends Enchantment {
         this.key = key;
     }
 
+    /*
+        WHEN YOU MAKE A NEW ENCHANTMENT, you MUST do the following:
+        1) Add it as a final variable in the EnchantmentManager
+        2) Register it in the EnchantmentManager
+        3) Add it to the getByCustomKey method's switch statement (used for bundle items and such)
+     */
+
     public abstract boolean canEnchantItem(ItemStack item);
 
     public abstract boolean conflictsWith(Enchantment other);
@@ -55,6 +62,30 @@ public abstract class EnchantmentFramework extends Enchantment {
     public abstract int getEnchantmentTableMaximumLevel();
 
     public abstract double getEnchantmentChance();
+
+    public static EnchantmentFramework getByCustomKey(String name){
+        // TODO: Make this automated by having an accessible HashMap of names loaded up upon server start.
+        EnchantmentFramework enchantment;
+        switch(name){
+            case "glow_strike":
+                enchantment = EnchantmentManager.GLOW_STRIKE;
+                break;
+            case "jump_boost":
+                enchantment = EnchantmentManager.JUMP_BOOST;
+                break;
+            case "explosive_arrows":
+                enchantment = EnchantmentManager.EXPLOSIVE_ARROWS;
+                break;
+            case "conversion":
+                enchantment = EnchantmentManager.CONVERSION;
+                break;
+            default:
+                System.out.println("Custom enchantment " + name + " returned null!");
+                enchantment = null;
+        }
+
+        return enchantment;
+    }
 
     @Override
     public int getStartLevel() { return 1; }

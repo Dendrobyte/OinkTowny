@@ -9,5 +9,5 @@ package com.redstoneoinkcraft.oinktowny.arenapvp;
 public enum ArenaStatus {
 
     // This could just be a boolean value... but I thought I was going to have more x) Just keepin' it simple, I guess!
-    WAITING, IN_USE;
+    WAITING, IN_USE, RUNNING;
 }

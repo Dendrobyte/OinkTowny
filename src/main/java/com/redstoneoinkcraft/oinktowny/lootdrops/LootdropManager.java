@@ -68,7 +68,6 @@ public class LootdropManager {
 
     // Drop loot
     public void dropLootChest(Location location){
-        System.out.println("1: " + location.getBlock());
         location.getBlock().setType(Material.CHEST);
         location.getBlock().getState().update();
         Chest chest = (Chest) location.getBlock().getState();
@@ -86,12 +85,14 @@ public class LootdropManager {
 
     // Drop loot predictably (mainly serves debug purposes)
     public void dropLootChestPredictably(Player player){
-        if(!player.getLocation().getWorld().getName().equalsIgnoreCase(townyWorld.getName())){
+
+        if (!player.getLocation().getWorld().getName().equalsIgnoreCase(townyWorld.getName())) {
             player.sendMessage(prefix + "You are not in a world with towny drops enabled!");
             return;
         }
         dropLootChest(player.getLocation());
         player.sendMessage(prefix + "Loot dropping at your location...");
+
     }
 
     // Fill contents of a passed in inventory with random loot
