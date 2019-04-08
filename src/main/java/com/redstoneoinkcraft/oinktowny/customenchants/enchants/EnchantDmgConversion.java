@@ -52,7 +52,7 @@ public class EnchantDmgConversion extends EnchantmentFramework {
 
     @Override
     public String getName() {
-        return "Conversion";
+        return "CONVERSION";
     }
 
     @Override

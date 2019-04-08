@@ -94,20 +94,22 @@ public class RegionsManager {
     // Util methods
     public void cacheRegions(){
         // Load chunks into their respective HashMaps
-        if(mainInstance.getRegionsConfig().getConfigurationSection("chunks").getKeys(false).isEmpty()){
+        try {
+            mainInstance.getRegionsConfig().getConfigurationSection("chunks").getKeys(false);
+        } catch(NullPointerException e){
             System.out.println(prefix + "No regions to cache.");
             mainInstance.saveRegionsConfig();
             return;
         }
-        for(String key : mainInstance.getRegionsConfig().getConfigurationSection("chunks").getKeys(false)){
+        for (String key : mainInstance.getRegionsConfig().getConfigurationSection("chunks").getKeys(false)) {
             List<String> chunksPerUUID = mainInstance.getRegionsConfig().getStringList("chunks." + key);
             UUID playerID = UUID.fromString(key);
-            for(String info : chunksPerUUID){
+            for (String info : chunksPerUUID) {
                 int dataX = Integer.parseInt(info.substring(0, info.indexOf(":")));
-                int dataZ = Integer.parseInt(info.substring(info.indexOf(":")+1));
+                int dataZ = Integer.parseInt(info.substring(info.indexOf(":") + 1));
 
                 Chunk chunkToAdd = Bukkit.getServer().getWorld(mainInstance.getWorldName()).getChunkAt(dataX, dataZ);
-                if(!playerChunks.keySet().contains(playerID)) playerChunks.put(playerID, new ArrayList<Chunk>());
+                if (!playerChunks.keySet().contains(playerID)) playerChunks.put(playerID, new ArrayList<Chunk>());
                 playerChunks.get(playerID).add(chunkToAdd);
                 claimedChunks.put(chunkToAdd, playerID);
             }

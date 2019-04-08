@@ -148,6 +148,9 @@ public class ArenaPVPManager {
         arenasConfig.set("arenas." + name + ".spawn_two.z", arena.getSpawn_two().getBlockZ());
 
         Main.getInstance().saveArenasConfig();
+
+        // Load arena
+        loadSingleArena(name);
     }
 
     public void teleportPlayer(Player player, String arenaName){
@@ -172,20 +175,24 @@ public class ArenaPVPManager {
         return playersInArenas.get(player);
     }
 
-    public void loadArenas(){
+    public void loadSingleArena(String arenaName){
         FileConfiguration arenasConfig = Main.getInstance().getArenasConfig();
+        ArenaObj workingArena = new ArenaObj(arenaName);
+        World world = Bukkit.getServer().getWorld(Main.getInstance().getWorldName());
+
+        Location arenaLoc = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".central_loc.x"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.y"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.z"));
+        Location lobby = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".lobby.x"), arenasConfig.getInt("arenas." + arenaName + ".lobby.y"), arenasConfig.getInt("arenas." + arenaName + ".lobby.z"));
+        Location spawn_one = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_one.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.z"));
+        Location spawn_two = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_two.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.z"));
+
+        workingArena.setAllValues(arenaLoc, lobby, spawn_one, spawn_two, ArenaStatus.WAITING);
+
+        loadedArenas.add(workingArena);
+    }
+
+    public void loadArenas(){
         for(String arenaName : getExistingArenas()){
-            ArenaObj workingArena = new ArenaObj(arenaName);
-            World world = Bukkit.getServer().getWorld(Main.getInstance().getWorldName());
-
-            Location arenaLoc = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".central_loc.x"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.y"), arenasConfig.getInt("arenas." + arenaName + ".central_loc.z"));
-            Location lobby = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".lobby.x"), arenasConfig.getInt("arenas." + arenaName + ".lobby.y"), arenasConfig.getInt("arenas." + arenaName + ".lobby.z"));
-            Location spawn_one = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_one.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_one.z"));
-            Location spawn_two = new Location(world, arenasConfig.getInt("arenas." + arenaName + ".spawn_two.x"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.y"), arenasConfig.getInt("arenas." + arenaName + ".spawn_two.z"));
-
-            workingArena.setAllValues(arenaLoc, lobby, spawn_one, spawn_two, ArenaStatus.WAITING);
-
-            loadedArenas.add(workingArena);
+            loadSingleArena(arenaName);
         }
         Bukkit.getLogger().log(Level.INFO, prefix + "Successfully loaded all PvP arenas! " + getLoadedArenas().toString());
     }
@@ -207,7 +214,7 @@ public class ArenaPVPManager {
         if(workingArena.getPlayerOne() == null){
             workingArena.setPlayerOne(player);
             workingArena.setArenaSign(wallSign);
-            player.teleport(workingArena.getArenaLoc());
+            player.teleport(workingArena.getLobby());
             player.sendMessage(arenaPrefix + "You have been added to " + workingArena.getName() + ".");
             player.sendMessage(arenaPrefix + ChatColor.GOLD + "Currently waiting for a second player...");
         } else {
@@ -215,7 +222,7 @@ public class ArenaPVPManager {
             player.sendMessage(arenaPrefix + "You have been added to " + ChatColor.BOLD + workingArena.getName() + ".");
             workingArena.getPlayerOne().sendMessage(arenaPrefix + ChatColor.GOLD + "You will be facing " + ChatColor.BOLD + player.getName() + "...");
             player.sendMessage(arenaPrefix + ChatColor.GOLD + "You will be facing " + ChatColor.BOLD + workingArena.getPlayerOne().getName() + "...");
-            player.teleport(workingArena.getArenaLoc()); // Needs to be before startArena so that the teleport listener doesn't kill everything.
+            player.teleport(workingArena.getLobby()); // Needs to be before startArena so that the teleport listener doesn't kill everything.
             startArena(workingArena);
         }
         playersInArenas.put(player, workingArena);
@@ -248,16 +255,22 @@ public class ArenaPVPManager {
     }
 
     public void prematurelyEndArena(Player player, String msg){
-        if(!isPlayerInArena(player)) return;
         ArenaObj workingArena = getPlayerArena(player);
         if(workingArena.getStatus() == ArenaStatus.IN_USE){
+            // Do nothing
+            return;
+        }
+        if(workingArena.getStatus() == ArenaStatus.RUNNING){
             Player winner;
             if(player == workingArena.getPlayerOne()) winner = workingArena.getPlayerTwo();
             else winner = workingArena.getPlayerOne();
             endArena(workingArena, winner);
             player.sendMessage(getArenaPrefix() + msg);
-        } else {
+        } else { // If it's just waiting then we're fine to have the player leave
+            playersInArenas.remove(player);
             workingArena.resetArena();
+            player.teleport(workingArena.getLobby());
+            player.sendMessage(getArenaPrefix() + msg);
         }
     }
 

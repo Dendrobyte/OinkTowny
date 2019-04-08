@@ -14,13 +14,13 @@ public class LootDropTimer extends BukkitRunnable {
     private int counter;
 
     public LootDropTimer(int minutes){
-        this.counter = minutes*60;
+        this.counter = minutes*20;
     }
 
     @Override
     public void run(){
         if(counter == 0){
-            if(Bukkit.getServer().getOnlinePlayers().size() > 1) LootdropManager.getInstance().dropLootChestRandom();
+            if(Bukkit.getServer().getOnlinePlayers().size() >= 1) LootdropManager.getInstance().dropLootChestRandom();
             cancel();
             LootdropManager.getInstance().initializeLootdropTimer();
         } else {

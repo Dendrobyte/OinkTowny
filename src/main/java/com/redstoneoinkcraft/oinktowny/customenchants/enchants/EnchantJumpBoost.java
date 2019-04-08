@@ -42,7 +42,7 @@ public class EnchantJumpBoost extends EnchantmentFramework {
 
     @Override
     public String getName() {
-        return "Jump Boost";
+        return "JUMP_BOOST";
     }
 
     @Override
