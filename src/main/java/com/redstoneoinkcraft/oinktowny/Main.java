@@ -10,6 +10,7 @@ import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
+import com.redstoneoinkcraft.oinktowny.portals.NetherPortalListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickCommand;
@@ -84,6 +85,8 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaDamageListener(), this);
         // Enchantments
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
+        // Portals
+        Bukkit.getServer().getPluginManager().registerEvents(new NetherPortalListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
