@@ -1,9 +1,6 @@
 package com.redstoneoinkcraft.oinktowny.customenchants;
 
-import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantDmgConversion;
-import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantExplosiveArrow;
-import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantGlowEntity;
-import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantJumpBoost;
+import com.redstoneoinkcraft.oinktowny.customenchants.enchants.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
@@ -36,12 +33,16 @@ public class EnchantmentManager {
     /* Constants
      * Note: All constant names are the namespace passed in in the class.
      */
+    public static final EnchantmentFramework ARTIFACT = new EnchantArtifact();
+
     public static final EnchantmentFramework JUMP_BOOST = new EnchantJumpBoost();
     public static final EnchantmentFramework GLOW_STRIKE = new EnchantGlowEntity();
     public static final EnchantmentFramework CONVERSION = new EnchantDmgConversion(); // Converts damage to health
     public static final EnchantmentFramework EXPLOSIVE_ARROWS = new EnchantExplosiveArrow();
 
     public static void registerEnchants(){
+        registerCustomEnchantment(ARTIFACT);
+
         registerCustomEnchantment(JUMP_BOOST);
         registerCustomEnchantment(GLOW_STRIKE);
         registerCustomEnchantment(CONVERSION);

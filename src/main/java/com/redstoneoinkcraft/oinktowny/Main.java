@@ -1,6 +1,7 @@
 package com.redstoneoinkcraft.oinktowny;
 
 import com.redstoneoinkcraft.oinktowny.arenapvp.*;
+import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactsListeners;
 import com.redstoneoinkcraft.oinktowny.bettersleep.SleepListener;
 import com.redstoneoinkcraft.oinktowny.bundles.PreventItemStealListener;
 import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
@@ -87,6 +88,8 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
         // Portals
         Bukkit.getServer().getPluginManager().registerEvents(new NetherPortalListener(), this);
+        // Artifacts
+        Bukkit.getServer().getPluginManager().registerEvents(new ArtifactsListeners(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
