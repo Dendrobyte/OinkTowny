@@ -156,6 +156,11 @@ public class ArtifactManager {
             }
         }
         blocksToBreak.add(block);
+        for(Block illegal : blocksToBreak){
+            if(illegal.getType() == Material.BEDROCK || illegal.getType() == Material.OBSIDIAN || illegal.getType() == Material.WATER || illegal.getType() == Material.LAVA){
+                blocksToBreak.remove(illegal);
+            }
+        }
 
         // Make sure we aren't affecting a region claim
         RegionsManager rm = RegionsManager.getInstance();
