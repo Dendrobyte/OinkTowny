@@ -1,9 +1,12 @@
 package com.redstoneoinkcraft.oinktowny.regions;
 
 import com.redstoneoinkcraft.oinktowny.Main;
+import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
+import com.redstoneoinkcraft.oinktowny.clans.ClanObj;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -40,6 +43,8 @@ public class RegionsManager {
     public HashMap<Chunk, UUID> getClaimedChunks(){
         return claimedChunks;
     }
+
+    private ClanManager cm = ClanManager.getInstance();
 
     // Methods
     public void claimChunk(Player claimer){
@@ -206,6 +211,20 @@ public class RegionsManager {
 
     public boolean isSuperpick(Player player){
         return superpickPlayers.contains(player);
+    }
+
+    /* Artifact Checks */
+    public boolean containsClaimedBlock(ArrayList<Block> blocks, Player player){
+        for(Block b : blocks){
+            if(instance.getClaimedChunks().containsKey(b.getChunk())){
+                UUID chunkOwner = instance.getClaimedChunks().get(b.getChunk());
+                ClanObj clan = cm.getPlayerClanID(chunkOwner);
+                if(!clan.getMemberIds().contains(player.getUniqueId())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

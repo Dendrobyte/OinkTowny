@@ -1,6 +1,7 @@
 package com.redstoneoinkcraft.oinktowny;
 
 import com.redstoneoinkcraft.oinktowny.arenapvp.*;
+import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactsListeners;
 import com.redstoneoinkcraft.oinktowny.bettersleep.SleepListener;
 import com.redstoneoinkcraft.oinktowny.bundles.PreventItemStealListener;
 import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
@@ -10,6 +11,7 @@ import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
+import com.redstoneoinkcraft.oinktowny.portals.NetherPortalListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickCommand;
@@ -35,6 +37,7 @@ public class Main extends JavaPlugin {
     private static Main instance;
     private String prefix = "§8(§3OinkTowny§8)§3 ";
     private String worldName;
+    private String netherWorldName;
 
     /* Custom configurations */
     // bundles.yml
@@ -64,6 +67,7 @@ public class Main extends JavaPlugin {
 
         // Set the main world name to retrieve from various functions
         worldName = getConfig().getString("world-name");
+        netherWorldName = getConfig().getString("world-nether");
 
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
@@ -84,6 +88,10 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaDamageListener(), this);
         // Enchantments
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
+        // Portals
+        Bukkit.getServer().getPluginManager().registerEvents(new NetherPortalListener(), this);
+        // Artifacts
+        Bukkit.getServer().getPluginManager().registerEvents(new ArtifactsListeners(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
@@ -123,6 +131,9 @@ public class Main extends JavaPlugin {
 
     public String getWorldName(){
         return worldName;
+    }
+    public String getNetherWorldName() {
+        return netherWorldName;
     }
 
     // Configuration file methods

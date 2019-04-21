@@ -52,8 +52,6 @@ public class SuperpickListeners implements Listener {
     @EventHandler // Immediately break block if activated and if holding pick
     public void onBlockHit(PlayerInteractEvent event){
         Player player = event.getPlayer();
-        // if(!event.getClickedBlock().getWorld().getName().equals(configpath)) return;
-        // TODO: This probably triggers the break/place event, but it does use #breakNaturally()... Let's find out if I have to do the region check!
         if(!rm.isSuperpick(player)) return;
 
         if(event.getAction() != Action.LEFT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND) return;

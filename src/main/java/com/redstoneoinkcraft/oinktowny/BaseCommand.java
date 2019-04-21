@@ -1,6 +1,8 @@
 package com.redstoneoinkcraft.oinktowny;
 
 import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaPVPManager;
+import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactManager;
+import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactType;
 import com.redstoneoinkcraft.oinktowny.bundles.BundleManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
@@ -10,10 +12,12 @@ import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 9/1/2018
@@ -344,6 +348,25 @@ public class BaseCommand implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("explode")){
                     em.enchantItem(player, EnchantmentManager.EXPLOSIVE_ARROWS, Integer.parseInt(args[2]));
                 }
+                return true;
+            }
+
+            /* ARTIFACT STUFF */
+            ArtifactManager am = ArtifactManager.getInstance();
+            if(args[0].equalsIgnoreCase("artifact")){
+                if(args[1].equalsIgnoreCase("jackhammer")){
+                    player.getInventory().setItem(0, am.createJackhammer());
+                }
+                if(args[1].equalsIgnoreCase("gravityshift")){
+                    player.getInventory().setItem(0, am.createGravityShifter());
+                }
+                if(args[1].equalsIgnoreCase("healthshift")){
+                    player.getInventory().setItem(0, am.createHealthShifter());
+                }
+                if(args[1].equalsIgnoreCase("explode")){
+                    player.getInventory().setItem(0, am.createDestructoid());
+                }
+                player.sendMessage(prefix + "Here ya go, mate...");
                 return true;
             }
             /* DEFAULT MESSAGE */

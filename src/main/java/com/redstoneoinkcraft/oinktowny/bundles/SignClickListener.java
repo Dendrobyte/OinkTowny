@@ -5,6 +5,7 @@ import com.redstoneoinkcraft.oinktowny.economy.TownyTokenManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -121,6 +122,7 @@ public class SignClickListener implements Listener {
                 tokenManager.makeTransaction(player, bundlePrice);
                 bundleManager.giveBundle(bundleName, player);
                 player.sendMessage(prefix + "Thank you for your purchase!");
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 4);
             } // Invalid transaction messages handled by validPurchase method
         }
 

@@ -79,6 +79,9 @@ public abstract class EnchantmentFramework extends Enchantment {
             case "conversion":
                 enchantment = EnchantmentManager.CONVERSION;
                 break;
+            case "artifact":
+                enchantment = EnchantmentManager.ARTIFACT;
+                break;
             default:
                 System.out.println("Custom enchantment " + name + " returned null!");
                 enchantment = null;
