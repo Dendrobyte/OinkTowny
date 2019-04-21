@@ -3,6 +3,7 @@ package com.redstoneoinkcraft.oinktowny.arenapvp;
 import com.redstoneoinkcraft.oinktowny.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,7 @@ public class ArenaDamageListener implements Listener {
         // We know that to get to this point, the damager and entity have to be players
         Player attacker = (Player) event.getDamager();
         Player defender = (Player) event.getEntity();
+        String worldName = event.getEntity().getWorld().getName();
         if(apm.isPlayerInArena(attacker) && apm.isPlayerInArena(defender)){
             ArenaObj workingArena = apm.getPlayerArena(attacker); // There's... no way for them to be in different arenas...
             if(!workingArena.getCanHitEachOther()){
@@ -40,8 +42,9 @@ public class ArenaDamageListener implements Listener {
                 defender.setHealth(defender.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
                 apm.endArena(workingArena, attacker);
             }
+            return;
         }
-        else if (event.getEntity().getWorld().getName().equalsIgnoreCase(Main.getInstance().getWorldName())){
+        else if (worldName.equalsIgnoreCase(Main.getInstance().getWorldName()) || worldName.equalsIgnoreCase(Main.getInstance().getNetherWorldName())){
             event.setCancelled(true);
             attacker.playSound(attacker.getLocation(), Sound.BLOCK_ANVIL_PLACE, 6.0f, 1.0f);
             attacker.sendMessage(Main.getInstance().getPrefix() + "PvP is not enabled in towny!");

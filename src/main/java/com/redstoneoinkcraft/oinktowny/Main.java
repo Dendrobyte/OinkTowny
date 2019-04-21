@@ -37,6 +37,7 @@ public class Main extends JavaPlugin {
     private static Main instance;
     private String prefix = "§8(§3OinkTowny§8)§3 ";
     private String worldName;
+    private String netherWorldName;
 
     /* Custom configurations */
     // bundles.yml
@@ -66,6 +67,7 @@ public class Main extends JavaPlugin {
 
         // Set the main world name to retrieve from various functions
         worldName = getConfig().getString("world-name");
+        netherWorldName = getConfig().getString("world-nether");
 
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
@@ -129,6 +131,9 @@ public class Main extends JavaPlugin {
 
     public String getWorldName(){
         return worldName;
+    }
+    public String getNetherWorldName() {
+        return netherWorldName;
     }
 
     // Configuration file methods

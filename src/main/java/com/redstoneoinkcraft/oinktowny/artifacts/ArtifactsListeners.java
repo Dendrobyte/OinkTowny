@@ -36,31 +36,36 @@ public class ArtifactsListeners implements Listener {
         // JackHammer
         if(am.getArtifactType(itemInHand) == ArtifactType.JACKHAMMER){
             if(event.getAction() != Action.LEFT_CLICK_BLOCK) return;
-            am.jackhammerBreak(event.getClickedBlock(), event.getBlockFace());
-            decrementUses(player, itemInHand);
+            if(am.jackhammerBreak(event.getClickedBlock(), event.getBlockFace(), event.getPlayer())) decrementUses(player, itemInHand);
+            return;
         }
 
         // Gravity Shifter
         if(am.getArtifactType(itemInHand) == ArtifactType.GRAVITY_SHIFTER){
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+                event.setCancelled(true);
                 am.gravityShift(player);
                 decrementUses(player, itemInHand);
+                return;
             }
         }
 
         // Health Shifter
         if(am.getArtifactType(itemInHand) == ArtifactType.HEALTH_SHIFTER){
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+                event.setCancelled(true);
                 am.healthShift(player);
                 decrementUses(player, itemInHand);
+                return;
             }
         }
 
         // Destructoid
-        if(am.getArtifactType(itemInHand) == ArtifactType.HEALTH_SHIFTER){
+        if(am.getArtifactType(itemInHand) == ArtifactType.DESTRUCTOID){
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
                 am.destruct(player);
                 decrementUses(player, itemInHand);
+                return;
             }
         }
     }

@@ -58,7 +58,6 @@ public class EnchantmentManager {
             acceptingNew.set(null, true);
 
             // Actual enchantment registration
-            System.out.println("1: " + enchantment);
             Enchantment.registerEnchantment(enchantment);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             Bukkit.getLogger().log(Level.WARNING, "[OinKTowny] Enchants: Field value failure! Did you reload the server?");
@@ -81,8 +80,6 @@ public class EnchantmentManager {
             itemMeta.setLore(newLore);
             itemInHand.setItemMeta(itemMeta);
             player.sendMessage("[Enchants]: Enchantment added!");
-            System.out.println("IT: " + enchantment);
-            System.out.println("E: " + itemInHand.getEnchantments());
         } else {
             player.sendMessage("[Enchants]: You can not enchant this item!");
         }
