@@ -116,7 +116,7 @@ public class SignClickListener implements Listener {
             for (int i = 0; i < bundleItems.size(); i++) {
                 bundleInv.setItem(i, bundleItems.get(i));
             }
-            player.sendMessage(prefix + "To buy this bundle, " + ChatColor.GOLD + ChatColor.BOLD + "SHIFT + RIGHT CLICK");
+            player.sendMessage(prefix + "To buy this bundle, " + ChatColor.GOLD + ChatColor.BOLD + "SHIFT/SNEAK + RIGHT CLICK");
         } else if (player.isSneaking()){
             if(tokenManager.validPurchase(player, bundlePrice)){
                 tokenManager.makeTransaction(player, bundlePrice);

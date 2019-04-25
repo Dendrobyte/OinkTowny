@@ -70,6 +70,7 @@ public class BundleManager {
         for(ItemStack item : playerInv.getContents()){
             StringBuilder builder = new StringBuilder();
             if(item == null) continue; // Make sure the item isn't null
+            // TODO: If it's an artifact...
             String formatItemDetails;
             // Get material
             builder.append(item.getType().toString()).append("; ");
@@ -124,6 +125,7 @@ public class BundleManager {
 
         // The format is ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL, ]; lore:[Line one, Line two]
         for(String origin : bundleItemList){
+            // TODO: If it's an artifact
             String str = origin;
 
             // Get indexes of semicolons

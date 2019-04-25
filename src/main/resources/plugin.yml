@@ -27,3 +27,5 @@ permissions:
     description: Allows a player to create an arena
   oinktowny.arenas:
     description: Allows a player to create an arena join sign
+  oinktowny.ruins:
+    description: Allows a player to create ruins

@@ -16,6 +16,8 @@ import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickCommand;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickListeners;
+import com.redstoneoinkcraft.oinktowny.ruins.RuinsChatListener;
+import com.redstoneoinkcraft.oinktowny.ruins.RuinsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -55,6 +57,9 @@ public class Main extends JavaPlugin {
     // arenas.yml
     private File arenasFile;
     private FileConfiguration arenasConfig;
+    // ruins.yml
+    private File ruinsFile;
+    private FileConfiguration ruinsConfig;
 
 
     @Override
@@ -92,6 +97,8 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new NetherPortalListener(), this);
         // Artifacts
         Bukkit.getServer().getPluginManager().registerEvents(new ArtifactsListeners(), this);
+        // Ruins
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsChatListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
@@ -108,6 +115,9 @@ public class Main extends JavaPlugin {
 
         /* Load arenas */
         ArenaPVPManager.getInstance().loadArenas();
+
+        /* Rebuild ruins */
+        RuinsManager.getInstance().rebuildRuins();
 
         /* Register enchantments */
         EnchantmentManager.registerEnchants();
@@ -231,6 +241,23 @@ public class Main extends JavaPlugin {
             }
             getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " arenas.yml has been loaded.");
         }
+
+        // Generate ruins.yml
+        ruinsFile = new File(getDataFolder(), "ruins.yml");
+        if(!ruinsFile.exists()){
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " is creating the ruins.yml...");
+            saveResource("ruins.yml", false);
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " ruins.yml has been created!");
+        } else {
+            ruinsConfig = new YamlConfiguration();
+            try {
+                ruinsConfig.load(ruinsFile);
+            } catch (IOException | InvalidConfigurationException e){
+                getLogger().log(Level.WARNING, "OInkTowny ruins.yml could not be loaded!");
+                e.printStackTrace();
+            }
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " ruins.yml has been loaded.");
+        }
     }
 
     // Bundles config file methods
@@ -312,6 +339,23 @@ public class Main extends JavaPlugin {
     }
     private File getArenasFile(){
         return this.arenasFile;
+    }
+
+    // Ruins config file methods
+    public void saveRuinsConfig(){
+        saveResource("ruins.yml", true);
+        try{
+            Main.getInstance().getRuinsConfig().save(getRuinsFile());
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getRuinsConfig(){
+        return this.ruinsConfig;
+    }
+    public File getRuinsFile(){
+        return this.ruinsFile;
     }
 
 }

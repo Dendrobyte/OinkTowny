@@ -42,11 +42,11 @@ public class TownyTokenManager {
 
         // Add item lore
         List<String> tokenLore = new ArrayList<String>();
-        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "You can use this token to...");
-        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "- Trade with players!");
-        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "- Purchase seasonal items!");
-        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "- Purchase item bundles!");
-        tokenLore.add("" + ChatColor.RESET + ChatColor.DARK_PURPLE + "... and probably more!");
+        tokenLore.add("You can use this token to...");
+        tokenLore.add("- Trade with players!");
+        tokenLore.add("- Purchase seasonal items!");
+        tokenLore.add("- Purchase item bundles!");
+        tokenLore.add("... and probably more!");
         tokenMeta.setLore(tokenLore);
 
         // Set the item meta
