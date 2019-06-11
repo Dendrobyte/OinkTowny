@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -29,7 +30,9 @@ public class ArenaTimer extends BukkitRunnable {
             workingArena.setCanHitEachOther(true);
             Player playerOne = workingArena.getPlayerOne();
             Player playerTwo = workingArena.getPlayerTwo();
+            playerOne.setVelocity(new Vector(0, 0, 0));
             playerOne.teleport(workingArena.getSpawn_one());
+            playerTwo.setVelocity(new Vector(0, 0, 0));
             playerTwo.teleport(workingArena.getSpawn_two());
             System.out.println("6: Players teleported!");
             playerOne.setHealth(playerOne.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());

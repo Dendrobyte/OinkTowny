@@ -1,5 +1,10 @@
 package com.redstoneoinkcraft.oinktowny.ruins;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Monster;
+
+import java.util.ArrayList;
+
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
  * Please do not use or edit without permission!
@@ -7,4 +12,29 @@ package com.redstoneoinkcraft.oinktowny.ruins;
  * §
  */
 public class RuinsObjLevel {
+
+    private Location spawnLocation;
+    private ArrayList<String> monsters = new ArrayList<>();
+
+    public RuinsObjLevel(Location spawnLocation){
+        this.spawnLocation = spawnLocation;
+    }
+
+    public ArrayList<String> getMonsters() {
+        return this.monsters;
+    }
+
+    // Formatted MONSTER;AMOUNT
+    public void addMonster(String monster){
+        monsters.add(monster);
+    }
+
+    public Location getSpawnLocation(){
+        return spawnLocation;
+    }
+
+    public void setSpawnpoint(Location location){
+        spawnLocation = location;
+    }
+
 }

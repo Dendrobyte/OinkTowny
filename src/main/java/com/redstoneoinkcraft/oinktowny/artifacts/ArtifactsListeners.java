@@ -7,11 +7,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-
-import java.util.ArrayList;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -70,4 +70,44 @@ public class ArtifactsListeners implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event){
+        if(event.getFrom().getBlockX() == event.getTo().getBlockX() && event.getFrom().getBlockY() == event.getTo().getBlockY() && event.getFrom().getBlockZ() == event.getTo().getBlockZ()) return;
+        Player player = event.getPlayer();
+        // Headlamp
+        ItemStack helmet = player.getInventory().getHelmet();
+        try {
+            if (am.getArtifactType(helmet) == ArtifactType.HEADLAMP) {
+                if(!player.getEyeLocation().getBlock().getType().equals(Material.AIR)) return;
+                am.replaceTorch(player, player.getEyeLocation().getBlock());
+                decrementUses(player, helmet);
+            }
+        } catch (NullPointerException e){
+            return;
+        }
+    }
+
+    @EventHandler
+    public void inventoryClick(InventoryClickEvent event){
+        if(!event.getInventory().getType().equals(InventoryType.CRAFTING)) return;
+        Player player = (Player) event.getWhoClicked();
+        // Headlamp
+        if(event.getSlotType() == InventoryType.SlotType.ARMOR){
+            if(am.getArtifactType(event.getCurrentItem()) == ArtifactType.HEADLAMP){
+                am.clearPlayerTorches(player);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event){
+        Player player = event.getPlayer();
+        Block block = event.getBlock();
+        // Headlamp
+        if(block.getType().equals(Material.TORCH)){
+            if(am.isHeadlampTorch(player, block)) {
+                event.setCancelled(true);
+            }
+        }
+    }
 }

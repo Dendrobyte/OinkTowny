@@ -28,7 +28,7 @@ public class ArenaSignListeners implements Listener {
     @EventHandler
     public void arenaSignCreation(SignChangeEvent event){
         Block block = event.getBlock();
-        if(!(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN)) return;
+        if(!(block.getType().toString().contains("SIGN"))) return;
         if(!event.getLine(0).equals(ChatColor.stripColor(tag))) return;
         String line2 = event.getLine(1); // Arena name
 
@@ -50,7 +50,7 @@ public class ArenaSignListeners implements Listener {
         if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return; // Ensure it's a right click
         if(!event.getHand().equals(EquipmentSlot.HAND)) return;
         Block clickedBlock = event.getClickedBlock();
-        if(!clickedBlock.getType().equals(Material.WALL_SIGN)) return; // Ensure it's a wall sign
+        if(!clickedBlock.getType().toString().contains("WALL_SIGN")) return; // Ensure it's a wall sign
 
         Sign wallSign = (Sign) clickedBlock.getState();
         if(!wallSign.getLine(0).equals(tag)) return; // Ensure the sign has the proper tag on top - Defined at the top of the class

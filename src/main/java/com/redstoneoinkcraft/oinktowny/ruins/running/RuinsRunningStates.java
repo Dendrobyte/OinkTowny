@@ -1,4 +1,4 @@
-package com.redstoneoinkcraft.oinktowny.artifacts;
+package com.redstoneoinkcraft.oinktowny.ruins.running;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -6,8 +6,8 @@ package com.redstoneoinkcraft.oinktowny.artifacts;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public enum ArtifactType {
+public enum RuinsRunningStates {
 
-    JACKHAMMER, GRAVITY_SHIFTER, HEALTH_SHIFTER, DESTRUCTOID, HEADLAMP
+    LOBBY, LEVELS, FINAL;
 
 }

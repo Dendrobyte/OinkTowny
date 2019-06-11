@@ -7,17 +7,23 @@ import com.redstoneoinkcraft.oinktowny.bundles.PreventItemStealListener;
 import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanChatListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
+import com.redstoneoinkcraft.oinktowny.clans.ClanUpdateUuidListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
+import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
+import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropOpenListener;
 import com.redstoneoinkcraft.oinktowny.portals.NetherPortalListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickCommand;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickListeners;
-import com.redstoneoinkcraft.oinktowny.ruins.RuinsChatListener;
+import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsChatListener;
 import com.redstoneoinkcraft.oinktowny.ruins.RuinsManager;
+import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsSelectJoinSigns;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsEntityDeathListener;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsSignClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,8 +44,7 @@ public class Main extends JavaPlugin {
 
     private static Main instance;
     private String prefix = "§8(§3OinkTowny§8)§3 ";
-    private String worldName;
-    private String netherWorldName;
+    private String worldName, netherWorldName, endWorldName;
 
     /* Custom configurations */
     // bundles.yml
@@ -73,9 +78,11 @@ public class Main extends JavaPlugin {
         // Set the main world name to retrieve from various functions
         worldName = getConfig().getString("world-name");
         netherWorldName = getConfig().getString("world-nether");
+        endWorldName = getConfig().getString("world-end");
 
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         // Bundle events
         Bukkit.getServer().getPluginManager().registerEvents(new SignClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PreventItemStealListener(), this);
@@ -84,6 +91,7 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new RegionBlockPlaceBreakListener(), this);
         // Clan events
         Bukkit.getServer().getPluginManager().registerEvents(new ClanChatListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ClanUpdateUuidListener(), this);
         // Better sleep events
         Bukkit.getServer().getPluginManager().registerEvents(new SleepListener(), this);
         // PvP Arena events
@@ -91,6 +99,8 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaPlayerQuitListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaDamageListener(), this);
+        // Lootdrops
+        Bukkit.getServer().getPluginManager().registerEvents(new LootdropOpenListener(), this);
         // Enchantments
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
         // Portals
@@ -99,6 +109,9 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new ArtifactsListeners(), this);
         // Ruins
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsChatListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsSelectJoinSigns(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsSignClickListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsEntityDeathListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
@@ -144,6 +157,10 @@ public class Main extends JavaPlugin {
     }
     public String getNetherWorldName() {
         return netherWorldName;
+    }
+    public String getEndWorldName() { return endWorldName; }
+    public boolean isTownyWorld(String name) {
+        return name.equals(worldName) || name.equals(netherWorldName) || name.equals(endWorldName);
     }
 
     // Configuration file methods

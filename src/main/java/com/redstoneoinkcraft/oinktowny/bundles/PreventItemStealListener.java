@@ -12,10 +12,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
  */
 public class PreventItemStealListener implements Listener {
 
-    @SuppressWarnings("Deprecation")
     @EventHandler
     public void onBundleInvClick(InventoryClickEvent event){
-        if(!event.getInventory().getName().contains("Token(s)")) return;
+        if(!event.getView().getTitle().contains("Token(s)")) return;
         event.setCancelled(true);
     }
 

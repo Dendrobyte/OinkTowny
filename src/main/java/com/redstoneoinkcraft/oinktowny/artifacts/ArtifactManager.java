@@ -6,7 +6,6 @@ import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,6 +13,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,8 +56,13 @@ public class ArtifactManager {
     }
 
     public ArtifactType getArtifactType(ItemStack item){
-        String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
-        return ArtifactType.valueOf(name);
+        if(item == null) return null;
+        try {
+            String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
+            return ArtifactType.valueOf(name);
+        } catch (NullPointerException e){
+            return null;
+        }
     }
 
     /* Effecting item information via lore */
@@ -82,6 +87,7 @@ public class ArtifactManager {
         }
         if(newAmount <= 0){
             item.setAmount(0);
+            if(getArtifactType(item) == ArtifactType.HEADLAMP) clearPlayerTorches(player);
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 2, 1);
             return;
         }
@@ -211,6 +217,29 @@ public class ArtifactManager {
         Location loc = player.getLocation();
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 8, true, true));
         player.getWorld().createExplosion(loc.getBlockX(), loc.getY(), loc.getZ(), 2.0f, false, false);
+    }
+
+    public ItemStack createHeadlamp(){
+        return initializeArtifact(Material.LEATHER_HELMET, ArtifactType.HEADLAMP, 400, 1);
+    }
+
+    private HashMap<Player, Block> torchReplacements = new HashMap<>(2);
+    public void replaceTorch(Player player, Block block){
+        if(!torchReplacements.containsKey(player)){
+            torchReplacements.put(player, block);
+        }
+        torchReplacements.get(player).setType(Material.AIR);
+        block.setType(Material.TORCH);
+        torchReplacements.put(player, block);
+    }
+
+    public boolean isHeadlampTorch(Player player, Block block){
+        return torchReplacements.get(player).equals(block);
+    }
+
+    public void clearPlayerTorches(Player player){
+        torchReplacements.get(player).setType(Material.AIR);
+        torchReplacements.remove(player);
     }
 
 }

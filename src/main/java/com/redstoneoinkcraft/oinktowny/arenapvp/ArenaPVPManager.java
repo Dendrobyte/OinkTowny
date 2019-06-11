@@ -94,7 +94,7 @@ public class ArenaPVPManager {
         setPlayerStage(player, ArenaCreationStage.ARENA_LOC);
         currentArenaInCreation.put(player, new ArenaObj(name));
         player.sendMessage(prefix + "Arena creation has been initiated for arena " + ChatColor.BOLD + name + "!");
-        player.sendMessage(prefix + ChatColor.RED + "To leave creation, use /ot arena leave");
+        player.sendMessage(prefix + ChatColor.RED + "To leave creation, use /ot arena quit");
         player.sendMessage(prefix + ChatColor.GREEN + "Please use the creation wand (the stick) to select the " + ChatColor.BOLD + " center (or close to it) of the arena.");
     }
 
@@ -119,7 +119,7 @@ public class ArenaPVPManager {
         writeArenaToConfig(currentArenaInCreation.get(player), Main.getInstance().getArenasConfig());
         player.sendMessage(prefix + ChatColor.GREEN + "Creation successful for " + ChatColor.BOLD + currentArenaInCreation.get(player).getName() + "!");
         currentArenaInCreation.remove(player);
-        player.getInventory().getItemInMainHand().setAmount(0);
+        player.getInventory().remove(getCreationWand());
     }
 
     public void quitCreation(Player player){

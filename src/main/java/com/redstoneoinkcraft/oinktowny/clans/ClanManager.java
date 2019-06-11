@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -325,6 +326,35 @@ public class ClanManager {
 
     private boolean playerIsLeader(Player player, ClanObj clan){
         return clan.getLeaderId().equals(player.getUniqueId());
+    }
+
+    // Incredibly poor optimization, but it won't be used often so for now I'm leaving it. Sorry :( I'll make use of the cache method with this one
+    private ArrayList<String> getClanMembers(ClanObj clan){
+        ArrayList<String> returnList = new ArrayList<>();
+        List<String> storedPlayers = Main.getInstance().getClansConfig().getStringList("stored-players");
+        HashMap<String, String> idToName = new HashMap<>(); // UUID, Name
+        for(String str : storedPlayers){
+            idToName.put(str.substring(str.indexOf(":")+1), str.substring(0, str.indexOf(":")));
+        }
+        for(UUID id : clan.getMemberIds()){
+            returnList.add(idToName.get(id.toString()));
+        }
+        return returnList;
+    }
+
+    public void createClanListScoreboard(Player player){
+        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = board.registerNewObjective(player.getName(), "", ChatColor.DARK_AQUA + player.getName() + "'s Clan Members");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        ArrayList<String> clanMembersToList = getClanMembers(getPlayerClan(player));
+        for(int i = 0; i < clanMembersToList.size(); i++){
+            Score temp = objective.getScore(ChatColor.GOLD + clanMembersToList.get(i));
+            temp.setScore(i);
+        }
+
+        player.setScoreboard(board);
+        ClanScoreboardTimer cst = new ClanScoreboardTimer(player, board);
+        cst.runTaskTimer(mainInstance,  0L, 20L);
     }
 
 }

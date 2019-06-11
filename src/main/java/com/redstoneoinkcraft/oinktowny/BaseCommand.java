@@ -20,6 +20,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 9/1/2018
  * Please do not use or edit without permission! (Being on GitHub counts as permission)
@@ -170,6 +172,7 @@ public class BaseCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.GOLD + "- invite");
                     player.sendMessage(ChatColor.GOLD + "- kick");
                     player.sendMessage(ChatColor.GOLD + "- leave");
+                    player.sendMessage(ChatColor.GOLD + "- list");
                     player.sendMessage(ChatColor.GOLD + "To chat with your clan, start your message with " + ChatColor.GOLD + ChatColor.BOLD
                             + ChatColor.DARK_AQUA + "%");
                     return true;
@@ -224,6 +227,17 @@ public class BaseCommand implements CommandExecutor {
                     cm.leaveClan(player);
                     return true;
                 }
+                // TODO: Toggle on/off permanently
+                // TODO: Check members of someone else's clan for 10 seconds
+                if(args[1].equalsIgnoreCase("list")){
+                    if(!cm.playerHasClan(player)){
+                        player.sendMessage(prefix + "You're not in a clan.");
+                        return true;
+                    }
+                    cm.createClanListScoreboard(player);
+                    player.sendMessage(prefix + "Scoreboard will disappear in 10 seconds.");
+                    return true;
+                }
             }
 
             /* LOOT DROP STUFF */
@@ -271,6 +285,10 @@ public class BaseCommand implements CommandExecutor {
                 ArenaPVPManager apm = ArenaPVPManager.getInstance();
                 if(!player.hasPermission("oinktowny.create")){
                     player.sendMessage(prefix + "Sorry, this is an admin-only command.");
+                    return true;
+                }
+                if(player.getWorld().getName().equalsIgnoreCase(Main.getInstance().getWorldName())){
+                    player.sendMessage(prefix + "Arenas can not be created in this world.");
                     return true;
                 }
                 /* Command structure: /oinktowny arena ... */
@@ -370,6 +388,9 @@ public class BaseCommand implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("explode")){
                     player.getInventory().setItem(0, am.createDestructoid());
                 }
+                if(args[1].equalsIgnoreCase("headlamp")){
+                    player.getInventory().setItem(0, am.createHeadlamp());
+                }
                 player.sendMessage(prefix + "Here ya go, mate...");
                 return true;
             }
@@ -381,13 +402,22 @@ public class BaseCommand implements CommandExecutor {
                     player.sendMessage(prefix + "Sorry, this is an admin-only command.");
                     return true;
                 }
+                if(args.length <= 1){
+                    player.sendMessage(prefix + "Use " + ChatColor.GOLD + "/ot ruins create <name>");
+                    return true;
+                }
                 if(args[1].equalsIgnoreCase("create")){
+                    if(player.getWorld().getName().equalsIgnoreCase(Main.getInstance().getWorldName())){
+                        player.sendMessage(prefix + "Ruins can not be created in this world.");
+                        return true;
+                    }
                     if(args.length == 2){
-                        player.sendMessage(prefix + "Please provide a name for the ruins.");
+                        player.sendMessage(prefix + ChatColor.RED + "Please provide a name for the ruins!");
                         return true;
                     }
                     player.sendMessage(prefix + "Now entering ruins creation mode...");
                     rm.initiateRuinsCreation(player, args[2]);
+                    return true;
                 }
             }
 

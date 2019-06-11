@@ -1,10 +1,22 @@
 package com.redstoneoinkcraft.oinktowny.ruins;
 
 import com.redstoneoinkcraft.oinktowny.Main;
+import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsCreationStates;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsEndingTimer;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsMobspawningTimer;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsRunningTimer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.block.Sign;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -15,26 +27,79 @@ import java.util.HashMap;
 public class RuinsManager {
 
     private static RuinsManager instance = new RuinsManager();
-    private String ruinsPrefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "TownyRuins" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY;
+    private String ruinsPrefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "TownyRuins" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
 
     public static RuinsManager getInstance(){
         return instance;
     }
+    public String getRuinsPrefix() {
+        return ruinsPrefix;
+    }
 
     private RuinsManager(){}
 
+    private ArrayList<RuinsObj> cachedRuins = new ArrayList<>(2);
+
     // Main initializing method called in the main file (just a fun name for it)
     public void rebuildRuins(){
-        // TODO
+        FileConfiguration ruinsConfig = Main.getInstance().getRuinsConfig();
+        System.out.println(ruinsPrefix + "Beginning ruins reconstruction process...");
+        try {
+            ruinsConfig.getConfigurationSection("ruins");
+        } catch (NullPointerException e){
+            System.out.println(ruinsPrefix + "No ruins in file. Skipping rebuilding process.");
+            return;
+        }
+        for(String ruinsName : ruinsConfig.getConfigurationSection("ruins").getKeys(false)){
+            RuinsObj load = new RuinsObj();
+            load.setName(ruinsName);
+            // Lobby
+            Location lobbyLoc = new Location(Bukkit.getWorld(ruinsConfig.getString("ruins." + ruinsName + ".lobby.world")), ruinsConfig.getInt("ruins." + ruinsName + ".lobby.x"), ruinsConfig.getInt("ruins." + ruinsName + ".lobby.y"), ruinsConfig.getInt("ruins." + ruinsName + ".lobby.z"));
+            load.setLobby(lobbyLoc);
+            // Signs
+            for(String signNum : ruinsConfig.getConfigurationSection("ruins." + ruinsName + ".signs").getKeys(false)){
+                Location signLoc = new Location(Bukkit.getWorld(ruinsConfig.getString("ruins." + ruinsName + ".signs." + signNum + ".world")), ruinsConfig.getInt("ruins." + ruinsName + ".signs." + signNum + ".x"), ruinsConfig.getInt("ruins." + ruinsName + ".signs." + signNum + ".y"), ruinsConfig.getInt("ruins." + ruinsName + ".signs." + signNum + ".z"));
+                if(signLoc.getBlock().getType().toString().contains("WALL_SIGN")) {
+                    load.addJoinSign((Sign) signLoc.getBlock().getState());
+                }
+            }
+            // Levels
+            for(String levelNum : ruinsConfig.getConfigurationSection("ruins." + ruinsName + ".levels").getKeys(false)){
+                RuinsObjLevel level = new RuinsObjLevel(new Location(Bukkit.getWorld(ruinsConfig.getString("ruins." + ruinsName + ".levels." + levelNum + ".spawnpoint.world")), ruinsConfig.getInt("ruins." + ruinsName + ".levels." + levelNum + ".spawnpoint.x"), ruinsConfig.getInt("ruins." + ruinsName + ".levels." + levelNum + ".spawnpoint.y"), ruinsConfig.getInt("ruins." + ruinsName + ".levels." + levelNum + ".spawnpoint.z")));
+                // Monsters
+                List<String> monsterList = ruinsConfig.getStringList("ruins." + ruinsName + ".levels." + levelNum + ".monsters");
+                for(String str : monsterList){
+                    level.addMonster(str);
+                }
+                load.addLevel(level);
+            }
+            // Reward items
+            ArrayList<ItemStack> itemList = new ArrayList<>();
+            for(String itemNum : ruinsConfig.getConfigurationSection("ruins." + ruinsName + ".rewards").getKeys(false)){
+                ItemStack item = ruinsConfig.getItemStack("ruins." + ruinsName + ".rewards." + itemNum);
+                itemList.add(item);
+            }
+            load.setRewardItems(itemList);
+            cachedRuins.add(load);
+            System.out.println(ruinsPrefix + "'Rebuilt' the " + ruinsName + " ruins.");
+        }
+        System.out.println(ruinsPrefix + "All ruins successfully rebuilt!");
     }
 
     /* Ruins creation objects */
-    HashMap<Player, RuinsCreationStates> playerCreationStates = new HashMap<Player, RuinsCreationStates>();
-    /* Ruins creation methods */
+    HashMap<Player, RuinsCreationStates> playerCreationStates = new HashMap<>();
+    HashMap<Player, RuinsObj> ruinsBeingCreated = new HashMap<>(2);
 
+    /* Ruins creation methods */
     public void initiateRuinsCreation(Player player, String name){
         player.sendMessage(ruinsPrefix + "Welcome to the Towny Ruins creation wizard! This wizard will use a combination of chat instructions and selection.");
         playerCreationStates.put(player, RuinsCreationStates.LOBBY);
+        RuinsObj ruins = new RuinsObj();
+        ruins.setName(name);
+        ruinsBeingCreated.put(player, ruins);
+        player.sendMessage(ruinsPrefix + "Please " + ChatColor.GREEN + "BEGIN" + ChatColor.getLastColors(ruinsPrefix) + " in the lobby location.");
+        player.sendMessage(ruinsPrefix + "Type " + ChatColor.RED + "EXIT" + ChatColor.getLastColors(ruinsPrefix) + " at any point to leave." + ChatColor.DARK_RED + ChatColor.ITALIC +
+                " (ALL PROGRESS WILL BE LOST)");
 
     }
 
@@ -47,14 +112,135 @@ public class RuinsManager {
         return playerCreationStates.get(player);
     }
 
-    public void changePlayerCreationState(Player player, RuinsCreationStates state){
+    public void removePlayerFromCreation(Player player){
+        playerCreationStates.remove(player);
+    }
+
+    public void setPlayerCreationState(Player player, RuinsCreationStates state){
         playerCreationStates.put(player, state);
     }
 
     public void endRuinsCreation(Player player, RuinsObj ruins){
+        FileConfiguration ruinsConfig = Main.getInstance().getRuinsConfig();
+        String name = ruins.getName();
+        // Lobby
+        ruinsConfig.set("ruins." + name + ".lobby.world", ruins.getLobby().getWorld().getName());
+        ruinsConfig.set("ruins." + name + ".lobby.x", ruins.getLobby().getBlockX());
+        ruinsConfig.set("ruins." + name + ".lobby.y", ruins.getLobby().getBlockY());
+        ruinsConfig.set("ruins." + name + ".lobby.z", ruins.getLobby().getBlockZ());
+        // Join signs
+        int counter = 0;
+        for(Sign sign : ruins.getJoinSigns()){
+            ruinsConfig.set("ruins." + name + ".signs." + counter + ".world", sign.getLocation().getWorld().getName());
+            ruinsConfig.set("ruins." + name + ".signs." + counter + ".x", sign.getLocation().getBlockX());
+            ruinsConfig.set("ruins." + name + ".signs." + counter + ".y", sign.getLocation().getBlockY());
+            ruinsConfig.set("ruins." + name + ".signs." + counter + ".z", sign.getLocation().getBlockZ());
+        }
+        // Levels
+        counter = 0;
+        for(RuinsObjLevel level : ruins.getLevels()){
+            // Spawnpoint
+            ruinsConfig.set("ruins." + name + ".levels." + counter  + ".spawnpoint.world", level.getSpawnLocation().getWorld().getName());
+            ruinsConfig.set("ruins." + name + ".levels." + counter  + ".spawnpoint.x", level.getSpawnLocation().getBlockX());
+            ruinsConfig.set("ruins." + name + ".levels." + counter  + ".spawnpoint.y", level.getSpawnLocation().getBlockY());
+            ruinsConfig.set("ruins." + name + ".levels." + counter  + ".spawnpoint.z", level.getSpawnLocation().getBlockZ());
+            // Monsters
+            ruinsConfig.set("ruins." + name + ".levels." + counter  + ".monsters", level.getMonsters());
+
+            counter ++;
+        }
+        // Rewards
+        counter  = 0;
+        for(ItemStack item : ruins.getRewardItems()){
+            ruinsConfig.set("ruins." + name + ".rewards." + counter, item);
+            counter ++;
+        }
+
+        Main.getInstance().saveRuinsConfig();
         playerCreationStates.remove(player);
+
+        cachedRuins.add(ruins);
+        player.sendMessage(ruinsPrefix + "Ruin creation successfully added to file and cached in memory.");
+    }
+
+    public RuinsObj getCreatedRuins(Player player){
+        return ruinsBeingCreated.get(player);
+    }
+
+    public void setLobbyLocation(RuinsObj ruins, Location lobbyLocation){
+        ruins.setLobby(lobbyLocation);
     }
 
     /* Ruins running methods */
+    HashMap<Player, RuinsObj> activePlayers = new HashMap<>();
+    HashMap<Player, RuinsMobspawningTimer> playerMobSpawningTimers = new HashMap<>();
+
+    public HashMap<Player, RuinsObj> getActivePlayers() {
+        return activePlayers;
+    }
+
+    public HashMap<Player, RuinsMobspawningTimer> getPlayerMobSpawningTimers() {
+        return playerMobSpawningTimers;
+    }
+
+    public RuinsObj getRuins(String name){
+        for(RuinsObj ruins : cachedRuins){
+            if(ruins.getName().equalsIgnoreCase(name)){
+                return ruins;
+            }
+        }
+        return null;
+    }
+
+    public void initiatePlayerInRuins(Player player, String name){
+        if(getRuins(name) == null){
+            player.sendMessage(ruinsPrefix + "Something went wrong with joining " + name + " ruins... Please contact staff.");
+            return;
+        }
+        RuinsObj ruins = getRuins(name);
+        ruins.getPlayerCurrentLevel().put(player, ruins.getFirstLevel());
+        getActivePlayers().put(player, ruins);
+        String message = "Get ready for the wave of mobs!";
+        int seconds = 20;
+        player.sendMessage(ruinsPrefix + "Your ruins excursion will begin in " + seconds + " seconds!");
+        RuinsRunningTimer rrt = new RuinsRunningTimer(message, seconds, player, ruins.getFirstLevel().getSpawnLocation());
+        rrt.runTaskTimer(Main.getInstance(), 0, 20L);
+    }
+
+    HashMap<Entity, Player> finalMobInLevel = new HashMap<>();
+
+    public HashMap<Entity, Player> getFinalMobInLevel() {
+        return finalMobInLevel;
+    }
+
+    public void advancePlayer(Player player){
+        RuinsObj ruins = getActivePlayers().get(player);
+        RuinsObjLevel currentLevel = ruins.getPlayerCurrentLevel().get(player);
+        if(currentLevel.equals(ruins.getLatestLevel())){
+            player.sendMessage(ruinsPrefix + "Congratulations on making it through the " + ruins.getName() + " ruins!");
+            player.sendMessage(ruinsPrefix + "Your rewards have been dropped at this rooms spawnpoint. You'll be returned to the lobby in 30 seconds.");
+            RuinsEndingTimer ret = new RuinsEndingTimer(player, ruins.getLobby(), ruins.getLatestLevel().getSpawnLocation());
+            ret.runTaskTimer(Main.getInstance(), 0, 20L);
+
+            for(ItemStack item : ruins.getRewardItems()){
+                ruins.getLatestLevel().getSpawnLocation().getWorld().dropItem(ruins.getLatestLevel().getSpawnLocation(), item);
+            }
+        } else {
+            RuinsObjLevel nextLevel = ruins.nextLevel(currentLevel);
+            ruins.getPlayerCurrentLevel().put(player, nextLevel);
+            player.sendMessage(ruinsPrefix + ChatColor.GOLD + "Heading into next wave in 20 seconds...");
+            String message = "Next wave starts now!";
+            int seconds = 20;
+            RuinsRunningTimer rrt = new RuinsRunningTimer(message, seconds, player, nextLevel.getSpawnLocation());
+            rrt.runTaskTimer(Main.getInstance(), 0, 20L);
+        }
+
+    }
+
+    public void kickPlayerFromRuins(Player player){
+        RuinsObj ruins = getActivePlayers().get(player);
+        ruins.getPlayerCurrentLevel().remove(player);
+        getActivePlayers().remove(player);
+    }
 
 }

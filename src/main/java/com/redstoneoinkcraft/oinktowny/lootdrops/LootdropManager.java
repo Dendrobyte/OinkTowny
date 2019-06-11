@@ -3,13 +3,13 @@ package com.redstoneoinkcraft.oinktowny.lootdrops;
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.economy.TownyTokenManager;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +37,39 @@ public class LootdropManager {
 
     public static LootdropManager getInstance(){
         return instance;
+    }
+
+    /* Expiration and already-opened checks */
+    private ArrayList<Chest> existingLootcrates = new ArrayList<>();
+    private HashMap<Chest, LootdropExpirationTimer> chestExpirationTimers = new HashMap<>();
+    public ArrayList<Chest> getExistingLootcrates(){
+        return existingLootcrates;
+    }
+
+    private void replaceChestExpirationTimer(Chest chest, LootdropExpirationTimer let){
+        chestExpirationTimers.get(chest).cancel();
+        chestExpirationTimers.put(chest, let);
+    }
+
+    public boolean isLootcrate(Chest chest){
+        return existingLootcrates.contains(chest);
+    }
+
+    public void startLootcrateExpiration(Chest chest, int seconds, Player finder){
+        finder.sendMessage(prefix + ChatColor.GREEN + ChatColor.BOLD + "Nice Find!" + ChatColor.RED + " This crate will expire in " + seconds + " seconds!");
+        LootdropExpirationTimer let = new LootdropExpirationTimer(chest, seconds);
+        let.runTaskTimer(mainInstance, 0L, 20L);
+        replaceChestExpirationTimer(chest, let);
+    }
+
+    private ArrayList<Chest> foundCrates = new ArrayList<>();
+    public boolean lootcrateIsFound(Chest chest){
+        return foundCrates.contains(chest);
+    }
+
+    public void setLootcrateFound(Chest chest, boolean found){
+        if(found) foundCrates.add(chest);
+        else foundCrates.remove(chest);
     }
 
     // Generate random location, then pass into drop loot location
@@ -71,8 +104,13 @@ public class LootdropManager {
         location.getBlock().setType(Material.CHEST);
         location.getBlock().getState().update();
         Chest chest = (Chest) location.getBlock().getState();
+        existingLootcrates.add(chest);
         Inventory chestInv = chest.getBlockInventory();
         fillLootContents(chestInv);
+        // Start an expiration timer
+        LootdropExpirationTimer let = new LootdropExpirationTimer(chest, 7200);
+        let.runTaskTimer(mainInstance, 0L, 20L);
+        chestExpirationTimers.put(chest, let);
     }
 
     // Drop loot randomly
@@ -156,9 +194,8 @@ public class LootdropManager {
     }
 
     public void initializeLootdropTimer(){
-        LootDropTimer ldt = new LootDropTimer(mainInstance.getLootdropsConfig().getInt("drop-interval"));
+        LootdropTimer ldt = new LootdropTimer(mainInstance.getLootdropsConfig().getInt("drop-interval"));
         ldt.runTaskTimer(mainInstance, 0L, 20L);
         System.out.println(prefix + "Lootdrop timer has been successfully initialized!");
     }
-
 }

@@ -4,11 +4,14 @@ import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanObj;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.UUID;
 
@@ -38,9 +41,21 @@ public class RegionBlockPlaceBreakListener implements Listener {
     @EventHandler
     public void onPlaceInRegion(BlockPlaceEvent event){
         Player player = event.getPlayer();
-        if(!canPlayerEdit(event.getBlock().getChunk(), event.getPlayer())){
+        if(!canPlayerEdit(event.getBlock().getChunk(), player)){
             event.setCancelled(true);
             player.sendMessage(prefix + "You are not in the proper clan to edit this claim.");
+        }
+    }
+
+    @EventHandler
+    public void onPlayerOpenChest(PlayerInteractEvent event){
+        if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if(event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST || event.getClickedBlock().getType() == Material.CHEST_MINECART ||
+                event.getClickedBlock().getType() == Material.HOPPER || event.getClickedBlock().getType() == Material.HOPPER_MINECART) {
+            if(!canPlayerEdit(event.getClickedBlock().getChunk(), event.getPlayer())){
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(prefix + "You can not access containers in this claim.");
+            }
         }
     }
 

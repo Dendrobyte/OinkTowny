@@ -1,4 +1,4 @@
-package com.redstoneoinkcraft.oinktowny.ruins;
+package com.redstoneoinkcraft.oinktowny.ruins.creation;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -6,8 +6,7 @@ package com.redstoneoinkcraft.oinktowny.ruins;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public enum RuinsCreationStates {
+public enum RuinDifficulty {
 
-    LOBBY, JOIN_SIGNS, LEVELS, FINAL_LOOT
-
+    EASY, MEDIUM, HARD, INSANE;
 }
