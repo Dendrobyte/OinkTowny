@@ -93,6 +93,7 @@ public class ArtifactsListeners implements Listener {
         Player player = (Player) event.getWhoClicked();
         // Headlamp
         if(event.getSlotType() == InventoryType.SlotType.ARMOR){
+            if(event.getCurrentItem().equals((null))) return;
             if(am.getArtifactType(event.getCurrentItem()) == ArtifactType.HEADLAMP){
                 am.clearPlayerTorches(player);
             }

@@ -13,26 +13,26 @@ import org.bukkit.inventory.ItemStack;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public class EnchantJumpBoost extends EnchantmentFramework {
+public class EnchantRust extends EnchantmentFramework {
 
-
-    public EnchantJumpBoost() {
-        super(new NamespacedKey(Main.getInstance(), "JUMP_BOOST"));
+    public EnchantRust(){
+        super(new NamespacedKey(Main.getInstance(), "RUST"));
     }
+
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return item.getType().toString().contains("BOOTS");
+        return item.getType().toString().contains("SWORD");
     }
 
     @Override
-    public boolean conflictsWith(Enchantment other){
+    public boolean conflictsWith(Enchantment other) {
         return false;
     }
 
     @Override
     public EnchantmentTarget getItemTarget() {
-        return EnchantmentTarget.ARMOR_FEET;
+        return EnchantmentTarget.WEAPON;
     }
 
     @Override
@@ -42,36 +42,31 @@ public class EnchantJumpBoost extends EnchantmentFramework {
 
     @Override
     public String getName() {
-        return "JUMP_BOOST";
+        return "RUST";
     }
 
     @Override
-    public NamespacedKey getKey(){
-        return key;
-    }
-
-    @Override // Level represents odds of conversion. Lvl 1 - 2 blocks, Lvl 2 - 3 blocks, Lvl 3 - 4 blocks
     public int getMaxLevel() {
-        return 3;
-    }
-
-    @Override
-    public int getEnchantmentTableMinimumLevel() {
         return 1;
     }
 
     @Override
+    public boolean staysAfterAnvil() {
+        return true;
+    }
+
+    @Override
+    public int getEnchantmentTableMinimumLevel() {
+        return 2;
+    }
+
+    @Override
     public int getEnchantmentTableMaximumLevel() {
-        return 3;
+        return 2;
     }
 
     @Override
     public double getEnchantmentChance() {
-        return 100;
-    }
-
-    @Override
-    public boolean staysAfterAnvil(){
-        return true;
+        return 0;
     }
 }

@@ -2,7 +2,7 @@
   <artifact type="jar" name="OinkTowny:jar">
     <output-path>F:/Misc Programming/MC TESTING SERVER (1.14.2)/plugins</output-path>
     <root id="archive" name="OinkTowny.jar">
-      <element id="module-output" name="OinkTowny" />
+      <element id="module-output" name="OinkTowny - Plugin" />
     </root>
   </artifact>
 </component>

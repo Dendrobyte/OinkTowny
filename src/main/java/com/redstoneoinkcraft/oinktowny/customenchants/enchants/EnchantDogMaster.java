@@ -2,6 +2,7 @@ package com.redstoneoinkcraft.oinktowny.customenchants.enchants;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
+import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -13,26 +14,26 @@ import org.bukkit.inventory.ItemStack;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public class EnchantJumpBoost extends EnchantmentFramework {
+public class EnchantDogMaster extends EnchantmentFramework {
 
-
-    public EnchantJumpBoost() {
-        super(new NamespacedKey(Main.getInstance(), "JUMP_BOOST"));
+    public EnchantDogMaster(){
+        super(new NamespacedKey(Main.getInstance(), "DOG_MASTER"));
     }
+
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return item.getType().toString().contains("BOOTS");
+        return item.getType().toString().contains("SWORD");
     }
 
     @Override
-    public boolean conflictsWith(Enchantment other){
-        return false;
+    public boolean conflictsWith(Enchantment other) {
+        return other == EnchantmentManager.NECROMANCER;
     }
 
     @Override
     public EnchantmentTarget getItemTarget() {
-        return EnchantmentTarget.ARMOR_FEET;
+        return EnchantmentTarget.WEAPON;
     }
 
     @Override
@@ -42,22 +43,22 @@ public class EnchantJumpBoost extends EnchantmentFramework {
 
     @Override
     public String getName() {
-        return "JUMP_BOOST";
+        return "DOG_MASTER";
     }
 
     @Override
-    public NamespacedKey getKey(){
-        return key;
+    public int getMaxLevel() {
+        return 1;
     }
 
-    @Override // Level represents odds of conversion. Lvl 1 - 2 blocks, Lvl 2 - 3 blocks, Lvl 3 - 4 blocks
-    public int getMaxLevel() {
-        return 3;
+    @Override
+    public boolean staysAfterAnvil() {
+        return true;
     }
 
     @Override
     public int getEnchantmentTableMinimumLevel() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -67,11 +68,6 @@ public class EnchantJumpBoost extends EnchantmentFramework {
 
     @Override
     public double getEnchantmentChance() {
-        return 100;
-    }
-
-    @Override
-    public boolean staysAfterAnvil(){
-        return true;
+        return 0;
     }
 }

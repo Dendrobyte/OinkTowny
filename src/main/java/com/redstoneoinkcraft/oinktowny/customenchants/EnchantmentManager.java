@@ -39,6 +39,10 @@ public class EnchantmentManager {
     public static final EnchantmentFramework GLOW_STRIKE = new EnchantGlowEntity();
     public static final EnchantmentFramework CONVERSION = new EnchantDmgConversion(); // Converts damage to health
     public static final EnchantmentFramework EXPLOSIVE_ARROWS = new EnchantExplosiveArrow();
+    public static final EnchantmentFramework DEFLECT = new EnchantDeflect();
+    public static final EnchantmentFramework DOG_MASTER = new EnchantDogMaster();
+    public static final EnchantmentFramework NECROMANCER = new EnchantNecromancer();
+    public static final EnchantmentFramework RUST = new EnchantRust();
 
     public static void registerEnchants(){
         registerCustomEnchantment(ARTIFACT);
@@ -47,6 +51,9 @@ public class EnchantmentManager {
         registerCustomEnchantment(GLOW_STRIKE);
         registerCustomEnchantment(CONVERSION);
         registerCustomEnchantment(EXPLOSIVE_ARROWS);
+        registerCustomEnchantment(DEFLECT);
+        registerCustomEnchantment(DOG_MASTER);
+        registerCustomEnchantment(NECROMANCER);
         Bukkit.getLogger().log(Level.INFO, "[OinkTowny] All enchantments have been loaded!");
     }
     /* Register and inject all enchantments to the server, the return is the result of the registration */

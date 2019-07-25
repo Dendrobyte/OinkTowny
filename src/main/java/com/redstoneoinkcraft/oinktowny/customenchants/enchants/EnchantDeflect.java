@@ -13,26 +13,25 @@ import org.bukkit.inventory.ItemStack;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public class EnchantJumpBoost extends EnchantmentFramework {
+public class EnchantDeflect extends EnchantmentFramework {
 
-
-    public EnchantJumpBoost() {
-        super(new NamespacedKey(Main.getInstance(), "JUMP_BOOST"));
+    public EnchantDeflect(){
+        super(new NamespacedKey(Main.getInstance(), "DEFLECT"));
     }
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return item.getType().toString().contains("BOOTS");
+        return item.getType().toString().contains("CHESTPLATE") || item.getType().toString().contains("LEGGINGS");
     }
 
     @Override
-    public boolean conflictsWith(Enchantment other){
-        return false;
+    public boolean conflictsWith(Enchantment other) {
+        return other == Enchantment.PROTECTION_PROJECTILE;
     }
 
     @Override
     public EnchantmentTarget getItemTarget() {
-        return EnchantmentTarget.ARMOR_FEET;
+        return EnchantmentTarget.ARMOR;
     }
 
     @Override
@@ -42,22 +41,22 @@ public class EnchantJumpBoost extends EnchantmentFramework {
 
     @Override
     public String getName() {
-        return "JUMP_BOOST";
+        return "DEFLECT";
     }
 
     @Override
-    public NamespacedKey getKey(){
-        return key;
-    }
-
-    @Override // Level represents odds of conversion. Lvl 1 - 2 blocks, Lvl 2 - 3 blocks, Lvl 3 - 4 blocks
     public int getMaxLevel() {
         return 3;
     }
 
     @Override
+    public boolean staysAfterAnvil() {
+        return true;
+    }
+
+    @Override
     public int getEnchantmentTableMinimumLevel() {
-        return 1;
+        return 21;
     }
 
     @Override
@@ -67,11 +66,6 @@ public class EnchantJumpBoost extends EnchantmentFramework {
 
     @Override
     public double getEnchantmentChance() {
-        return 100;
-    }
-
-    @Override
-    public boolean staysAfterAnvil(){
-        return true;
+        return 20;
     }
 }
