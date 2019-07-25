@@ -60,8 +60,7 @@ public class EnchantmentManager {
             // Actual enchantment registration
             Enchantment.registerEnchantment(enchantment);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            Bukkit.getLogger().log(Level.WARNING, "[OinKTowny] Enchants: Field value failure! Did you reload the server?");
-            e.printStackTrace();
+            Bukkit.getLogger().log(Level.WARNING, "[OinKTowny] Enchants: Field value failure! Did you reload the server? If so, you should be fine.");
         } catch (IllegalStateException e) {
             Bukkit.getLogger().log(Level.WARNING, "[OinKTowny] Enchants: Not accepting new values!");
         }
