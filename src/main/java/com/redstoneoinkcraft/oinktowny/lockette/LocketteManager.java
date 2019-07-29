@@ -2,6 +2,7 @@ package com.redstoneoinkcraft.oinktowny.lockette;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,8 +10,8 @@ import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Array;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -22,6 +23,7 @@ public class LocketteManager {
 
     private static LocketteManager instance = new LocketteManager();
     String prefix = Main.getInstance().getPrefix();
+    private String editorPrefix = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "LocketteEditor" + ChatColor.DARK_GRAY + "]" + ChatColor.YELLOW + " ";
 
     private LocketteManager(){}
 
@@ -31,39 +33,45 @@ public class LocketteManager {
 
     private HashMap<Chest, List<String>> privatedChests = new HashMap<>();
     public void loadChests(){
-        ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("chests");
-        for(String chestNum : chests.getKeys(false)){
-            // Get the chest
-            Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
-            Block block = storedLoc.getBlock();
-            if(block.getType() != Material.CHEST){
-                System.out.println("ERROR: Lockette chest location in config not a chest.");
+        try {
+            ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("lockette-data.chests");
+            for (String chestNum : chests.getKeys(false)) {
+                // Get the chest
+                Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
+                Block block = storedLoc.getBlock();
+                if (block.getType() != Material.CHEST) {
+                    System.out.println("ERROR: Lockette chest location in config not a chest.");
+                }
+
+                // Get the added player names
+                List<String> playerNames = chests.getStringList(chestNum + ".added-players");
+                playerNames.add(chests.getString(chestNum + ".owner"));
+
+                // Add them to the map
+                privatedChests.put((Chest) block.getState(), playerNames);
             }
-
-            // Get the added player names
-            List<String> playerNames = chests.getStringList(chestNum + ".added-players");
-            playerNames.add(chests.getString(chestNum + ".owner"));
-
-            // Add them to the map
-            privatedChests.put((Chest)block.getState(), playerNames);
+            System.out.println(prefix + "All chests successfully loaded!");
+            System.out.println("Privated chests hashmap: " + privatedChests.toString());
+            return;
+        } catch (NullPointerException e){
+            Bukkit.getLogger().log(Level.WARNING, prefix + "No Lockette chests loaded!");
         }
-        System.out.println(prefix + "All chests successfully loaded!");
-        return;
     }
 
     // For after editing the file
     public void reloadChests(){
-        System.out.println(prefix + "Initiation reload of Lockette chests...");
+        System.out.println(prefix + "Initiating reload of Lockette chests...");
         privatedChests.clear();
         loadChests();
     }
 
     // When players place a chest, they must activate it as private within 30 seconds
-    public HashMap<Chest, Player> activeChests = new HashMap<>();
+    public HashMap<Chest, Player> activeChests = new HashMap<>(2);
     public void addActiveChest(Chest chest, Player player){
         activeChests.put(chest, player);
         LocketteActiveChestTimer lact = new LocketteActiveChestTimer(chest, player);
         lact.runTaskTimer(Main.getInstance(), 0L, 20L);
+        activeTimers.put(player, lact);
     }
     public void removeActiveChest(Chest chest){
         activeChests.remove(chest);
@@ -73,6 +81,11 @@ public class LocketteManager {
     }
     public Player activeChestPlayer(Chest chest){
         return activeChests.get(chest);
+    }
+
+    public HashMap<Player, LocketteActiveChestTimer> activeTimers = new HashMap<>(2);
+    public HashMap<Player, LocketteActiveChestTimer> getActiveTimers(){
+        return activeTimers;
     }
 
     public void makeNewPrivateChest(Chest chest, Player player){
@@ -146,14 +159,15 @@ public class LocketteManager {
 
     public void initiatePlayerEditing(Player player, Chest chest){
         // No check for world or anything because there should be no reason this method is called should those checks not pass
-        if(playersEditing.containsKey(player)){
-            player.sendMessage(prefix + "You are already editing a chest!");
+        if(isPlayerEditingChest(player)){
+            player.sendMessage(editorPrefix + "You are already editing a chest!");
             return;
         }
         playersEditing.put(player, chest);
-        player.sendMessage(prefix + "ADD - Add a player to the chest you just clicked");
-        player.sendMessage(prefix + "DELETE - Remove the chest you just clicked");
-        player.sendMessage(prefix + "DONE - Leave this edit wizard");
+        player.sendMessage(editorPrefix + "ADD <name> - " + ChatColor.GRAY + "Add a player to the chest you just clicked");
+        player.sendMessage(editorPrefix + "REMOVE <name> - " + ChatColor.GRAY + "Remove a player from the chest you just clicked");
+        player.sendMessage(editorPrefix + "DELETE - " + ChatColor.GRAY + "Remove the chest you just clicked");
+        player.sendMessage(editorPrefix + "DONE - " + ChatColor.GRAY + "Leave this edit wizard");
     }
 
     public boolean addPlayerToChest(Chest chest, UUID playerId, String playerName){

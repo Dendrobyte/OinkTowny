@@ -12,6 +12,7 @@ import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
+import com.redstoneoinkcraft.oinktowny.lockette.LocketteChatListener;
 import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPlaceBreakListener;
 import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPrivatedListener;
 import com.redstoneoinkcraft.oinktowny.lockette.LocketteManager;
@@ -118,6 +119,7 @@ public class Main extends JavaPlugin {
         // Lockette
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPlaceBreakListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPrivatedListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new LocketteChatListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());

@@ -30,8 +30,14 @@ public class LocketteChatListener implements Listener {
     public void playerEditingChest(AsyncPlayerChatEvent event){
         Player player = event.getPlayer();
         if(!lm.isPlayerEditingChest(player)) return;
+        System.out.println("Editing!");
+        event.setCancelled(true);
         String message = ChatColor.stripColor(event.getMessage());
         if (message.toUpperCase().contains("ADD")) {
+            if(message.length() <= 3){
+                player.sendMessage(prefix + "Please provide a player name after \'ADD \'");
+                return;
+            }
             String playerName = message.substring(message.indexOf(" "));
             boolean playerOnline = false;
             UUID playerId = null;
@@ -86,10 +92,10 @@ public class LocketteChatListener implements Listener {
             lm.getPlayersEditing().remove(player);
             return;
         } else {
-            player.sendMessage(prefix + "ADD <name> - Add a player to the chest you just clicked");
-            player.sendMessage(prefix + "REMOVE <name> - Remove a player from the chest you just clicked");
-            player.sendMessage(prefix + "DELETE - Remove the chest you just clicked");
-            player.sendMessage(prefix + "DONE - Leave this edit wizard");
+            player.sendMessage(prefix + "ADD <name> - " + ChatColor.GRAY + "Add a player to the chest you just clicked");
+            player.sendMessage(prefix + "REMOVE <name> - " + ChatColor.GRAY + "Remove a player from the chest you just clicked");
+            player.sendMessage(prefix + "DELETE - " + ChatColor.GRAY + "Remove the chest you just clicked");
+            player.sendMessage(prefix + "DONE - " + ChatColor.GRAY + "Leave this edit wizard");
         }
     }
 

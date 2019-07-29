@@ -22,12 +22,17 @@ public class LocketteChestPrivatedListener implements Listener {
     String prefix = Main.getInstance().getPrefix();
 
     @EventHandler
-    public void onPlayerPrivatesChest(PlayerInteractEvent event){
-        if(event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getAction() != Action.LEFT_CLICK_BLOCK) return;
-        if(event.getClickedBlock().getType() != Material.CHEST) return;
+    public void onPlayerPrivatesChest(PlayerInteractEvent event) {
+        try {
+            if (event.getClickedBlock().getType() != Material.CHEST) return;
+        } catch (NullPointerException e){
+            return;
+        }
         Player player = event.getPlayer();
         if(!Main.getInstance().isTownyWorld(player.getWorld().getName())) return;
         Chest chest = (Chest)event.getClickedBlock().getState();
+        System.out.println("Lockette chest? " + lm.isLocketteChest(chest));
+        System.out.println("The chest: " + chest.toString());
         if(lm.isLocketteChest(chest)) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 if (lm.playerCanAccessChest(player, chest)) {
@@ -50,6 +55,7 @@ public class LocketteChestPrivatedListener implements Listener {
                     if(!player.isSneaking()) return;
                     player.sendMessage(prefix + "Now entering the chest editing wizard...");
                     lm.initiatePlayerEditing(player, chest);
+                    event.setCancelled(true);
                     return;
                 } else {
                     // Nothing to do, since only player who owns the chest can add people
@@ -57,15 +63,25 @@ public class LocketteChestPrivatedListener implements Listener {
                 }
             }
         } else { //!lm.isLocketteChest(chest)
-            if(lm.chestIsActive(chest)){
-                if(!player.equals(lm.activeChestPlayer(chest))){
-                    if(!player.isSneaking()) return;
-                    player.sendMessage(prefix + "You did not place this chest!");
-                    return;
+            if(!player.isSneaking()) return;
+            if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                System.out.println("2");
+                if (lm.chestIsActive(chest)) {
+                    if (player.equals(lm.activeChestPlayer(chest))) {
+                        System.out.println("3");
+                        lm.makeNewPrivateChest(chest, player);
+                        player.sendMessage(prefix + "Chest has been privated! To edit it, " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + LEFT CLICK");
+                        lm.getActiveTimers().get(player).cancel();
+                        lm.removeActiveChest(chest);
+                        event.setCancelled(true);
+                        return;
+                    } else {
+                        System.out.println("4");
+                        player.sendMessage(prefix + "You did not place this chest!");
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
-                lm.makeNewPrivateChest(chest, player);
-                player.sendMessage(prefix + "Chest has been privated! To edit it, " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + LEFT CLICK");
-                return;
             }
         }
     }

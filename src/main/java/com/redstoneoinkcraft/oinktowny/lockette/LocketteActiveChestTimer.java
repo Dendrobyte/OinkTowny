@@ -29,6 +29,7 @@ public class LocketteActiveChestTimer extends BukkitRunnable {
         if(counter <= 0){
             this.cancel();
             lm.removeActiveChest(chest);
+            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "LocketteTimer" + ChatColor.DARK_GRAY + "]" + ChatColor.YELLOW + " Chest timer expired.");
         } else {
             if(counter == 20 || counter == 10){
                 player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "LocketteTimer" + ChatColor.DARK_GRAY + "]" + ChatColor.YELLOW +
