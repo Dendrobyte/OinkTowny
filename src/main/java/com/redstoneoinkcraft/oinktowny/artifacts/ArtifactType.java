@@ -8,6 +8,6 @@ package com.redstoneoinkcraft.oinktowny.artifacts;
  */
 public enum ArtifactType {
 
-    JACKHAMMER, GRAVITY_SHIFTER, HEALTH_SHIFTER, DESTRUCTOID, HEADLAMP
+    JACKHAMMER, GRAVITY_SHIFTER, HEALTH_SHIFTER, DESTRUCTOID, HEADLAMP, TELEPOOF, LUCKY_HOE
 
 }

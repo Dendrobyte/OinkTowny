@@ -1,7 +1,9 @@
 package com.redstoneoinkcraft.oinktowny.artifacts;
 
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -33,6 +36,8 @@ public class ArtifactsListeners implements Listener {
         if(!am.isItemStackAnArtifact(itemInHand)) return;
         Player player = event.getPlayer();
 
+        if(event.getHand() == EquipmentSlot.OFF_HAND) return;
+
         // JackHammer TODO: Work with blockbreakevent and player location relative to a given blockface
         if(am.getArtifactType(itemInHand) == ArtifactType.JACKHAMMER){
             if(event.getAction() != Action.LEFT_CLICK_BLOCK) return;
@@ -40,32 +45,45 @@ public class ArtifactsListeners implements Listener {
             return;
         }
 
-        // Gravity Shifter
-        if(am.getArtifactType(itemInHand) == ArtifactType.GRAVITY_SHIFTER){
-            if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+        // Right click events
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+            // Gravity Shifter
+            if(am.getArtifactType(itemInHand) == ArtifactType.GRAVITY_SHIFTER){
                 event.setCancelled(true);
                 am.gravityShift(player);
                 decrementUses(player, itemInHand);
                 return;
             }
-        }
 
-        // Health Shifter
-        if(am.getArtifactType(itemInHand) == ArtifactType.HEALTH_SHIFTER){
-            if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+            // Health Shifter
+            if(am.getArtifactType(itemInHand) == ArtifactType.HEALTH_SHIFTER){
                 event.setCancelled(true);
                 am.healthShift(player);
                 decrementUses(player, itemInHand);
                 return;
             }
-        }
 
-        // Destructoid
-        if(am.getArtifactType(itemInHand) == ArtifactType.DESTRUCTOID){
-            if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+            // Destructoid
+            if(am.getArtifactType(itemInHand) == ArtifactType.DESTRUCTOID){
                 am.destruct(player);
                 decrementUses(player, itemInHand);
                 return;
+            }
+
+            // Telepoof
+            if(am.getArtifactType(itemInHand) == ArtifactType.TELEPOOF){
+                am.poofTeleport(player);
+                event.setCancelled(true);
+                decrementUses(player, itemInHand);
+            }
+
+            // Lucky Hoe
+            if(am.getArtifactType(itemInHand) == ArtifactType.LUCKY_HOE){
+                if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
+                    if(am.instantGrowth(event.getClickedBlock())){
+                        decrementUses(player, itemInHand);
+                    }
+                }
             }
         }
     }

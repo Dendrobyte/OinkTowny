@@ -61,11 +61,12 @@ public class RuinsPlayerLeaveListeners implements Listener {
     public void playerCommandInRuins(PlayerCommandPreprocessEvent event){
         String command = event.getMessage();
         Player player = event.getPlayer();
+        if(!rm.getActivePlayers().containsKey(player)) return;
         if(command.equalsIgnoreCase("leave")){
             player.sendMessage(rm.getRuinsPrefix() + ChatColor.RED + "Leaving ruins...");
             rm.kickPlayerFromRuins(player);
         } else {
-            player.sendMessage(rm.getRuinsPrefix() + "No using commands while in ruins. Type " + ChatColor.RED + " /leave " + ChatColor.getLastColors(rm.getRuinsPrefix()) + "to leave.");
+            player.sendMessage(rm.getRuinsPrefix() + "No using commands while in ruins. Type " + ChatColor.RED + "/leave " + ChatColor.getLastColors(rm.getRuinsPrefix()) + "to leave.");
         }
         event.setCancelled(true);
     }

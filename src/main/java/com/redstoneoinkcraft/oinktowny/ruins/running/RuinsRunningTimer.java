@@ -39,7 +39,7 @@ public class RuinsRunningTimer extends BukkitRunnable {
             player.sendMessage(prefix + message);
             player.teleport(nextLocation);
             RuinsObjLevel level = rm.getActivePlayers().get(player).getPlayerCurrentLevel().get(player);
-            RuinsMobspawningTimer rmt = new RuinsMobspawningTimer(level.getMonsters(), level.getSpawnLocation(), player);
+            RuinsMobspawningTimer rmt = new RuinsMobspawningTimer(level.getMonsters(), level.getMonsterSpawnLocations(), level.getSpawnLocation(), player);
             rmt.runTaskTimer(Main.getInstance(), 0, 20L);
             cancel();
         }

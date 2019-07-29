@@ -2,7 +2,6 @@ package com.redstoneoinkcraft.oinktowny;
 
 import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaPVPManager;
 import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactManager;
-import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactType;
 import com.redstoneoinkcraft.oinktowny.bundles.BundleManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
@@ -13,14 +12,10 @@ import com.redstoneoinkcraft.oinktowny.ruins.RuinsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 9/1/2018
@@ -385,6 +380,10 @@ public class BaseCommand implements CommandExecutor {
             /* ARTIFACT STUFF */
             if(args[0].equalsIgnoreCase("artifact")){
                 ArtifactManager am = ArtifactManager.getInstance();
+                if(args.length == 1){
+                    player.sendMessage(prefix + "Add the name of an artifact.");
+                    return true;
+                }
                 if(args[1].equalsIgnoreCase("jackhammer")){
                     player.getInventory().setItem(0, am.createJackhammer());
                 }
@@ -399,6 +398,12 @@ public class BaseCommand implements CommandExecutor {
                 }
                 if(args[1].equalsIgnoreCase("headlamp")){
                     player.getInventory().setItem(0, am.createHeadlamp());
+                }
+                if(args[1].equalsIgnoreCase("telepoof")){
+                    player.getInventory().setItem(0, am.createTelepoof());
+                }
+                if(args[1].equalsIgnoreCase("luckyhoe")){
+                    player.getInventory().setItem(0, am.createLuckyHoe());
                 }
                 player.sendMessage(prefix + "Here ya go, mate...");
                 return true;
