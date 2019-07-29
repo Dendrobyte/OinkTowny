@@ -46,7 +46,7 @@ public class RuinsSelectionListener implements Listener {
         else if(rm.getPlayerCreationState(player) == RuinsCreationStates.LEVELS){
             event.setCancelled(true);
             Block block = event.getClickedBlock();
-            Location spawnPoint = new Location(block.getWorld(), block.getX(), block.getY(), block.getZ());
+            Location spawnPoint = new Location(block.getWorld(), block.getX(), block.getY()+2, block.getZ());
             ruinsObj.addMonsterSpawnpoint(spawnPoint);
         }
     }

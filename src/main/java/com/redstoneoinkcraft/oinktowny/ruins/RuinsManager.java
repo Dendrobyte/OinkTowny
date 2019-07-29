@@ -203,6 +203,21 @@ public class RuinsManager {
         ruins.setLobby(lobbyLocation);
     }
 
+    public void destroyRuins(String ruinsName, Player player){
+        if(getRuins(ruinsName) == null){
+            player.sendMessage(ruinsPrefix + "The " + ruinsName + " ruins could not be found.");
+            return;
+        }
+        // Remove from file
+        RuinsObj ruinsToRemove = getRuins(ruinsName);
+        Main.getInstance().getRuinsConfig().set("ruins." + ruinsName, null);
+        Main.getInstance().saveRuinsConfig();
+        // Remove from cache
+        cachedRuins.remove(ruinsToRemove);
+
+        player.sendMessage(ruinsPrefix + "The " + ruinsName + " ruins have crumbled! [Removed from configuration and cache]");
+    }
+
     /* Ruins running methods */
     HashMap<Player, RuinsObj> activePlayers = new HashMap<>();
     HashMap<Player, RuinsMobspawningTimer> playerMobSpawningTimers = new HashMap<>();
@@ -283,6 +298,7 @@ public class RuinsManager {
         getSpawnedEntities().remove(player);
         activeTimers.get(player).cancel();
         activeTimers.remove(player);
+        player.teleport(ruins.getLobby());
     }
 
 }

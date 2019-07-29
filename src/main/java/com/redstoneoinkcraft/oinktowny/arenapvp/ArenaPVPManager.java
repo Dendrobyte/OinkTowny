@@ -125,6 +125,7 @@ public class ArenaPVPManager {
     public void quitCreation(Player player){
         playerCurrentStage.remove(player);
         currentArenaInCreation.remove(player);
+        player.getInventory().remove(getCreationWand());
         player.sendMessage(prefix + "You have left arena creation! Progress was lost.");
     }
 

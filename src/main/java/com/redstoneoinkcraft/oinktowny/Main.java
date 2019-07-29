@@ -27,7 +27,7 @@ import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsChatListener;
 import com.redstoneoinkcraft.oinktowny.ruins.RuinsManager;
 import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsSelectionListener;
 import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsEntityDeathListener;
-import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsPlayerDeathLeaveListener;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsPlayerLeaveListeners;
 import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsSignClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -117,7 +117,7 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsSelectionListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsSignClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsEntityDeathListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new RuinsPlayerDeathLeaveListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsPlayerLeaveListeners(), this);
         // Lockette
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPlaceBreakListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPrivatedListener(), this);

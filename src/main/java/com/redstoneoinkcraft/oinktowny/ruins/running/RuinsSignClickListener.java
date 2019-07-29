@@ -25,7 +25,7 @@ public class RuinsSignClickListener implements Listener {
 
     @EventHandler
     public void onPlayerJoinRuins(PlayerInteractEvent event){
-        if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR) return; // Ensure it's a right click
+        if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return; // Ensure it's a right click
         if(!event.getHand().equals(EquipmentSlot.HAND)) return;
         Block clickedBlock = event.getClickedBlock();
         if(!clickedBlock.getType().toString().contains("WALL_SIGN")) return; // Ensure it's a wall sign

@@ -413,6 +413,7 @@ public class BaseCommand implements CommandExecutor {
                 }
                 if(args.length <= 1){
                     player.sendMessage(prefix + "Use " + ChatColor.GOLD + "/ot ruins create <name>");
+                    player.sendMessage(prefix + "To delete ruins: " + ChatColor.GOLD + "/ot ruins destroy <name>");
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("create")){
@@ -426,6 +427,15 @@ public class BaseCommand implements CommandExecutor {
                     }
                     player.sendMessage(prefix + "Now entering ruins creation mode...");
                     rm.initiateRuinsCreation(player, args[2]);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("destroy")){
+                    if(args.length == 2){
+                        player.sendMessage(prefix + "Provide the name of the ruins you'd like to delete." + ChatColor.DARK_RED + ChatColor.BOLD + "[THIS IS PERMANENT]");
+                        return true;
+                    }
+                    player.sendMessage(prefix + "Destroying the " + args[2] + " ruins...");
+                    rm.destroyRuins(args[2], player);
                     return true;
                 }
             }

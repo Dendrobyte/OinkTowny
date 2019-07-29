@@ -26,7 +26,6 @@ public class RuinsChatListener implements Listener {
         Player player = event.getPlayer();
         if(!rm.isPlayerCreatingRuins(player)) return;
         event.setCancelled(true);
-        player.sendMessage("test");
         String message = ChatColor.stripColor(event.getMessage());
         RuinsCreationStates playerState = rm.getPlayerCreationState(player);
         RuinsObj ruinsObj = rm.getCreatedRuins(player);
