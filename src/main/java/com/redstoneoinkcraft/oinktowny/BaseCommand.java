@@ -370,6 +370,15 @@ public class BaseCommand implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("explode")){
                     em.enchantItem(player, EnchantmentManager.EXPLOSIVE_ARROWS, Integer.parseInt(args[2]));
                 }
+                if(args[1].equalsIgnoreCase("dogmaster")){
+                    em.enchantItem(player, EnchantmentManager.DOG_MASTER, Integer.parseInt(args[2]));
+                }
+                if(args[1].equalsIgnoreCase("necromancer")){
+                    em.enchantItem(player, EnchantmentManager.NECROMANCER, Integer.parseInt(args[2]));
+                }
+                if(args[1].equalsIgnoreCase("deflect")){
+                    em.enchantItem(player, EnchantmentManager.DEFLECT, Integer.parseInt(args[2]));
+                }
                 return true;
             }
 

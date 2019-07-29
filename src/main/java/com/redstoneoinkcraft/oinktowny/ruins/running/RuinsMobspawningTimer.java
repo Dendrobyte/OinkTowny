@@ -24,9 +24,10 @@ public class RuinsMobspawningTimer extends BukkitRunnable {
     HashMap<EntityType, Integer> monsters = new HashMap<>();
     int total;
     Location playerSpawnLoc;
+    ArrayList<Location> monsterSpawnLocs;
     Player player;
 
-    public RuinsMobspawningTimer(ArrayList<String> monstersOnLevel, Location playerSpawnLoc, Player player){
+    public RuinsMobspawningTimer(ArrayList<String> monstersOnLevel, ArrayList<Location> monsterSpawnLocs, Location playerSpawnLoc, Player player){
         for(String str : monstersOnLevel){
             String monsterStr = str.substring(0, str.indexOf(";"));
             int amount = Integer.parseInt(str.substring(str.indexOf(";")+1));
@@ -35,8 +36,10 @@ public class RuinsMobspawningTimer extends BukkitRunnable {
             total += amount;
         }
         this.playerSpawnLoc = playerSpawnLoc;
+        this.monsterSpawnLocs = monsterSpawnLocs;
         this.player = player;
         rm.getPlayerMobSpawningTimers().put(player, this);
+        rm.getSpawnedEntities().put(player, new ArrayList<Entity>());
     }
 
     private Random rand = new Random();
@@ -63,14 +66,14 @@ public class RuinsMobspawningTimer extends BukkitRunnable {
 
     private void spawnMob(){
         // Location
-        int x = rand.nextInt(3);
-        int z = rand.nextInt(3);
-        Location mobSpawnLoc = playerSpawnLoc;
+        int randIndex = rand.nextInt(monsterSpawnLocs.size());
+        Location mobSpawnLoc = monsterSpawnLocs.get(randIndex);
         // Mob
         World world = playerSpawnLoc.getWorld();
         Entity entity = world.spawnEntity(mobSpawnLoc, entities.get(0));
         entities.remove(0);
-        if(entities.size() == 0) rm.getFinalMobInLevel().put(entity, player);
+        rm.getSpawnedEntities().get(player).add(entity);
+        rm.getSpawnedEntitiesToPlayer().put(entity, player);
     }
 
     private int delay = 0;

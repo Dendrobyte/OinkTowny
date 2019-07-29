@@ -56,7 +56,7 @@ public class RuinsChatListener implements Listener {
                 if(message.equalsIgnoreCase("DONE")){
                     player.sendMessage(prefix + "Join signs added!");
                     rm.setPlayerCreationState(player, RuinsCreationStates.LEVELS);
-                    player.sendMessage(prefix + "Please type " + goldBold + "NEXT" + ChatColor.getLastColors(prefix) + " to begin the level creation process!");
+                    player.sendMessage(prefix + "Type " + goldBold + "NEXT" + ChatColor.getLastColors(prefix) + " to begin level creation!");
                     return;
                 } else {
                     player.sendMessage(prefix + "Type " + goldBold + "DONE" + ChatColor.getLastColors(prefix) + " to move on.");
@@ -74,26 +74,44 @@ public class RuinsChatListener implements Listener {
                     return;
                 }
                 else if(message.equalsIgnoreCase("SPAWNPOINT")){
+                    if(ruinsObj.getLatestLevel().getSpawnLocation() != null){
+                        player.sendMessage(prefix + ChatColor.RED + "A spawnpoint for this level has already been set.");
+                        return;
+                    }
                     RuinsObjLevel newLevel = new RuinsObjLevel(player.getLocation());
                     ruinsObj.addLevel(newLevel);
                     player.sendMessage(prefix + "Player spawnpoint added!");
                     player.sendMessage(prefix + "Now entering monster addition phase...");
-                    player.sendMessage(prefix + "Type " + goldBold + "NEW MONSTER" + ChatColor.getLastColors(prefix) + " on how to add monsters.");
-                    player.sendMessage(prefix + "Type " + ChatColor.RED + "EXIT" + ChatColor.getLastColors(prefix) + " at any point to leave." + ChatColor.DARK_RED + ChatColor.ITALIC +
-                            " (ALL PROGRESS WILL BE LOST)");
+                    player.sendMessage(prefix + "Type " + goldBold + "NEW MONSTER" + ChatColor.getLastColors(prefix) + " to add monsters.");
+                    player.sendMessage(prefix + goldBold + "LEFT CLICK" + ChatColor.getLastColors(prefix) + " on blocks where you would like monsters to spawn.");
+                    player.sendMessage(prefix + "Type " + ChatColor.RED + "EXIT" + ChatColor.getLastColors(prefix) + " at any point to leave.");
                     rm.setPlayerCreationState(player, RuinsCreationStates.MONSTERS);
                     return;
                 }
                 else if(message.equalsIgnoreCase("DONE")){
+                    // Make sure they added a spawnpoint
+                    if(ruinsObj.getLatestLevel().getSpawnLocation() == null){
+                        player.sendMessage(prefix + ChatColor.RED + "Please set a spawnpoint!");
+                        return;
+                    }
+                    // Make sure they added monster spawnpoints
+                    if(ruinsObj.getLatestLevel().getMonsterSpawnLocations().isEmpty()){
+                        player.sendMessage(prefix + ChatColor.RED + "Please add at least one monster spawnpoint.");
+                        return;
+                    }
+                    // Make sure they added mobs
+                    if(ruinsObj.getLatestLevel().getMonsters().size() == 0){
+                        player.sendMessage(prefix + ChatColor.RED + "You need at least one mob per level.");
+                        return;
+                    }
                     player.sendMessage(prefix + "Moving on to loot configuration...");
                     rm.setPlayerCreationState(player, RuinsCreationStates.FINAL_LOOT);
                     return;
                 }
                 else {
-                    player.sendMessage(prefix + "Please type " + goldBold + "SPAWNPOINT" + ChatColor.getLastColors(prefix) + " to mark the spawn location of this level.");
-                    player.sendMessage(prefix + "If you wish to finish creation, type " + goldBold + "DONE" + ChatColor.getLastColors(prefix) + " to finish and exit ruin creation.");
-                    player.sendMessage(prefix + "Type " + ChatColor.RED + "EXIT" + ChatColor.getLastColors(prefix) + " at any point to leave." + ChatColor.DARK_RED + ChatColor.ITALIC +
-                            " (ALL PROGRESS WILL BE LOST)");
+                    player.sendMessage(prefix + "Type " + goldBold + "SPAWNPOINT" + ChatColor.getLastColors(prefix) + " to mark this level's spawnpoint.");
+                    player.sendMessage(prefix + "Finish creation by typing " + goldBold + "DONE" + ChatColor.getLastColors(prefix) + ".");
+                    player.sendMessage(prefix + "Type " + ChatColor.RED + "EXIT" + ChatColor.getLastColors(prefix) + " at any point to leave.");
                     return;
             }
             case MONSTERS:
@@ -102,10 +120,10 @@ public class RuinsChatListener implements Listener {
                 }
                 if(message.substring(0, 3).equalsIgnoreCase("NEW")){
                     if(message.substring(4).equalsIgnoreCase("MONSTER")){
-                        player.sendMessage(prefix + "The creation message for a monster should be presented as such: " + goldBold + "NEW MOB_TYPE AMOUNT");
+                        player.sendMessage(prefix + "To create a monster: " + goldBold + "NEW MOB_TYPE AMOUNT");
                         player.sendMessage(prefix + goldBold + "Valid Types: " + ChatColor.getLastColors(prefix) + "[ZOMBIE, SKELETON, WITHER_SKELETON, CREEPER, CAVE_SPIDER, WITCH]");
-                        player.sendMessage(prefix + "Amounts should be whole numebrs.");
-                        player.sendMessage(prefix + "Creation example: " + goldBold + "NEW ZOMBIE 10");
+                        player.sendMessage(prefix + "Amounts should be whole numbers.");
+                        player.sendMessage(prefix + "Example: " + goldBold + "NEW ZOMBIE 10");
                         return;
                     }
                     else if(message.substring(4).equalsIgnoreCase("ROOM")){

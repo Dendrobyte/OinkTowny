@@ -8,6 +8,7 @@ import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsRunningTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -72,6 +73,20 @@ public class RuinsManager {
                     level.addMonster(str);
                 }
                 load.addLevel(level);
+                // Monster spawn locations
+                ArrayList<Location> monsterSpawnLocs = new ArrayList<>(2);
+                World world = level.getSpawnLocation().getWorld();
+                for(String coords : ruinsConfig.getConfigurationSection("ruins." + ruinsName + ".levels." + levelNum + ".monster_spawnlocs").getKeys(false)){
+                    String manip = coords;
+                    int x = Integer.parseInt(manip.substring(0, manip.indexOf(",")));
+                    manip = manip.replace(x + ",", "");
+                    int y = Integer.parseInt(manip.substring(0, manip.indexOf(",")));
+                    manip = manip.replace(y + ",", "");
+                    int z = Integer.parseInt(manip);
+                    Location loc = new Location(world, x, y, z);
+                    monsterSpawnLocs.add(loc);
+                }
+                level.setMonsterSpawnLocations(monsterSpawnLocs);
             }
             // Reward items
             ArrayList<ItemStack> itemList = new ArrayList<>();
@@ -92,15 +107,25 @@ public class RuinsManager {
 
     /* Ruins creation methods */
     public void initiateRuinsCreation(Player player, String name){
-        player.sendMessage(ruinsPrefix + "Welcome to the Towny Ruins creation wizard! This wizard will use a combination of chat instructions and selection.");
+        if(ruinsExist(name)){
+            player.sendMessage(ruinsPrefix + "Ruins by that name already exist. Please try another name.");
+            return;
+        }
+        player.sendMessage(ruinsPrefix + "Welcome to the Towny Ruins creation wizard!");
         playerCreationStates.put(player, RuinsCreationStates.LOBBY);
         RuinsObj ruins = new RuinsObj();
         ruins.setName(name);
         ruinsBeingCreated.put(player, ruins);
-        player.sendMessage(ruinsPrefix + "Please " + ChatColor.GREEN + "BEGIN" + ChatColor.getLastColors(ruinsPrefix) + " in the lobby location.");
-        player.sendMessage(ruinsPrefix + "Type " + ChatColor.RED + "EXIT" + ChatColor.getLastColors(ruinsPrefix) + " at any point to leave." + ChatColor.DARK_RED + ChatColor.ITALIC +
-                " (ALL PROGRESS WILL BE LOST)");
+        player.sendMessage(ruinsPrefix + "Type " + ChatColor.GREEN + "BEGIN" + ChatColor.getLastColors(ruinsPrefix) + " at the lobby location.");
+    }
 
+    public boolean ruinsExist(String name){
+        for(RuinsObj ruins : cachedRuins){
+            if(ruins.getName().equalsIgnoreCase(name)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isPlayerCreatingRuins(Player player){
@@ -146,6 +171,13 @@ public class RuinsManager {
             ruinsConfig.set("ruins." + name + ".levels." + counter  + ".spawnpoint.z", level.getSpawnLocation().getBlockZ());
             // Monsters
             ruinsConfig.set("ruins." + name + ".levels." + counter  + ".monsters", level.getMonsters());
+            // Monster spawnpoints
+            int mslCounter = 0;
+            for(Location spawnLoc : level.getMonsterSpawnLocations()) {
+                ruinsConfig.set("ruins." + name + ".levels." + counter + ".monster_spawnlocs." + mslCounter,
+                        spawnLoc.getBlockX() + "," + spawnLoc.getBlockY() + "," + spawnLoc.getBlockZ());
+                mslCounter++;
+            }
 
             counter ++;
         }
@@ -205,12 +237,19 @@ public class RuinsManager {
         player.sendMessage(ruinsPrefix + "Your ruins excursion will begin in " + seconds + " seconds!");
         RuinsRunningTimer rrt = new RuinsRunningTimer(message, seconds, player, ruins.getFirstLevel().getSpawnLocation());
         rrt.runTaskTimer(Main.getInstance(), 0, 20L);
+        activeTimers.put(player, rrt);
     }
 
-    HashMap<Entity, Player> finalMobInLevel = new HashMap<>();
+    private HashMap<Player, RuinsRunningTimer> activeTimers = new HashMap<>(2);
+    private HashMap<Player, ArrayList<Entity>> spawnedEntities = new HashMap<>();
+    private HashMap<Entity, Player> spawnedEntitiesToPlayer = new HashMap<>(); // oof
 
-    public HashMap<Entity, Player> getFinalMobInLevel() {
-        return finalMobInLevel;
+    public HashMap<Player, ArrayList<Entity>> getSpawnedEntities() {
+        return spawnedEntities;
+    }
+
+    public HashMap<Entity, Player> getSpawnedEntitiesToPlayer(){
+        return spawnedEntitiesToPlayer;
     }
 
     public void advancePlayer(Player player){
@@ -228,9 +267,9 @@ public class RuinsManager {
         } else {
             RuinsObjLevel nextLevel = ruins.nextLevel(currentLevel);
             ruins.getPlayerCurrentLevel().put(player, nextLevel);
-            player.sendMessage(ruinsPrefix + ChatColor.GOLD + "Heading into next wave in 20 seconds...");
+            player.sendMessage(ruinsPrefix + "Heading into next wave in 10 seconds...");
             String message = "Next wave starts now!";
-            int seconds = 20;
+            int seconds = 10;
             RuinsRunningTimer rrt = new RuinsRunningTimer(message, seconds, player, nextLevel.getSpawnLocation());
             rrt.runTaskTimer(Main.getInstance(), 0, 20L);
         }
@@ -241,6 +280,9 @@ public class RuinsManager {
         RuinsObj ruins = getActivePlayers().get(player);
         ruins.getPlayerCurrentLevel().remove(player);
         getActivePlayers().remove(player);
+        getSpawnedEntities().remove(player);
+        activeTimers.get(player).cancel();
+        activeTimers.remove(player);
     }
 
 }

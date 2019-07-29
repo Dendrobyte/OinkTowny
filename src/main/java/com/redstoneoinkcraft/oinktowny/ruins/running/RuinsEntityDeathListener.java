@@ -17,15 +17,16 @@ public class RuinsEntityDeathListener implements Listener {
 
     RuinsManager rm = RuinsManager.getInstance();
 
-    // TODO: Change this so that remaining entities is 0 versus killing the final spawned entity
-
     @EventHandler
     public void onEntityDeathInRuins(EntityDeathEvent event){
         Entity entity = event.getEntity();
-        if(!rm.getFinalMobInLevel().containsKey(entity)) return;
-        Player player = rm.getFinalMobInLevel().get(entity);
-        rm.advancePlayer(player); // Doesn't matter if it is the player that kills it or not.
-        rm.getFinalMobInLevel().remove(entity);
+        if(!rm.getSpawnedEntitiesToPlayer().containsKey(entity)) return;
+        Player player = rm.getSpawnedEntitiesToPlayer().get(entity);
+        rm.getSpawnedEntitiesToPlayer().remove(entity);
+        rm.getSpawnedEntities().get(player).remove(entity);
+        if(rm.getSpawnedEntities().get(player).size() == 0){
+            rm.advancePlayer(player);
+        }
     }
 
 }

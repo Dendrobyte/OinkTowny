@@ -1,6 +1,8 @@
 package com.redstoneoinkcraft.oinktowny.ruins;
 
 import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinDifficulty;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsGroup;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsRunningStates;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
@@ -27,6 +29,13 @@ public class RuinsObj {
     private RuinDifficulty difficulty; // TODO
     private LinkedList<RuinsObjLevel> levels = new LinkedList<>();
     private ArrayList<ItemStack> rewardItems = new ArrayList<>(9);
+    private RuinsRunningStates currentState = RuinsRunningStates.WAITING;
+    private RuinsGroup currentGroup;
+
+    public void startRuins(RuinsGroup group){
+        currentState = RuinsRunningStates.RUNNING;
+        currentGroup = group;
+    }
 
     public String getName(){
         return name;
@@ -68,6 +77,10 @@ public class RuinsObj {
         levels.add(level);
     }
 
+    public void addMonsterSpawnpoint(Location monsterSpawnPoint){
+        getLatestLevel().addMonsterSpawnLocation(monsterSpawnPoint);
+    }
+
     public ArrayList<ItemStack> getRewardItems(){
         return rewardItems;
     }
@@ -88,6 +101,10 @@ public class RuinsObj {
 
     public HashMap<Player, RuinsObjLevel> getPlayerCurrentLevel() {
         return playerCurrentLevel;
+    }
+
+    public RuinsGroup getCurrentGroup(){
+        return currentGroup;
     }
 
     public RuinsObjLevel nextLevel(RuinsObjLevel currentLevel){

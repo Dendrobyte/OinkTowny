@@ -15,6 +15,7 @@ public class RuinsObjLevel {
 
     private Location spawnLocation;
     private ArrayList<String> monsters = new ArrayList<>();
+    private ArrayList<Location> monsterSpawnLocations = new ArrayList<>(2);
 
     public RuinsObjLevel(Location spawnLocation){
         this.spawnLocation = spawnLocation;
@@ -33,8 +34,16 @@ public class RuinsObjLevel {
         return spawnLocation;
     }
 
-    public void setSpawnpoint(Location location){
-        spawnLocation = location;
+    public void addMonsterSpawnLocation(Location spawnLoc){
+        monsterSpawnLocations.add(spawnLoc);
+    }
+
+    public ArrayList<Location> getMonsterSpawnLocations(){
+        return monsterSpawnLocations;
+    }
+
+    public void setMonsterSpawnLocations(ArrayList<Location> replacementSpawnLocations){
+        monsterSpawnLocations = replacementSpawnLocations;
     }
 
 }

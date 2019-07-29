@@ -8,6 +8,6 @@ package com.redstoneoinkcraft.oinktowny.ruins.running;
  */
 public enum RuinsRunningStates {
 
-    LOBBY, LEVELS, FINAL;
+    WAITING, RUNNING, FINAL_LEVEL;
 
 }
