@@ -7,21 +7,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/OinkTowny - Plugin.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantDeflect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantDogMaster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantNecromancer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantRust.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/OinkTowny_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/OinkTowny_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteActiveChestTimer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChatListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPlaceBreakListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPrivatedListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactsListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactsListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantDmgConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantDmgConversion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantJumpBoost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantJumpBoost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,31 +30,6 @@
         <option value="Class" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>System.</find>
-      <find>playerChunks</find>
-      <find>getPlayerArena</find>
-      <find>&quot;world&quot;</find>
-      <find>you don't seem</find>
-      <find>you don't seem to</find>
-      <find>exist</find>
-      <find>world</find>
-      <find>getLoaded</find>
-      <find>(&quot;world</find>
-      <find>resetArena</find>
-      <find>getWorld</find>
-      <find>getMemberIds(</find>
-      <find>getMemberIds</find>
-      <find>setUses</find>
-      <find>getWorldName</find>
-      <find>worldName</find>
-      <find>getWorldName()</find>
-    </findStrings>
-    <dirStrings>
-      <dir>E:\Programming\OinkTowny\src\main\java\com\redstoneoinkcraft\oinktowny</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -233,7 +201,9 @@
       <workItem from="1564019577293" duration="252000" />
       <workItem from="1564020373903" duration="78000" />
       <workItem from="1564020488803" duration="137000" />
-      <workItem from="1564064591099" duration="8823000" />
+      <workItem from="1564064591099" duration="9735000" />
+      <workItem from="1564349981200" duration="195000" />
+      <workItem from="1564350494183" duration="9611000" />
     </task>
     <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
       <created>1538704636495</created>
@@ -361,7 +331,14 @@
       <option name="project" value="LOCAL" />
       <updated>1564019144811</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="New enchantments, fix to jump boost enchant">
+      <created>1564082533781</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1564082533787</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -398,6 +375,7 @@
     <MESSAGE value="Arrows now canceled in PvP, some ruins progress." />
     <MESSAGE value="Some misc fixes, but mainly ruins basic is up and running!" />
     <MESSAGE value="idk just making sure things are up to date" />
-    <option name="LAST_COMMIT_MESSAGE" value="idk just making sure things are up to date" />
+    <MESSAGE value="New enchantments, fix to jump boost enchant" />
+    <option name="LAST_COMMIT_MESSAGE" value="New enchantments, fix to jump boost enchant" />
   </component>
 </project>

@@ -1,3 +1,15 @@
 world-name: towny
 world-nether: towny_nether
 world-end: towny_end
+
+lockette-data:
+  chest-counter: 0
+  chests:
+    -1:
+      location:
+        world:
+        x:
+        y:
+        z:
+      owner:
+      added-players:

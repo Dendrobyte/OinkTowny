@@ -12,6 +12,9 @@ import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
+import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPlaceBreakListener;
+import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPrivatedListener;
+import com.redstoneoinkcraft.oinktowny.lockette.LocketteManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropOpenListener;
 import com.redstoneoinkcraft.oinktowny.portals.NetherPortalListener;
@@ -112,6 +115,9 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsSelectJoinSigns(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsSignClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsEntityDeathListener(), this);
+        // Lockette
+        Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPlaceBreakListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPrivatedListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
@@ -134,6 +140,10 @@ public class Main extends JavaPlugin {
 
         /* Register enchantments */
         EnchantmentManager.registerEnchants();
+
+        /* Store Lockette chests in memory */
+        LocketteManager.getInstance().loadChests();
+
         // Finish
         getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been enabled!");
     }
@@ -159,6 +169,7 @@ public class Main extends JavaPlugin {
         return netherWorldName;
     }
     public String getEndWorldName() { return endWorldName; }
+
     public boolean isTownyWorld(String name) {
         return name.equals(worldName) || name.equals(netherWorldName) || name.equals(endWorldName);
     }

@@ -1,10 +1,10 @@
 name: OinkTowny
 author: Dendrobyte, Mobkinz78
-version: 0.11a
+version: 0.23a
 main: com.redstoneoinkcraft.oinktowny.Main
 description: OinkTowny plugin made for Oinkcraft's new towny reboot!
 softdepend: [Multiverse-Core]
-api-version: 1.13
+api-version: 1.14
 commands:
   oinktowny:
     description: Base oinktowny command
