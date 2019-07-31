@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -20,6 +21,8 @@ import java.util.logging.Level;
  * §
  */
 public class LocketteManager {
+
+    // TODO (optimization): For editing a double chest, instead of searching for 'otherHalf' of chest, just get the double-chest-id and skip to it.
 
     private static LocketteManager instance = new LocketteManager();
     String prefix = Main.getInstance().getPrefix();
@@ -88,7 +91,7 @@ public class LocketteManager {
         return activeTimers;
     }
 
-    public void makeNewPrivateChest(Chest chest, Player player){
+    public void makeNewPrivateChest(Chest chest, Player player, boolean isDouble, Chest otherHalf){
         Location loc = chest.getLocation();
         int chestNum = Main.getInstance().getConfig().getInt("lockette-data.chest-counter");
         Main.getInstance().getConfig().set("lockette-data.chests." + chestNum + ".location.world", loc.getWorld().getName());
@@ -97,6 +100,24 @@ public class LocketteManager {
         Main.getInstance().getConfig().set("lockette-data.chests." + chestNum + ".location.z", loc.getBlockZ());
         Main.getInstance().getConfig().set("lockette-data.chests." + chestNum + ".owner", player.getUniqueId() + ":" + player.getName());
         Main.getInstance().getConfig().set("lockette-data.chests." + chestNum + ".added-players", player.getUniqueId() + ":" + player.getName());
+        if(!isDouble){
+            Main.getInstance().getConfig().set("lockette-data.chests." + chestNum + ".doublechest", false);
+        } else { // isDouble
+            Main.getInstance().getConfig().set("lockette-data.chests." + chestNum + ".doublechest", true);
+            /* This seriously needs to be turned into a method... */
+            ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("chests");
+            for(String existingChestNums : chests.getKeys(false)) {
+                Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
+                if(storedLoc.equals(makeFakeLocationForRealChest(otherHalf))){
+                    chests.set(chestNum + ".other-half-id", Integer.parseInt(existingChestNums));
+                    chests.set(existingChestNums + ".doublechest", true);
+                    chests.set(existingChestNums + ".other-half-id", chestNum);
+                    break;
+                }
+            }
+            // Set the other-half-id to that chest
+            // Set the other ches'ts other-half-id to this chest
+        }
 
         Main.getInstance().getConfig().set("lockette-data.chest-counter", chestNum+1);
         Main.getInstance().saveConfig();
@@ -109,6 +130,9 @@ public class LocketteManager {
 
     public boolean playerOwnsChest(Player player, Chest chest){
         // Owner should be last on the list. No need to check actual name.
+        System.out.println("privatedChests: " + privatedChests.toString());
+        System.out.println("index 0: " + privatedChests.get(chest).get(0));
+        System.out.println("size: " + privatedChests.get(chest).size());
         String lastPlayer = privatedChests.get(chest).get(privatedChests.get(chest).size()-1);
         return lastPlayer.substring(0, lastPlayer.indexOf(":")).equalsIgnoreCase(player.getUniqueId().toString());
     }
@@ -231,6 +255,27 @@ public class LocketteManager {
         }
         reloadChests();
         return passed;
+    }
+
+    /* Utils */
+    public boolean isDoubleChest(Chest chest){
+        return chest.getInventory().getHolder() instanceof DoubleChest; // May not work, but want to give it a shot
+        // return chest.getInventory().getSize() > 27;
+    }
+
+    public Chest getOtherHalfOfDouble(DoubleChest doubleChest, Chest chest){
+        Chest leftHalf = (Chest)doubleChest.getLeftSide();
+        if (leftHalf.equals(chest)) {
+            return (Chest)doubleChest.getRightSide();
+        } else {
+            return (Chest)doubleChest.getLeftSide();
+        }
+    }
+
+    public boolean isDoubleAlreadyPrivated(DoubleChest chest){
+        Chest leftHalf = (Chest)chest.getLeftSide();
+        Chest rightHalf = (Chest)chest.getRightSide();
+        return isLocketteChest(leftHalf) || isLocketteChest(rightHalf);
     }
 
 }

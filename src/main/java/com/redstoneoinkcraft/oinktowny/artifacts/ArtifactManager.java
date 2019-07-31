@@ -198,7 +198,7 @@ public class ArtifactManager {
 
     public void gravityShift(Player player){
         int hoverTime = 8*20; // *20 for the ticks
-        PotionEffect gravity = new PotionEffect(PotionEffectType.LEVITATION, hoverTime, 1, true, true);
+        PotionEffect gravity = new PotionEffect(PotionEffectType.LEVITATION, hoverTime, 8, true, true);
         player.addPotionEffect(gravity);
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, hoverTime+80, 1, true, true)); // Extend resistance to prevent fall damage
         player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_TELEPORT, 1, 1);
@@ -260,8 +260,13 @@ public class ArtifactManager {
         int xChange = rand.nextInt(30) - 20;
         int zChange = rand.nextInt(30) - 20;
         int yChange = rand.nextInt(5); // Only go up
+        boolean viableLocation = false;
         Location newLoc = new Location(playerLoc.getWorld(), playerLoc.getBlockX()+xChange, playerLoc.getBlockY()+yChange, playerLoc.getBlockZ()+zChange);
-        newLoc.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, playerLoc, 40);
+        while(!viableLocation){
+            newLoc = new Location(newLoc.getWorld(), newLoc.getBlockX(), newLoc.getBlockY()+4, newLoc.getBlockZ());
+            if(newLoc.getBlock().getType().equals(Material.AIR)) viableLocation = true;
+        }
+        newLoc.getWorld().spawnParticle(Particle.HEART, playerLoc, 100);
         player.teleport(newLoc);
         newLoc.getWorld().playSound(newLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 8, 0);
     }

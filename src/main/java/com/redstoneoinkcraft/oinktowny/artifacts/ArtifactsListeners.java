@@ -35,7 +35,6 @@ public class ArtifactsListeners implements Listener {
         ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
         if(!am.isItemStackAnArtifact(itemInHand)) return;
         Player player = event.getPlayer();
-
         if(event.getHand() == EquipmentSlot.OFF_HAND) return;
 
         // JackHammer TODO: Work with blockbreakevent and player location relative to a given blockface

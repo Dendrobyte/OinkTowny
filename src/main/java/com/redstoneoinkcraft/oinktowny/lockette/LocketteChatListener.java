@@ -30,7 +30,6 @@ public class LocketteChatListener implements Listener {
     public void playerEditingChest(AsyncPlayerChatEvent event){
         Player player = event.getPlayer();
         if(!lm.isPlayerEditingChest(player)) return;
-        System.out.println("Editing!");
         event.setCancelled(true);
         String message = ChatColor.stripColor(event.getMessage());
         if (message.toUpperCase().contains("ADD")) {
@@ -51,8 +50,12 @@ public class LocketteChatListener implements Listener {
                 player.sendMessage(prefix + "Please make sure the player you are trying to add is online.");
                 return;
             }
-            boolean success = lm.addPlayerToChest(lm.getPlayersEditing().get(player), playerId, playerName);
+            Chest original = lm.getPlayersEditing().get(player);
+            boolean success = lm.addPlayerToChest(original, playerId, playerName);
             if(success) {
+                if(lm.isDoubleChest(original)){
+                    lm.addPlayerToChest(lm.getOtherHalfOfDouble((DoubleChest)original, original), playerId, playerName);
+                }
                 player.sendMessage(prefix + playerName + " has been added to your chest!");
             } else {
                 player.sendMessage(prefix + "Player was not added!");
@@ -61,14 +64,19 @@ public class LocketteChatListener implements Listener {
         }
         else if (message.toUpperCase().contains("REMOVE")){
             String playerName = message.substring(message.indexOf(" "));
-            boolean removed = lm.removePlayerFromChest(lm.getPlayersEditing().get(player), playerName);
+            Chest original = lm.getPlayersEditing().get(player);
+            boolean removed = lm.removePlayerFromChest(original, playerName);
             if(!removed){
                 player.sendMessage(prefix + "Player not listed as added to chest, thus not removed.");
             } else { // removed
+                if(lm.isDoubleChest(original)) {
+                    lm.removePlayerFromChest(lm.getOtherHalfOfDouble((DoubleChest)original, original), playerName);
+                }
                 player.sendMessage(prefix + "Removed " + playerName + " from chest!");
             }
             return;
         }
+        // TODO: If it's a double chest... Break the whole thing and remove both chests from configuration
         else if (message.equalsIgnoreCase("DELETE")){
             player.sendMessage(prefix + "This command deletes your currently edited chest (items will be dropped). To confirm, type " + ChatColor.RED + ChatColor.BOLD + "CONFIRM DELETE");
             return;
@@ -76,11 +84,18 @@ public class LocketteChatListener implements Listener {
         else if (message.equalsIgnoreCase("CONFIRM DELETE")){
             player.sendMessage(prefix + "Breaking chest...");
             int amt = 1;
-            lm.getPlayersEditing().get(player).getBlock().breakNaturally();
-            InventoryHolder ih = lm.getPlayersEditing().get(player).getInventory().getHolder();
-            if(ih instanceof DoubleChest){
+            Chest original = lm.getPlayersEditing().get(player);
+            Chest otherHalf;
+            if(lm.isDoubleChest(original)){
                 amt = 2;
+                otherHalf = lm.getOtherHalfOfDouble((DoubleChest)original, original);
+                lm.removeChest(otherHalf);
+                otherHalf.getBlock().breakNaturally();
+                // TODO: Make sure this drops all the contents.
             }
+            lm.removeChest(original);
+            original.getBlock().breakNaturally();
+
             Bukkit.getWorld(player.getWorld().getName()).dropItem(player.getLocation(), new ItemStack(Material.CHEST, amt));
             lm.removeChest(lm.getPlayersEditing().get(player));
             player.sendMessage(prefix + "Chest destroyed. Exiting editor...");

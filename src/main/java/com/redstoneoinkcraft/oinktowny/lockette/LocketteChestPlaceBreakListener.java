@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +31,11 @@ public class LocketteChestPlaceBreakListener implements Listener {
         Player player = event.getPlayer();
         Chest chest = (Chest)event.getBlock().getState();
         if(!Main.getInstance().isTownyWorld(player.getWorld().getName())) return;
+        if(lm.isDoubleChest(chest)){ // Does this get the chet placed as a single chest, or does it get the chest placed when it becomes a double chest...?
+            if(lm.isDoubleAlreadyPrivated((DoubleChest)chest)){
+
+            }
+        }
         player.sendMessage(prefix + ChatColor.AQUA + "If you'd like to private this chest, " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + RIGHT CLICK");
         lm.addActiveChest(chest, player);
     }
@@ -37,18 +43,24 @@ public class LocketteChestPlaceBreakListener implements Listener {
     @EventHandler
     public void onChestBreak(BlockBreakEvent event){
         if(event.getBlock().getType() != Material.CHEST) return;
+        System.out.println("Chest broken!");
         Player player = event.getPlayer();
-        if(player.isOp()){ // Allow ops to break chests for extenuating circumstances. Permission later?
+        /* if(player.isOp()){ // Allow ops to break chests for extenuating circumstances. Permission later? -- TODO: Removed for testing server
+            return;
+        } */
+        Chest chest = (Chest)event.getBlock().getState();
+        if(!lm.isLocketteChest(chest)){
             return;
         }
-        if(!lm.playerOwnsChest(player, (Chest)event.getBlock().getState())) {
-            event.setCancelled(true); // Don't need to worry about world, since technically no private chests can exist in other worlds
+        if(!lm.playerOwnsChest(player, chest)) {
+            // Don't need to worry about world, since technically no private chests can exist in other worlds
             player.sendMessage(prefix + ChatColor.RED + "This chest is privately owned. Only the owner can break it.");
+            event.setCancelled(true);
             return;
         } else {
             if(player.isSneaking()){
                 player.sendMessage(prefix + "Privately owned chest broken.");
-                lm.removeChest((Chest)event.getBlock().getState());
+                lm.removeChest(chest);
                 return;
             }
             player.sendMessage(prefix + "This chest is privated. To break it, " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + LEFT CLICK");

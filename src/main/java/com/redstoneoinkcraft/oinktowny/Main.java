@@ -8,6 +8,7 @@ import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanChatListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanUpdateUuidListener;
+import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantAnvilListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
@@ -108,6 +109,7 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new LootdropOpenListener(), this);
         // Enchantments
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new EnchantAnvilListener(), this);
         // Portals
         Bukkit.getServer().getPluginManager().registerEvents(new NetherPortalListener(), this);
         // Artifacts

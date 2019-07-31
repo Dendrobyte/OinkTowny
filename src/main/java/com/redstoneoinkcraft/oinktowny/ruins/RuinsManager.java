@@ -46,7 +46,7 @@ public class RuinsManager {
         FileConfiguration ruinsConfig = Main.getInstance().getRuinsConfig();
         System.out.println(ruinsPrefix + "Beginning ruins reconstruction process...");
         try {
-            ruinsConfig.getConfigurationSection("ruins");
+            ruinsConfig.getConfigurationSection("ruins").getKeys(false);
         } catch (NullPointerException e){
             System.out.println(ruinsPrefix + "No ruins in file. Skipping rebuilding process.");
             return;
