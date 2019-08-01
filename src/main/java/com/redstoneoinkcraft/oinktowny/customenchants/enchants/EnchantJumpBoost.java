@@ -67,7 +67,7 @@ public class EnchantJumpBoost extends EnchantmentFramework {
 
     @Override
     public double getEnchantmentChance() {
-        return 0;
+        return 100;
     }
 
     @Override

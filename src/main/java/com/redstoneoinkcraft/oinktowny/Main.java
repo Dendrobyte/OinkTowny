@@ -7,15 +7,29 @@ import com.redstoneoinkcraft.oinktowny.bundles.PreventItemStealListener;
 import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanChatListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
+import com.redstoneoinkcraft.oinktowny.clans.ClanUpdateUuidListener;
+import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantAnvilListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
+import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
+import com.redstoneoinkcraft.oinktowny.lockette.LocketteChatListener;
+import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPlaceBreakListener;
+import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPrivatedListener;
+import com.redstoneoinkcraft.oinktowny.lockette.LocketteManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
+import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropOpenListener;
 import com.redstoneoinkcraft.oinktowny.portals.NetherPortalListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickCommand;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickListeners;
+import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsChatListener;
+import com.redstoneoinkcraft.oinktowny.ruins.RuinsManager;
+import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsSelectionListener;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsEntityDeathListener;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsPlayerLeaveListeners;
+import com.redstoneoinkcraft.oinktowny.ruins.running.RuinsSignClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,8 +50,7 @@ public class Main extends JavaPlugin {
 
     private static Main instance;
     private String prefix = "§8(§3OinkTowny§8)§3 ";
-    private String worldName;
-    private String netherWorldName;
+    private String worldName, netherWorldName, endWorldName;
 
     /* Custom configurations */
     // bundles.yml
@@ -55,6 +68,9 @@ public class Main extends JavaPlugin {
     // arenas.yml
     private File arenasFile;
     private FileConfiguration arenasConfig;
+    // ruins.yml
+    private File ruinsFile;
+    private FileConfiguration ruinsConfig;
 
 
     @Override
@@ -68,9 +84,11 @@ public class Main extends JavaPlugin {
         // Set the main world name to retrieve from various functions
         worldName = getConfig().getString("world-name");
         netherWorldName = getConfig().getString("world-nether");
+        endWorldName = getConfig().getString("world-end");
 
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         // Bundle events
         Bukkit.getServer().getPluginManager().registerEvents(new SignClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PreventItemStealListener(), this);
@@ -79,6 +97,7 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new RegionBlockPlaceBreakListener(), this);
         // Clan events
         Bukkit.getServer().getPluginManager().registerEvents(new ClanChatListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ClanUpdateUuidListener(), this);
         // Better sleep events
         Bukkit.getServer().getPluginManager().registerEvents(new SleepListener(), this);
         // PvP Arena events
@@ -86,12 +105,25 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaPlayerQuitListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ArenaDamageListener(), this);
+        // Lootdrops
+        Bukkit.getServer().getPluginManager().registerEvents(new LootdropOpenListener(), this);
         // Enchantments
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new EnchantAnvilListener(), this);
         // Portals
         Bukkit.getServer().getPluginManager().registerEvents(new NetherPortalListener(), this);
         // Artifacts
         Bukkit.getServer().getPluginManager().registerEvents(new ArtifactsListeners(), this);
+        // Ruins
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsChatListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsSelectionListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsSignClickListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsEntityDeathListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new RuinsPlayerLeaveListeners(), this);
+        // Lockette
+        Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPlaceBreakListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPrivatedListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new LocketteChatListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
@@ -109,8 +141,15 @@ public class Main extends JavaPlugin {
         /* Load arenas */
         ArenaPVPManager.getInstance().loadArenas();
 
+        /* Rebuild ruins */
+        RuinsManager.getInstance().rebuildRuins();
+
         /* Register enchantments */
         EnchantmentManager.registerEnchants();
+
+        /* Store Lockette chests in memory */
+        LocketteManager.getInstance().loadChests();
+
         // Finish
         getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been enabled!");
     }
@@ -134,6 +173,11 @@ public class Main extends JavaPlugin {
     }
     public String getNetherWorldName() {
         return netherWorldName;
+    }
+    public String getEndWorldName() { return endWorldName; }
+
+    public boolean isTownyWorld(String name) {
+        return name.equals(worldName) || name.equals(netherWorldName) || name.equals(endWorldName);
     }
 
     // Configuration file methods
@@ -231,6 +275,23 @@ public class Main extends JavaPlugin {
             }
             getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " arenas.yml has been loaded.");
         }
+
+        // Generate ruins.yml
+        ruinsFile = new File(getDataFolder(), "ruins.yml");
+        if(!ruinsFile.exists()){
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " is creating the ruins.yml...");
+            saveResource("ruins.yml", false);
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " ruins.yml has been created!");
+        } else {
+            ruinsConfig = new YamlConfiguration();
+            try {
+                ruinsConfig.load(ruinsFile);
+            } catch (IOException | InvalidConfigurationException e){
+                getLogger().log(Level.WARNING, "OInkTowny ruins.yml could not be loaded!");
+                e.printStackTrace();
+            }
+            getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " ruins.yml has been loaded.");
+        }
     }
 
     // Bundles config file methods
@@ -312,6 +373,23 @@ public class Main extends JavaPlugin {
     }
     private File getArenasFile(){
         return this.arenasFile;
+    }
+
+    // Ruins config file methods
+    public void saveRuinsConfig(){
+        saveResource("ruins.yml", true);
+        try{
+            Main.getInstance().getRuinsConfig().save(getRuinsFile());
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getRuinsConfig(){
+        return this.ruinsConfig;
+    }
+    public File getRuinsFile(){
+        return this.ruinsFile;
     }
 
 }

@@ -9,11 +9,11 @@ import org.bukkit.scheduler.BukkitRunnable;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public class LootDropTimer extends BukkitRunnable {
+public class LootdropTimer extends BukkitRunnable {
 
     private int counter;
 
-    public LootDropTimer(int minutes){
+    public LootdropTimer(int minutes){
         this.counter = minutes*20;
     }
 

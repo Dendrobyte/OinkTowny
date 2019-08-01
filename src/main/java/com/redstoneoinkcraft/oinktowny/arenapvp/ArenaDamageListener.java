@@ -5,10 +5,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -20,34 +23,50 @@ public class ArenaDamageListener implements Listener {
 
     ArenaPVPManager apm = ArenaPVPManager.getInstance();
     String prefix = apm.getArenaPrefix();
+    Main mainInstance = Main.getInstance();
 
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event){
-        if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) return;
-        // We know that to get to this point, the damager and entity have to be players
-        Player attacker = (Player) event.getDamager();
-        Player defender = (Player) event.getEntity();
-        String worldName = event.getEntity().getWorld().getName();
+        if(!(event.getEntity() instanceof Player)) return;
+
+        /* Damage instances being players */
+        if(event.getDamager() instanceof Player){
+            event.setCancelled(processDamage((Player)event.getDamager(), (Player)event.getEntity(), event.getDamage()));
+            return;
+        }
+        /* Damange instances being arrows */
+        if(event.getDamager() instanceof Arrow){
+            Arrow arrow = (Arrow) event.getDamager();
+            if(!(arrow.getShooter() instanceof Player)) return;
+            event.setCancelled(processDamage((Player)arrow.getShooter(), (Player)event.getEntity(), event.getDamage()));
+        }
+        /* Damage instances being tridents */
+        if(event.getDamager() instanceof Trident){
+            Trident trident = (Trident) event.getDamager();
+            if(!(trident.getShooter() instanceof Player)) return;
+            event.setCancelled(processDamage((Player)trident.getShooter(), (Player)event.getEntity(), event.getDamage()));
+        }
+    }
+
+    private boolean processDamage(Player attacker, Player defender, double damage){
         if(apm.isPlayerInArena(attacker) && apm.isPlayerInArena(defender)){
             ArenaObj workingArena = apm.getPlayerArena(attacker); // There's... no way for them to be in different arenas...
             if(!workingArena.getCanHitEachOther()){
                 attacker.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Wait until the match starts-- gain some distance!");
-                event.setCancelled(true);
-                return;
+                return true;
             }
-            double damage = event.getFinalDamage();
             if(defender.getHealth() - damage <= 0){
-                event.setCancelled(true);
+                apm.endArena(workingArena, attacker);
                 attacker.setHealth(attacker.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
                 defender.setHealth(defender.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
-                apm.endArena(workingArena, attacker);
+                return true;
             }
-            return;
         }
-        else if (worldName.equalsIgnoreCase(Main.getInstance().getWorldName()) || worldName.equalsIgnoreCase(Main.getInstance().getNetherWorldName())){
-            event.setCancelled(true);
+        else if (mainInstance.isTownyWorld(attacker.getWorld().getName())){
             attacker.playSound(attacker.getLocation(), Sound.BLOCK_ANVIL_PLACE, 6.0f, 1.0f);
             attacker.sendMessage(Main.getInstance().getPrefix() + "PvP is not enabled in towny!");
+            return true;
         }
+        return false;
     }
 }

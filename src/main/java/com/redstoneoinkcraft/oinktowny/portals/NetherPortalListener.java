@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 
 /**
@@ -17,26 +18,48 @@ import org.bukkit.util.Vector;
  */
 public class NetherPortalListener implements Listener {
 
+    Main mainInstance = Main.getInstance();
+    String prefix = mainInstance.getPrefix();
+
     @EventHandler
     public void onPlayerPortalTeleport(PlayerPortalEvent event){
         Player player = event.getPlayer();
-        if(player.getWorld().getName().equalsIgnoreCase(Main.getInstance().getWorldName())){
-            event.setCancelled(true);
-            try {
-                player.sendMessage(Main.getInstance().getPrefix() + "Teleporting to the towny nether hub...");
-                player.teleport(Bukkit.getServer().getWorld(Main.getInstance().getConfig().getString("world-nether")).getSpawnLocation());
-            } catch (NullPointerException e){
-                player.sendMessage(Main.getInstance().getPrefix() + ChatColor.RED + "There seems to be a problem with the nether world configuration. Please contact an admin!");
+        if(!mainInstance.isTownyWorld(player.getWorld().getName())) return;
+        if(event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+            if (player.getWorld().getName().equalsIgnoreCase(mainInstance.getWorldName())) {
+                event.setCancelled(true);
+                try {
+                    player.sendMessage(prefix + "Teleporting to the towny nether hub...");
+                    player.teleport(Bukkit.getServer().getWorld(mainInstance.getConfig().getString("world-nether")).getSpawnLocation());
+                } catch (NullPointerException e) {
+                    player.sendMessage(prefix + ChatColor.RED + "There seems to be a problem with the nether world configuration. Please contact an admin!");
+                }
+                return;
+            } else if (player.getWorld().getName().equalsIgnoreCase(mainInstance.getConfig().getString("world-nether"))) {
+                event.setCancelled(true);
+                player.sendMessage(prefix + "Teleporting back to the towny spawn...");
+                player.teleport(Bukkit.getServer().getWorld(mainInstance.getWorldName()).getSpawnLocation());
+                return;
             }
-            return;
-        }
-        else if(player.getWorld().getName().equalsIgnoreCase(Main.getInstance().getConfig().getString("world-nether"))){
-            event.setCancelled(true);
-            player.sendMessage(Main.getInstance().getPrefix() + "Teleporting back to towny spawn...");
-            player.teleport(Bukkit.getServer().getWorld(Main.getInstance().getWorldName()).getSpawnLocation());
-            return;
         }
 
+        if(event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL || event.getCause() == PlayerTeleportEvent.TeleportCause.END_GATEWAY){
+            if(player.getWorld().getName().equalsIgnoreCase(mainInstance.getWorldName())){
+                event.setCancelled(true);
+                try {
+                    player.sendMessage(prefix + "Teleporting to the end world hub...");
+                    player.teleport(Bukkit.getServer().getWorld(mainInstance.getConfig().getString("world-end")).getSpawnLocation());
+                } catch (NullPointerException e){
+                    player.sendMessage(prefix + ChatColor.RED + "There seems to be a problem with the end world configuration. Please contact an admin!");
+                }
+                return;
+            } else if (player.getWorld().getName().equalsIgnoreCase(mainInstance.getConfig().getString("world-end"))){
+                event.setCancelled(true);
+                player.sendMessage(prefix + "Teleporting back to the towny spawn...");
+                player.teleport(Bukkit.getServer().getWorld(mainInstance.getWorldName()).getSpawnLocation());
+                return;
+            }
+        }
 
 
     }

@@ -2,22 +2,20 @@ package com.redstoneoinkcraft.oinktowny;
 
 import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaPVPManager;
 import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactManager;
-import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactType;
 import com.redstoneoinkcraft.oinktowny.bundles.BundleManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.economy.TownyTokenManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
+import com.redstoneoinkcraft.oinktowny.ruins.RuinsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 9/1/2018
@@ -51,14 +49,16 @@ public class BaseCommand implements CommandExecutor {
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny clan");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny lootdrop" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny arena" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny artifact" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny ruins" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
                 player.sendMessage(ChatColor.GOLD + "To chat with your clan, start your message with " + ChatColor.GOLD + ChatColor.BOLD
                         + ChatColor.DARK_AQUA + "%");
                 return true;
             }
 
             /* BUNDLE STUFF */
-            BundleManager bundleManager = BundleManager.getInstance();
             if(args[0].equalsIgnoreCase("bundle")){
+                BundleManager bundleManager = BundleManager.getInstance();
                 if(!player.hasPermission("oinktowny.bundle")){
                     player.sendMessage(prefix + "Sorry, you don't have access to do this." + ChatColor.RED + "oinktowny.bundle");
                     return true;
@@ -144,16 +144,16 @@ public class BaseCommand implements CommandExecutor {
             }
 
             /* TOWNYTOKEN STUFF */
-            TownyTokenManager ttManager = TownyTokenManager.getInstance();
             if(args[0].equalsIgnoreCase("token")){
+                TownyTokenManager ttManager = TownyTokenManager.getInstance();
                 int amt = Integer.parseInt(args[1]);
                 player.getInventory().setItem(0, ttManager.createToken(amt));
                 return true;
             }
 
             /* CLAN/CLAN CHAT STUFF */
-            ClanManager cm = ClanManager.getInstance();
             if(args[0].equalsIgnoreCase("clan")){
+                ClanManager cm = ClanManager.getInstance();
                 if(!player.hasPermission("oinktowny.clans")){
                     player.sendMessage(prefix + "Sorry, you don't have access to do this." + ChatColor.RED + "oinktowny.bundle");
                     return true;
@@ -167,6 +167,7 @@ public class BaseCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.GOLD + "- invite");
                     player.sendMessage(ChatColor.GOLD + "- kick");
                     player.sendMessage(ChatColor.GOLD + "- leave");
+                    player.sendMessage(ChatColor.GOLD + "- list");
                     player.sendMessage(ChatColor.GOLD + "To chat with your clan, start your message with " + ChatColor.GOLD + ChatColor.BOLD
                             + ChatColor.DARK_AQUA + "%");
                     return true;
@@ -221,11 +222,22 @@ public class BaseCommand implements CommandExecutor {
                     cm.leaveClan(player);
                     return true;
                 }
+                // TODO: Toggle on/off permanently
+                // TODO: Check members of someone else's clan for 10 seconds
+                if(args[1].equalsIgnoreCase("list")){
+                    if(!cm.playerHasClan(player)){
+                        player.sendMessage(prefix + "You're not in a clan.");
+                        return true;
+                    }
+                    cm.createClanListScoreboard(player);
+                    player.sendMessage(prefix + "Scoreboard will disappear in 10 seconds.");
+                    return true;
+                }
             }
 
             /* LOOT DROP STUFF */
-            LootdropManager lm = LootdropManager.getInstance();
             if(args[0].equalsIgnoreCase("lootdrop")){
+                LootdropManager lm = LootdropManager.getInstance();
                 if(!player.hasPermission("oinktowny.lootdrop")) {
                     player.sendMessage(prefix + "This is an admin-only command!");
                     return true;
@@ -252,21 +264,26 @@ public class BaseCommand implements CommandExecutor {
             }
 
             /* REGION CLAIMING STUFF */
-            RegionsManager rm = RegionsManager.getInstance();
             if(args[0].equalsIgnoreCase("claim")){
+                RegionsManager rm = RegionsManager.getInstance();
                 rm.claimChunk(player);
                 return true;
             }
             if(args[0].equalsIgnoreCase("unclaim")){
+                RegionsManager rm = RegionsManager.getInstance();
                 rm.unclaimChunk(player);
                 return true;
             }
 
             /* ARENAS STUFF */
-            ArenaPVPManager apm = ArenaPVPManager.getInstance();
             if(args[0].equalsIgnoreCase("arena")){
+                ArenaPVPManager apm = ArenaPVPManager.getInstance();
                 if(!player.hasPermission("oinktowny.create")){
                     player.sendMessage(prefix + "Sorry, this is an admin-only command.");
+                    return true;
+                }
+                if(player.getWorld().getName().equalsIgnoreCase(Main.getInstance().getWorldName())){
+                    player.sendMessage(prefix + "Arenas can not be created in this world.");
                     return true;
                 }
                 /* Command structure: /oinktowny arena ... */
@@ -330,8 +347,8 @@ public class BaseCommand implements CommandExecutor {
             }
 
             /* ENCHANTMENT STUFF */
-            EnchantmentManager em = EnchantmentManager.getInstance();
             if(args[0].equalsIgnoreCase("enchant")){
+                EnchantmentManager em = EnchantmentManager.getInstance();
                 if(args.length < 3) {
                     player.sendMessage(prefix + "You need 3 args");
                     return true;
@@ -348,12 +365,25 @@ public class BaseCommand implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("explode")){
                     em.enchantItem(player, EnchantmentManager.EXPLOSIVE_ARROWS, Integer.parseInt(args[2]));
                 }
+                if(args[1].equalsIgnoreCase("dogmaster")){
+                    em.enchantItem(player, EnchantmentManager.DOG_MASTER, Integer.parseInt(args[2]));
+                }
+                if(args[1].equalsIgnoreCase("necromancer")){
+                    em.enchantItem(player, EnchantmentManager.NECROMANCER, Integer.parseInt(args[2]));
+                }
+                if(args[1].equalsIgnoreCase("deflect")){
+                    em.enchantItem(player, EnchantmentManager.DEFLECT, Integer.parseInt(args[2]));
+                }
                 return true;
             }
 
             /* ARTIFACT STUFF */
-            ArtifactManager am = ArtifactManager.getInstance();
             if(args[0].equalsIgnoreCase("artifact")){
+                ArtifactManager am = ArtifactManager.getInstance();
+                if(args.length == 1){
+                    player.sendMessage(prefix + "Add the name of an artifact.");
+                    return true;
+                }
                 if(args[1].equalsIgnoreCase("jackhammer")){
                     player.getInventory().setItem(0, am.createJackhammer());
                 }
@@ -366,9 +396,55 @@ public class BaseCommand implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("explode")){
                     player.getInventory().setItem(0, am.createDestructoid());
                 }
+                if(args[1].equalsIgnoreCase("headlamp")){
+                    player.getInventory().setItem(0, am.createHeadlamp());
+                }
+                if(args[1].equalsIgnoreCase("telepoof")){
+                    player.getInventory().setItem(0, am.createTelepoof());
+                }
+                if(args[1].equalsIgnoreCase("luckyhoe")){
+                    player.getInventory().setItem(0, am.createLuckyHoe());
+                }
                 player.sendMessage(prefix + "Here ya go, mate...");
                 return true;
             }
+
+            /* RUINS STUFF */
+            if(args[0].equalsIgnoreCase("ruins")){
+                RuinsManager rm = RuinsManager.getInstance();
+                if(!player.hasPermission("oinktowny.ruins")){
+                    player.sendMessage(prefix + "Sorry, this is an admin-only command.");
+                    return true;
+                }
+                if(args.length <= 1){
+                    player.sendMessage(prefix + "Use " + ChatColor.GOLD + "/ot ruins create <name>");
+                    player.sendMessage(prefix + "To delete ruins: " + ChatColor.GOLD + "/ot ruins destroy <name>");
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("create")){
+                    if(player.getWorld().getName().equalsIgnoreCase(Main.getInstance().getWorldName())){
+                        player.sendMessage(prefix + "Ruins can not be created in this world.");
+                        return true;
+                    }
+                    if(args.length == 2){
+                        player.sendMessage(prefix + ChatColor.RED + "Please provide a name for the ruins!");
+                        return true;
+                    }
+                    player.sendMessage(prefix + "Now entering ruins creation mode...");
+                    rm.initiateRuinsCreation(player, args[2]);
+                    return true;
+                }
+                if(args[1].equalsIgnoreCase("destroy")){
+                    if(args.length == 2){
+                        player.sendMessage(prefix + "Provide the name of the ruins you'd like to delete." + ChatColor.DARK_RED + ChatColor.BOLD + "[THIS IS PERMANENT]");
+                        return true;
+                    }
+                    player.sendMessage(prefix + "Destroying the " + args[2] + " ruins...");
+                    rm.destroyRuins(args[2], player);
+                    return true;
+                }
+            }
+
             /* DEFAULT MESSAGE */
             player.sendMessage(prefix + ChatColor.RED + "Argument not recognized! Please see " + ChatColor.GOLD + "/ot help");
             return true;

@@ -22,7 +22,6 @@ public class EnchantDmgConversion extends EnchantmentFramework {
     @Override
     public boolean canEnchantItem(ItemStack item) {
         return item.getType().toString().contains("CHESTPLATE");
-
     }
 
     @Override

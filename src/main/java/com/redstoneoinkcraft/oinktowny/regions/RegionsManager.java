@@ -22,6 +22,10 @@ import java.util.UUID;
  */
 public class RegionsManager {
 
+    // TODO: Support for multiple worlds.
+    // Right now, regions are cached based on overworld chunks. Make subregions in the config?
+    // Would need to update [world name of claim, subcategorie in configuration, chunks per world...]
+
     private static RegionsManager instance = new RegionsManager();
     private Main mainInstance = Main.getInstance();
     String prefix = mainInstance.getPrefix();

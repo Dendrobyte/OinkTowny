@@ -64,148 +64,27 @@ public class BundleManager {
             return;
         }
 
-        // The format is ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL, ]; lore:[Line one, Line two]
-        ArrayList<String> bundleItems = new ArrayList<>();
         Inventory playerInv = player.getInventory();
+        int i = 0;
         for(ItemStack item : playerInv.getContents()){
-            StringBuilder builder = new StringBuilder();
-            if(item == null) continue; // Make sure the item isn't null
-            String formatItemDetails;
-            // Get material
-            builder.append(item.getType().toString()).append("; ");
-            // Get amount
-            builder.append(item.getAmount()).append("; ");
-            // Get name
-            builder.append("name:");
-            if(item.getItemMeta().getDisplayName() != null){
-                builder.append(item.getItemMeta().getDisplayName());
-            }
-            builder.append("; ");
-            // Get enchants
-            builder.append("enchants:[");
-            if(item.getEnchantments() != null) {
-                Map<Enchantment, Integer> itemEnchantments = item.getEnchantments();
-                for (Enchantment enchant : itemEnchantments.keySet()) {
-                    builder.append(enchant.getKey()).append("-").append(itemEnchantments.get(enchant)).append(", ");
-                }
-            }
-            builder.append("]; ");
-
-            // Get lore
-            builder.append("lore:");
-            if(item.getItemMeta().getLore() != null) {
-                builder.append(ChatColor.stripColor(item.getItemMeta().getLore().toString()));
-            }
-            // Add a comma to the last lore item, by removing bracket then putting both
-            builder.deleteCharAt(builder.length()-1);
-            builder.append(",]");
-            formatItemDetails = builder.toString();
-            bundleItems.add(formatItemDetails);
+            Main.getInstance().getBundlesConfig().set("bundles." + bundleName + "." + i, item);
+            i++;
         }
-
-        if(bundleItems.isEmpty()){
-            player.sendMessage(prefix + "There is nothing in your inventory!");
-            return;
-        }
-
-        Main.getInstance().getBundlesConfig().set("bundles." + bundleName, bundleItems);
         Main.getInstance().saveBundlesConfig();
         player.sendMessage(prefix + ChatColor.GREEN + "Your bundle, " + ChatColor.GOLD + ChatColor.BOLD + bundleName + "," + ChatColor.GREEN + " has been created!");
     }
 
     /* Retrieve and parse the bundle items from a specified bundle */
     public ArrayList<ItemStack> getBundle(String bundleName, Player player){
-        ArrayList<ItemStack> bundleItems = new ArrayList<>();
         if(!bundleExists(bundleName)){
             player.sendMessage(prefix + "Sorry, it appears that bundle doesn't exist.\n" + prefix + "Please contact a staff member.");
             return null;
         }
-        List<String> bundleItemList = Main.getInstance().getBundlesConfig().getStringList("bundles." + bundleName);
+        ArrayList<ItemStack> bundleItems = new ArrayList<>();
 
-        // The format is ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL, ]; lore:[Line one, Line two]
-        for(String origin : bundleItemList){
-            String str = origin;
-
-            // Get indexes of semicolons
-            int matSemi = str.indexOf(";");
-            int amtSemi = str.indexOf(";", matSemi+1);
-            int nameSemi = str.indexOf(";", amtSemi+1);
-            int enchantSemi = str.indexOf(";", nameSemi+1);
-
-            // Set material
-            String itemMat = str.substring(0, matSemi);
-            Material newItemMaterial = Material.getMaterial(itemMat);
-
-            // Set amount
-            String itemAmount = str.substring(matSemi+2, amtSemi);
-            int newItemAmount = Integer.parseInt(itemAmount);
-
-            // Define item and itemmeta
-            ItemStack tempItem = new ItemStack(newItemMaterial, newItemAmount);
-            ItemMeta tempMeta = tempItem.getItemMeta();
-
-            // Set enchants - enchants:[NAME-LVL, NAME-LVL, ]
-            String itemEnchants = str.substring(nameSemi+11, enchantSemi);
-            int enchantsIndexCheck = 0;
-            int startEnchantIndex = 1; // Start after the first bracket, then move after the comma and space
-            while(enchantsIndexCheck != -1){
-                if(!itemEnchants.contains(",")){
-                    break;
-                }
-                String enchantType = itemEnchants.substring(startEnchantIndex, startEnchantIndex+9).equalsIgnoreCase("minecraft") ? "minecraft" : "oinktowny";
-                String enchantName = itemEnchants.substring(startEnchantIndex+10, itemEnchants.indexOf("-")); // +10 accounts for 'minecraft:' and 'oinktowny:'
-                String enchantLevel = itemEnchants.substring(itemEnchants.indexOf("-")+1, itemEnchants.indexOf(","));
-                int enchantLevelInt;
-                try {
-                    enchantLevelInt = Integer.parseInt(enchantLevel);
-                    Enchantment itemEnchant;
-                    if(enchantType.equalsIgnoreCase("minecraft")) {
-                        System.out.println("It's a minecraft enchantment!");
-                        itemEnchant = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantName.toLowerCase()));
-                    } else {
-                        System.out.println("It's an oinkcraft enchantment!");
-                        itemEnchant = EnchantmentFramework.getByCustomKey(enchantName.toLowerCase());
-                    }
-                    System.out.println("The name is: " + enchantName.toLowerCase());
-                    System.out.println("The enchantment is: " + itemEnchant.toString());
-                    if(itemEnchant != null){
-                        tempMeta.addEnchant(itemEnchant, enchantLevelInt, true);
-                    }
-                } catch (NumberFormatException exception){
-                    player.sendMessage(prefix + ChatColor.RED + "It looks like an enchantment, " + enchantName + " is improperly defined! Contact an admin.");
-                }
-                enchantsIndexCheck = itemEnchants.indexOf(",");
-                if(enchantsIndexCheck == -1) break;
-                itemEnchants = "[" + itemEnchants.substring(itemEnchants.indexOf(",")+2);
-            }
-
-            // Set name
-            String newItemName = str.substring(amtSemi+7, nameSemi);
-
-            // Set lore
-            String itemLore = str.substring(enchantSemi+7);
-            ArrayList<String> newItemLore = new ArrayList<>();
-            int num = 0; // Keep track of item so we can remove space from all items beyond the first
-            while(itemLore.contains(",")){
-                String loreString = itemLore.substring(1, itemLore.indexOf(","));
-                if(num > 0 && loreString.length() > 1){
-                    newItemLore.add(loreString.substring(1));
-                } else {
-                    newItemLore.add(loreString);
-                }
-                itemLore = "[" + itemLore.substring(itemLore.indexOf(",")+1);
-                num++;
-            }
-
-            // Set values
-            tempMeta.setDisplayName(newItemName);
-            tempMeta.setLore(newItemLore);
-
-            // Finally add the updated meta
-            tempItem.setItemMeta(tempMeta);
-            bundleItems.add(tempItem);
+        for(int i = 0; i <= Main.getInstance().getBundlesConfig().getKeys(false).size(); i++){
+            bundleItems.add(Main.getInstance().getBundlesConfig().getItemStack("bundles." + bundleName + "." + i));
         }
-
         return bundleItems;
     }
 

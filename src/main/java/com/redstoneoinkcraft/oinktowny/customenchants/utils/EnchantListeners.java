@@ -2,21 +2,24 @@ package com.redstoneoinkcraft.oinktowny.customenchants.utils;
 
 import com.google.common.collect.Sets;
 import com.redstoneoinkcraft.oinktowny.Main;
+import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import com.redstoneoinkcraft.oinktowny.customenchants.enchants.EnchantJumpBoost;
+import org.bukkit.*;
+import org.bukkit.enchantments.EnchantmentOffer;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -35,10 +38,31 @@ public class EnchantListeners implements Listener {
 
     private Set<UUID> prevPlayersOnGround = Sets.newHashSet(); // For the jump thing
 
+    /* General required enchantment listeners */
+    @EventHandler
+    public void itemPlacedInTable(PrepareItemEnchantEvent event){
+        // TODO: This is killing me inside
+    }
+
+    /* For the actual enchantments */
+
+    @EventHandler
+    public void onPlayerJump(PlayerStatisticIncrementEvent event){
+        if(event.getStatistic() == Statistic.JUMP){
+            Player player = event.getPlayer();
+            if(player.getInventory().getBoots() == null) return;
+            if(player.getInventory().getBoots().getEnchantments().containsKey(EnchantmentManager.JUMP_BOOST)) {
+                int jumpLevel = player.getInventory().getBoots().getEnchantmentLevel(EnchantmentManager.JUMP_BOOST);
+                player.setVelocity(new Vector(player.getVelocity().getX(), player.getVelocity().getY() + jumpLevel, player.getVelocity().getZ()));
+            }
+        }
+    }
+
+    /* I never want to see this again if the statistics thing works
     @EventHandler
     public void enchantOnPlayerMove(PlayerMoveEvent event) {
         /* Jumping check
-         * Taken from: https://bukkit.org/threads/detect-player-jump.445415/ */
+         * Taken from: https://bukkit.org/threads/detect-player-jump.445415/
         Player player = event.getPlayer();
         if (player.getVelocity().getY() > 0) {
             double jumpVelocity = (double) 0.42F;
@@ -66,7 +90,7 @@ public class EnchantListeners implements Listener {
         } else {
             prevPlayersOnGround.remove(player.getUniqueId());
         }
-    }
+    } */
 
     @EventHandler
     public void enchantOnEntityHit(EntityDamageByEntityEvent event){
@@ -77,8 +101,8 @@ public class EnchantListeners implements Listener {
 
         /* Player is the one damaged */
         if(damaged instanceof Player){
-            /* Conversion Enchantment - Converts damage to health */
             Player player = (Player) damaged;
+            /* Conversion Enchantment - Converts damage to health */
             ItemStack chestplate = player.getInventory().getChestplate();
             try {
                 if (chestplate.getEnchantments().containsKey(EnchantmentManager.CONVERSION)) {
@@ -102,13 +126,43 @@ public class EnchantListeners implements Listener {
         if(damager instanceof Player) {
             /* Glowing Strike Enchantment */
             Player player = (Player) damager;
+            Entity victim = damaged;
             ItemStack sword = player.getInventory().getItemInMainHand();
             if (sword.getEnchantments().containsKey(EnchantmentManager.GLOW_STRIKE)) {
                 damaged.setGlowing(true);
                 EnchantTimer et = new EnchantTimer(10, damaged);
                 et.runTaskTimer(Main.getInstance(), 0, 20L);
             }
+
+            // TODO: Give these odds of 10%
+            /* Dog master enchantment */
+            if(player.getInventory().getItemInMainHand().containsEnchantment(EnchantmentManager.DOG_MASTER)){
+                Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
+                wolf.setAdult();
+                wolf.setAngry(true);
+                wolf.setCollarColor(DyeColor.ORANGE);
+                wolf.setCustomName("" + ChatColor.GOLD + ChatColor.BOLD + player.getName() + "'s Summoned Wolf");
+                wolf.setOwner(player);
+                if(victim instanceof LivingEntity)  wolf.setTarget((LivingEntity)victim);
+                // TODO: Kill wolves after a certain time
+            }
+
+            /* Necromancer enchantment */
+            if(player.getInventory().getItemInMainHand().containsEnchantment(EnchantmentManager.NECROMANCER)){
+                Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+                if(victim instanceof LivingEntity)  zombie.setTarget((LivingEntity)victim);
+                zombie.setCustomName("" + ChatColor.DARK_PURPLE + ChatColor.BOLD + player.getName() + "'s Summoned Zombie");
+                zombie.setHealth(1);
+            }
+
+            /* Rust Enchantment */
+            if(player.getInventory().getItemInMainHand().containsEnchantment(EnchantmentManager.RUST)){
+                // TODO: Give odds of 20%
+                if(victim instanceof LivingEntity) ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20*4, 2));
+                // hitter.sendMessage(Poisoned!);
+            }
         }
+
     }
 
     private ArrayList<Arrow> explosiveArrows = new ArrayList<>();
@@ -128,7 +182,7 @@ public class EnchantListeners implements Listener {
     }
 
     @EventHandler
-    public void enchantOnArrowHit(ProjectileHitEvent event){
+    public void enchantOnProjectileHit(ProjectileHitEvent event){
         /* Projectile is an arrow */
         if(event.getEntity() instanceof Arrow){
             Arrow arrow = (Arrow) event.getEntity();
@@ -138,7 +192,22 @@ public class EnchantListeners implements Listener {
                 Location loc = arrow.getLocation();
                 loc.getWorld().createExplosion(loc.getBlockX(), loc.getY(), loc.getZ(), 2.0f, false, false);
             }
+        }
+        /* Deflection enchantment */
+        if(event.getHitEntity() instanceof Player){
+            Player damaged = (Player) event.getHitEntity();
+            Projectile proj = event.getEntity();
 
+            // TODO: Make a method that just checks all armor for enchantments
+            ItemStack chestplate = damaged.getInventory().getChestplate();
+            ItemStack leggings = damaged.getInventory().getLeggings();
+            if(chestplate.getEnchantments().containsKey(EnchantmentManager.DEFLECT) || leggings.getEnchantments().containsKey(EnchantmentManager.DEFLECT)){
+                Vector v = proj.getVelocity();
+
+                Projectile newProj = (Projectile) damaged.getWorld().spawnEntity(damaged.getLocation(), proj.getType());
+                newProj.setShooter(damaged);
+                newProj.setVelocity(proj.getVelocity().rotateAroundY(180));
+            }
         }
     }
 }

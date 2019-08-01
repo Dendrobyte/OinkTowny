@@ -1,4 +1,4 @@
-package com.redstoneoinkcraft.oinktowny.customenchants.utils;
+package com.redstoneoinkcraft.oinktowny.ruins.creation;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -6,7 +6,7 @@ package com.redstoneoinkcraft.oinktowny.customenchants.utils;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public class EnchantAnvilMaintance {
+public enum RuinDifficulty {
 
-    // TODO: Maintain enchants through anvils
+    EASY, MEDIUM, HARD, INSANE;
 }

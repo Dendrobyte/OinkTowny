@@ -1,10 +1,10 @@
 name: OinkTowny
 author: Dendrobyte, Mobkinz78
-version: 0.8a
+version: 0.28a
 main: com.redstoneoinkcraft.oinktowny.Main
 description: OinkTowny plugin made for Oinkcraft's new towny reboot!
 softdepend: [Multiverse-Core]
-api-version: 1.13
+api-version: 1.14
 commands:
   oinktowny:
     description: Base oinktowny command
@@ -27,3 +27,5 @@ permissions:
     description: Allows a player to create an arena
   oinktowny.arenas:
     description: Allows a player to create an arena join sign
+  oinktowny.ruins:
+    description: Allows a player to create ruins

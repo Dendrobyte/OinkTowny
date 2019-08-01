@@ -6,7 +6,7 @@ import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Item;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,7 +14,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -22,6 +24,8 @@ import java.util.List;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
+
+// This could honestly be a bit more organized... ._.
 public class ArtifactManager {
 
     private static ArtifactManager instance = new ArtifactManager();
@@ -29,8 +33,8 @@ public class ArtifactManager {
         return instance;
     }
 
-    private String label = "" + ChatColor.DARK_GREEN + ChatColor.BOLD + "ARTIFACT";
-    private String usesLabel = "" + ChatColor.RED + ChatColor.BOLD + "USES: ";
+    private String label = "" + ChatColor.DARK_GREEN + "Artifact";
+    private String usesLabel = "" + ChatColor.RED + "Uses: ";
     private String prefix = Main.getInstance().getPrefix();
 
     private ArtifactManager(){}
@@ -44,7 +48,9 @@ public class ArtifactManager {
         ItemStack artifact = new ItemStack(material, amount);
         ItemMeta meta = artifact.getItemMeta();
 
-        meta.setDisplayName("" + ChatColor.GREEN + ChatColor.BOLD + type.toString());
+        String name = type.toString().replaceAll("_", " ");
+        name = name.substring(0, 1) + name.substring(1).toLowerCase();
+        meta.setDisplayName("" + ChatColor.GREEN + name);
         meta.addEnchant(EnchantmentManager.ARTIFACT, 1, true);
         ArrayList<String> lore = new ArrayList<>();
         lore.add(label);
@@ -56,16 +62,22 @@ public class ArtifactManager {
     }
 
     public ArtifactType getArtifactType(ItemStack item){
-        String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
-        return ArtifactType.valueOf(name);
+        if(item == null) return null;
+        try {
+            String name = ChatColor.stripColor(item.getItemMeta().getDisplayName()).toUpperCase();
+            name = name.replaceAll(" ", "_");
+            return ArtifactType.valueOf(name);
+        } catch (NullPointerException e){
+            return null;
+        }
     }
 
     /* Effecting item information via lore */
     public int getUses(ItemStack item){
         ItemMeta meta = item.getItemMeta();
         for (String str : meta.getLore()){
-            if (str.contains("USES: ")) {
-                return Integer.parseInt(str.substring(6 + 4)); // +4 for the color codes
+            if (str.contains("Uses: ")) {
+                return Integer.parseInt(str.substring(6 + 2)); // +2 for the color code
             }
         }
 
@@ -82,13 +94,14 @@ public class ArtifactManager {
         }
         if(newAmount <= 0){
             item.setAmount(0);
+            if(getArtifactType(item) == ArtifactType.HEADLAMP) clearPlayerTorches(player);
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 2, 1);
             return;
         }
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for(int i = 0; i < lore.size(); i++){
-            if(lore.get(i).contains("USES: ")){
+            if(lore.get(i).contains("Uses: ")){
                 lore.set(i, usesLabel + newAmount);
                 break;
             }
@@ -185,7 +198,7 @@ public class ArtifactManager {
 
     public void gravityShift(Player player){
         int hoverTime = 8*20; // *20 for the ticks
-        PotionEffect gravity = new PotionEffect(PotionEffectType.LEVITATION, hoverTime, 1, true, true);
+        PotionEffect gravity = new PotionEffect(PotionEffectType.LEVITATION, hoverTime, 8, true, true);
         player.addPotionEffect(gravity);
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, hoverTime+80, 1, true, true)); // Extend resistance to prevent fall damage
         player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_TELEPORT, 1, 1);
@@ -211,6 +224,71 @@ public class ArtifactManager {
         Location loc = player.getLocation();
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 8, true, true));
         player.getWorld().createExplosion(loc.getBlockX(), loc.getY(), loc.getZ(), 2.0f, false, false);
+    }
+
+    public ItemStack createHeadlamp(){
+        return initializeArtifact(Material.LEATHER_HELMET, ArtifactType.HEADLAMP, 400, 1);
+    }
+
+    private HashMap<Player, Block> torchReplacements = new HashMap<>(2);
+    public void replaceTorch(Player player, Block block){
+        if(!torchReplacements.containsKey(player)){
+            torchReplacements.put(player, block);
+        }
+        torchReplacements.get(player).setType(Material.AIR);
+        block.setType(Material.TORCH);
+        torchReplacements.put(player, block);
+    }
+
+    public boolean isHeadlampTorch(Player player, Block block){
+        return torchReplacements.get(player).equals(block);
+    }
+
+    public void clearPlayerTorches(Player player){
+        torchReplacements.get(player).setType(Material.AIR);
+        torchReplacements.remove(player);
+    }
+
+    public ItemStack createTelepoof(){
+        return initializeArtifact(Material.FIRE_CHARGE, ArtifactType.TELEPOOF, 10, 1);
+    }
+
+    public void poofTeleport(Player player){
+        Location playerLoc = player.getLocation();
+        playerLoc.getWorld().spawnParticle(Particle.SMOKE_LARGE, playerLoc, 2);
+        Random rand = new Random();
+        int xChange = rand.nextInt(30) - 20;
+        int zChange = rand.nextInt(30) - 20;
+        int yChange = rand.nextInt(5); // Only go up
+        boolean viableLocation = false;
+        Location newLoc = new Location(playerLoc.getWorld(), playerLoc.getBlockX()+xChange, playerLoc.getBlockY()+yChange, playerLoc.getBlockZ()+zChange);
+        while(!viableLocation){
+            newLoc = new Location(newLoc.getWorld(), newLoc.getBlockX(), newLoc.getBlockY()+4, newLoc.getBlockZ());
+            if(newLoc.getBlock().getType().equals(Material.AIR)) viableLocation = true;
+        }
+        newLoc.getWorld().spawnParticle(Particle.HEART, playerLoc, 100);
+        player.teleport(newLoc);
+        newLoc.getWorld().playSound(newLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 8, 0);
+    }
+
+    public ItemStack createLuckyHoe(){
+        return initializeArtifact(Material.DIAMOND_HOE, ArtifactType.LUCKY_HOE, 20, 1);
+    }
+
+    public boolean instantGrowth(Block block){
+        if(block.getBlockData() instanceof Ageable){
+            Ageable crop = (Ageable)block.getBlockData();
+            if(crop.getAge() == crop.getMaximumAge()){
+                return false;
+            }
+            crop.setAge(crop.getMaximumAge());
+            block.setBlockData(crop);
+            block.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, block.getLocation(), 40);
+            block.getWorld().playSound(block.getLocation(), Sound.BLOCK_COMPOSTER_FILL_SUCCESS, 4, 0);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
