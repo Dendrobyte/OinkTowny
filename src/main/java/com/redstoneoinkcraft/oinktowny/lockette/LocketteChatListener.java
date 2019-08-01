@@ -37,7 +37,7 @@ public class LocketteChatListener implements Listener {
                 player.sendMessage(prefix + "Please provide a player name after \'ADD \'");
                 return;
             }
-            String playerName = message.substring(message.indexOf(" "));
+            String playerName = message.substring(message.indexOf(" ")+1);
             boolean playerOnline = false;
             UUID playerId = null;
             for(Player onlinePlayer : Bukkit.getOnlinePlayers()){
@@ -54,7 +54,7 @@ public class LocketteChatListener implements Listener {
             boolean success = lm.addPlayerToChest(original, playerId, playerName);
             if(success) {
                 if(lm.isDoubleChest(original)){
-                    lm.addPlayerToChest(lm.getOtherHalfOfDouble((DoubleChest)original, original), playerId, playerName);
+                    lm.addPlayerToChest(lm.getOtherHalfOfDouble(lm.toDoubleChest(original), original), playerId, playerName);
                 }
                 player.sendMessage(prefix + playerName + " has been added to your chest!");
             } else {
@@ -70,7 +70,7 @@ public class LocketteChatListener implements Listener {
                 player.sendMessage(prefix + "Player not listed as added to chest, thus not removed.");
             } else { // removed
                 if(lm.isDoubleChest(original)) {
-                    lm.removePlayerFromChest(lm.getOtherHalfOfDouble((DoubleChest)original, original), playerName);
+                    lm.removePlayerFromChest(lm.getOtherHalfOfDouble(lm.toDoubleChest(original), original), playerName);
                 }
                 player.sendMessage(prefix + "Removed " + playerName + " from chest!");
             }
@@ -78,27 +78,22 @@ public class LocketteChatListener implements Listener {
         }
         // TODO: If it's a double chest... Break the whole thing and remove both chests from configuration
         else if (message.equalsIgnoreCase("DELETE")){
-            player.sendMessage(prefix + "This command deletes your currently edited chest (items will be dropped). To confirm, type " + ChatColor.RED + ChatColor.BOLD + "CONFIRM DELETE");
+            player.sendMessage(prefix + "This command permanently unprivates your chest. To confirm, type " + ChatColor.RED + ChatColor.BOLD + "CONFIRM DELETE");
             return;
         }
         else if (message.equalsIgnoreCase("CONFIRM DELETE")){
-            player.sendMessage(prefix + "Breaking chest...");
-            int amt = 1;
+            player.sendMessage(prefix + "Unprivating chest...");
             Chest original = lm.getPlayersEditing().get(player);
             Chest otherHalf;
             if(lm.isDoubleChest(original)){
-                amt = 2;
-                otherHalf = lm.getOtherHalfOfDouble((DoubleChest)original, original);
-                lm.removeChest(otherHalf);
-                otherHalf.getBlock().breakNaturally();
-                // TODO: Make sure this drops all the contents.
-            }
-            lm.removeChest(original);
-            original.getBlock().breakNaturally();
+                otherHalf = lm.getOtherHalfOfDouble(lm.toDoubleChest(original), original);
+                lm.removeChest(otherHalf); // Other have taken care of in removeChest method
 
-            Bukkit.getWorld(player.getWorld().getName()).dropItem(player.getLocation(), new ItemStack(Material.CHEST, amt));
-            lm.removeChest(lm.getPlayersEditing().get(player));
-            player.sendMessage(prefix + "Chest destroyed. Exiting editor...");
+            } else {
+                lm.removeChest(original);
+            }
+
+            player.sendMessage(prefix + "Chest unprivated. Exiting editor...");
             lm.getPlayersEditing().remove(player);
             return;
         }
@@ -109,7 +104,7 @@ public class LocketteChatListener implements Listener {
         } else {
             player.sendMessage(prefix + "ADD <name> - " + ChatColor.GRAY + "Add a player to the chest you just clicked");
             player.sendMessage(prefix + "REMOVE <name> - " + ChatColor.GRAY + "Remove a player from the chest you just clicked");
-            player.sendMessage(prefix + "DELETE - " + ChatColor.GRAY + "Remove the chest you just clicked");
+            player.sendMessage(prefix + "DELETE - " + ChatColor.GRAY + "Unprivate the chest you just clicked");
             player.sendMessage(prefix + "DONE - " + ChatColor.GRAY + "Leave this edit wizard");
         }
     }

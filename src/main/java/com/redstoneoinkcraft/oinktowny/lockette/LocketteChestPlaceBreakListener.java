@@ -31,10 +31,9 @@ public class LocketteChestPlaceBreakListener implements Listener {
         Player player = event.getPlayer();
         Chest chest = (Chest)event.getBlock().getState();
         if(!Main.getInstance().isTownyWorld(player.getWorld().getName())) return;
-        if(lm.isDoubleChest(chest)){ // Does this get the chet placed as a single chest, or does it get the chest placed when it becomes a double chest...?
-            if(lm.isDoubleAlreadyPrivated((DoubleChest)chest)){
-
-            }
+        if (lm.getActiveTimers().containsKey(player)) {
+            lm.getActiveTimers().get(player).cancel();
+            player.sendMessage(prefix + ChatColor.GRAY + "Previous Lockette timer canceled.");
         }
         player.sendMessage(prefix + ChatColor.AQUA + "If you'd like to private this chest, " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + RIGHT CLICK");
         lm.addActiveChest(chest, player);
@@ -50,6 +49,11 @@ public class LocketteChestPlaceBreakListener implements Listener {
         } */
         Chest chest = (Chest)event.getBlock().getState();
         if(!lm.isLocketteChest(chest)){
+            if(lm.getActiveTimers().containsValue(chest)){
+                player.sendMessage(prefix + "Please wait until the timer expires to break this chest.");
+                event.setCancelled(true);
+                return;
+            }
             return;
         }
         if(!lm.playerOwnsChest(player, chest)) {
@@ -58,12 +62,7 @@ public class LocketteChestPlaceBreakListener implements Listener {
             event.setCancelled(true);
             return;
         } else {
-            if(player.isSneaking()){
-                player.sendMessage(prefix + "Privately owned chest broken.");
-                lm.removeChest(chest);
-                return;
-            }
-            player.sendMessage(prefix + "This chest is privated. To break it, " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + LEFT CLICK");
+            player.sendMessage(prefix + "This chest is privated. To unprivate it (then break it), " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + LEFT CLICK");
             event.setCancelled(true);
         }
 

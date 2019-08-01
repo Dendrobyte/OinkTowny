@@ -10,6 +10,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -105,14 +106,19 @@ public class LocketteManager {
         } else { // isDouble
             Main.getInstance().getConfig().set("lockette-data.chests." + chestNum + ".doublechest", true);
             /* This seriously needs to be turned into a method... */
-            ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("chests");
+            ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("lockette-data.chests");
             for(String existingChestNums : chests.getKeys(false)) {
-                Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
-                if(storedLoc.equals(makeFakeLocationForRealChest(otherHalf))){
+                Location storedLoc = new Location(Bukkit.getWorld(chests.getString(existingChestNums + ".location.world")), chests.getInt(existingChestNums + ".location.x"), chests.getInt(existingChestNums + ".location.y"), chests.getInt(existingChestNums + ".location.z"));
+                Location fakeLocation = makeFakeLocationForRealChest(otherHalf);
+                if(storedLoc.equals(fakeLocation)){
+                    System.out.println("otherHalf located");
                     chests.set(chestNum + ".other-half-id", Integer.parseInt(existingChestNums));
+                    System.out.println("first ID: " + Integer.parseInt(existingChestNums));
                     chests.set(existingChestNums + ".doublechest", true);
                     chests.set(existingChestNums + ".other-half-id", chestNum);
-                    break;
+                    continue;
+                } else {
+                    System.out.println("Not located at all");
                 }
             }
             // Set the other-half-id to that chest
@@ -159,13 +165,18 @@ public class LocketteManager {
 
     public boolean removeChest(Chest chest){
         boolean passed = false;
-        ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("chests");
+        ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("lockette-data.chests");
         for(String chestNum : chests.getKeys(false)) {
             Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
             if(storedLoc.equals(makeFakeLocationForRealChest(chest))){
+                if(chests.getBoolean(chestNum + ".doublechest")){
+                    int otherId = chests.getInt(chestNum + ".other-half-id");
+                    chests.set(Integer.toString(otherId), null);
+                }
                 chests.set(chestNum, null);
                 Main.getInstance().saveConfig();
                 passed = true;
+                break;
             }
         }
         reloadChests();
@@ -190,7 +201,7 @@ public class LocketteManager {
         playersEditing.put(player, chest);
         player.sendMessage(editorPrefix + "ADD <name> - " + ChatColor.GRAY + "Add a player to the chest you just clicked");
         player.sendMessage(editorPrefix + "REMOVE <name> - " + ChatColor.GRAY + "Remove a player from the chest you just clicked");
-        player.sendMessage(editorPrefix + "DELETE - " + ChatColor.GRAY + "Remove the chest you just clicked");
+        player.sendMessage(editorPrefix + "DELETE - " + ChatColor.GRAY + "Unprivate the chest you just clicked");
         player.sendMessage(editorPrefix + "DONE - " + ChatColor.GRAY + "Leave this edit wizard");
     }
 
@@ -259,8 +270,7 @@ public class LocketteManager {
 
     /* Utils */
     public boolean isDoubleChest(Chest chest){
-        return chest.getInventory().getHolder() instanceof DoubleChest; // May not work, but want to give it a shot
-        // return chest.getInventory().getSize() > 27;
+        return chest.getInventory().getSize() > 27;
     }
 
     public Chest getOtherHalfOfDouble(DoubleChest doubleChest, Chest chest){
@@ -276,6 +286,15 @@ public class LocketteManager {
         Chest leftHalf = (Chest)chest.getLeftSide();
         Chest rightHalf = (Chest)chest.getRightSide();
         return isLocketteChest(leftHalf) || isLocketteChest(rightHalf);
+    }
+
+    public DoubleChest toDoubleChest(Chest chest){
+        // Double check it is indeed a double chest
+        InventoryHolder holder = chest.getInventory().getHolder();
+        if(holder instanceof DoubleChest){
+            return (DoubleChest)holder;
+        }
+        return null;
     }
 
 }

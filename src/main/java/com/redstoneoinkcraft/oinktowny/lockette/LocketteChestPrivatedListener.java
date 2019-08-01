@@ -39,7 +39,7 @@ public class LocketteChestPrivatedListener implements Listener {
         if(lm.isDoubleChest(chest)) {
             System.out.println("Double chest!");
             isDouble = true;
-            doubleChest = (DoubleChest)chest;
+            doubleChest = lm.toDoubleChest(chest);
             /* Should this not work
              * I suppose trying to write a method that compares the contents of each half of the chest could work.
              * I can either check the configuration for the half not used, assuming they didn't click on a Lockette chest,
@@ -77,7 +77,7 @@ public class LocketteChestPrivatedListener implements Listener {
             else if (event.getAction() == Action.LEFT_CLICK_BLOCK){
                 if(lm.playerOwnsChest(player, chest)){
                     if(!player.isSneaking()) return;
-                    player.sendMessage(prefix + "Now entering the chest editing wizard...");
+                    player.sendMessage(prefix + ChatColor.YELLOW + "Now entering the chest editing wizard...");
                     lm.initiatePlayerEditing(player, chest);
                     event.setCancelled(true);
                     return;
@@ -95,6 +95,7 @@ public class LocketteChestPrivatedListener implements Listener {
                             if(lm.isLocketteChest(otherHalf)){
                                 if(!lm.playerOwnsChest(player, otherHalf)){
                                     player.sendMessage(prefix + "You don't own the other half of this chest!");
+                                    event.setCancelled(true);
                                     return;
                                 }
                                 lm.makeNewPrivateChest(chest, player, true, otherHalf);
@@ -107,10 +108,11 @@ public class LocketteChestPrivatedListener implements Listener {
                             }
 
                         } else {
-                            lm.makeNewPrivateChest(chest, player, false, otherHalf);
+                            lm.makeNewPrivateChest(chest, player, false, null);
                         }
                         player.sendMessage(prefix + "Chest has been privated! To edit it, " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + LEFT CLICK");
                         lm.getActiveTimers().get(player).cancel();
+                        lm.getActiveTimers().remove(player);
                         lm.removeActiveChest(chest);
                         event.setCancelled(true);
                         return;
