@@ -13,10 +13,8 @@ import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
-import com.redstoneoinkcraft.oinktowny.lockette.LocketteChatListener;
-import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPlaceBreakListener;
-import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPrivatedListener;
-import com.redstoneoinkcraft.oinktowny.lockette.LocketteManager;
+import com.redstoneoinkcraft.oinktowny.listeners.TreeFellerBreakListener;
+import com.redstoneoinkcraft.oinktowny.lockette.*;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropOpenListener;
 import com.redstoneoinkcraft.oinktowny.portals.NetherPortalListener;
@@ -89,6 +87,7 @@ public class Main extends JavaPlugin {
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new TreeFellerBreakListener(), this);
         // Bundle events
         Bukkit.getServer().getPluginManager().registerEvents(new SignClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PreventItemStealListener(), this);
@@ -124,6 +123,7 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPlaceBreakListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPrivatedListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChatListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new LocketteDoorListener(), this);
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());

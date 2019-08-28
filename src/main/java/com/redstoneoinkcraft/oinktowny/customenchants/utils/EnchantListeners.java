@@ -199,14 +199,18 @@ public class EnchantListeners implements Listener {
             Projectile proj = event.getEntity();
 
             // TODO: Make a method that just checks all armor for enchantments
-            ItemStack chestplate = damaged.getInventory().getChestplate();
-            ItemStack leggings = damaged.getInventory().getLeggings();
-            if(chestplate.getEnchantments().containsKey(EnchantmentManager.DEFLECT) || leggings.getEnchantments().containsKey(EnchantmentManager.DEFLECT)){
-                Vector v = proj.getVelocity();
+            try {
+                ItemStack chestplate = damaged.getInventory().getChestplate();
+                ItemStack leggings = damaged.getInventory().getLeggings();
+                if(chestplate.getEnchantments().containsKey(EnchantmentManager.DEFLECT) || leggings.getEnchantments().containsKey(EnchantmentManager.DEFLECT)){
+                    Vector v = proj.getVelocity();
 
-                Projectile newProj = (Projectile) damaged.getWorld().spawnEntity(damaged.getLocation(), proj.getType());
-                newProj.setShooter(damaged);
-                newProj.setVelocity(proj.getVelocity().rotateAroundY(180));
+                    Projectile newProj = (Projectile) damaged.getWorld().spawnEntity(damaged.getLocation(), proj.getType());
+                    newProj.setShooter(damaged);
+                    newProj.setVelocity(proj.getVelocity().rotateAroundY(180));
+                }
+            } catch (NullPointerException e){
+                return; // Not wearing any armor
             }
         }
     }

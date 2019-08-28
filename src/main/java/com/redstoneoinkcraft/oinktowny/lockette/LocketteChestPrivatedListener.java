@@ -70,7 +70,7 @@ public class LocketteChestPrivatedListener implements Listener {
                     return;
                 } else {
                     event.setCancelled(true);
-                    player.sendMessage(prefix + ChatColor.RED + "This chest is privately owned, and you are not added!");
+                    player.sendMessage(prefix + ChatColor.RED + "This chest is privately owned.");
                     return;
                 }
             }

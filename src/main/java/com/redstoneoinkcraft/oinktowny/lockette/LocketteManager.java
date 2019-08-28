@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
@@ -35,24 +36,27 @@ public class LocketteManager {
         return instance;
     }
 
+    ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("lockette-data.chests");
+
     private HashMap<Chest, List<String>> privatedChests = new HashMap<>();
     public void loadChests(){
         try {
-            ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("lockette-data.chests");
             for (String chestNum : chests.getKeys(false)) {
                 // Get the chest
                 Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
                 Block block = storedLoc.getBlock();
                 if (block.getType() != Material.CHEST) {
                     System.out.println("ERROR: Lockette chest location in config not a chest.");
+                    chests.set(chestNum, null);
+                } else {
+
+                    // Get the added player names
+                    List<String> playerNames = chests.getStringList(chestNum + ".added-players");
+                    playerNames.add(chests.getString(chestNum + ".owner"));
+
+                    // Add them to the map
+                    privatedChests.put((Chest)block.getState(), playerNames);
                 }
-
-                // Get the added player names
-                List<String> playerNames = chests.getStringList(chestNum + ".added-players");
-                playerNames.add(chests.getString(chestNum + ".owner"));
-
-                // Add them to the map
-                privatedChests.put((Chest) block.getState(), playerNames);
             }
             System.out.println(prefix + "All chests successfully loaded!");
             System.out.println("Privated chests hashmap: " + privatedChests.toString());
@@ -106,7 +110,6 @@ public class LocketteManager {
         } else { // isDouble
             Main.getInstance().getConfig().set("lockette-data.chests." + chestNum + ".doublechest", true);
             /* This seriously needs to be turned into a method... */
-            ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("lockette-data.chests");
             for(String existingChestNums : chests.getKeys(false)) {
                 Location storedLoc = new Location(Bukkit.getWorld(chests.getString(existingChestNums + ".location.world")), chests.getInt(existingChestNums + ".location.x"), chests.getInt(existingChestNums + ".location.y"), chests.getInt(existingChestNums + ".location.z"));
                 Location fakeLocation = makeFakeLocationForRealChest(otherHalf);
@@ -165,21 +168,24 @@ public class LocketteManager {
 
     public boolean removeChest(Chest chest){
         boolean passed = false;
-        ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("lockette-data.chests");
         for(String chestNum : chests.getKeys(false)) {
             Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
             if(storedLoc.equals(makeFakeLocationForRealChest(chest))){
-                if(chests.getBoolean(chestNum + ".doublechest")){
+                /*if(chests.getBoolean(chestNum + ".doublechest")){
                     int otherId = chests.getInt(chestNum + ".other-half-id");
+                    Location otherChestLoc = new Location(Bukkit.getWorld(chests.getString(otherId + ".location.world")), chests.getInt(otherId + ".location.x"), chests.getInt(otherId + ".location.y"), chests.getInt(otherId + ".location.z"));
+                    System.out.println("4: " + otherChestLoc.getBlock().toString());
+                    Chest otherChest = (Chest)otherChestLoc.getBlock().getState();
+                    privatedChests.remove(otherChest);
                     chests.set(Integer.toString(otherId), null);
-                }
+                } */
+                privatedChests.remove(chest);
                 chests.set(chestNum, null);
                 Main.getInstance().saveConfig();
                 passed = true;
                 break;
             }
         }
-        reloadChests();
         return passed;
     }
 
@@ -199,32 +205,35 @@ public class LocketteManager {
             return;
         }
         playersEditing.put(player, chest);
-        player.sendMessage(editorPrefix + "ADD <name> - " + ChatColor.GRAY + "Add a player to the chest you just clicked");
-        player.sendMessage(editorPrefix + "REMOVE <name> - " + ChatColor.GRAY + "Remove a player from the chest you just clicked");
-        player.sendMessage(editorPrefix + "DELETE - " + ChatColor.GRAY + "Unprivate the chest you just clicked");
-        player.sendMessage(editorPrefix + "DONE - " + ChatColor.GRAY + "Leave this edit wizard");
+        player.sendMessage(prefix + "ADD <name> - " + ChatColor.GRAY + "Add a player to your chest");
+        player.sendMessage(prefix + "REMOVE <name> - " + ChatColor.GRAY + "Remove a player from your chest");
+        player.sendMessage(prefix + "DELETE - " + ChatColor.GRAY + "Unprivate the chest");
+        player.sendMessage(prefix + "DONE - " + ChatColor.GRAY + "Leave this editor");
     }
 
     public boolean addPlayerToChest(Chest chest, UUID playerId, String playerName){
         boolean passed = false;
-        ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("chests");
+        if(privatedChests.get(chest).contains(playerId + ":" + playerName)){
+            return false;
+        }
         for(String chestNum : chests.getKeys(false)) {
             Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
             if(storedLoc.equals(makeFakeLocationForRealChest(chest))){
                 List<String> playerNames = chests.getStringList(chestNum + ".added-players");
                 playerNames.add(playerId + ":" + playerName);
+                chests.set(chestNum + ".added-players", playerNames);
+                privatedChests.get(chest).add(0, playerId + ":" + playerName);
                 Main.getInstance().saveConfig();
                 passed = true;
+                break;
             }
         }
-        reloadChests();
         return passed;
     }
 
     // If someone's name changed, check if their UUID is still on the chest
     // TODO: This may cause an issue with the owner's name... Then again, we may be fine since that deals with UUID
     public void refreshChest(Chest chest, UUID playerId, String playerName){
-        ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("chests");
         for(String chestNum : chests.getKeys(false)) {
             // Get the chest
             Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
@@ -247,7 +256,6 @@ public class LocketteManager {
 
     public boolean removePlayerFromChest(Chest chest, String playerName){
         boolean passed = false;
-        ConfigurationSection chests = Main.getInstance().getConfig().getConfigurationSection("chests");
         for(String chestNum : chests.getKeys(false)) {
             Location storedLoc = new Location(Bukkit.getWorld(chests.getString(chestNum + ".location.world")), chests.getInt(chestNum + ".location.x"), chests.getInt(chestNum + ".location.y"), chests.getInt(chestNum + ".location.z"));
             if(storedLoc.equals(makeFakeLocationForRealChest(chest))){
@@ -257,6 +265,7 @@ public class LocketteManager {
                     if(storedName.equalsIgnoreCase(playerName)){
                         playerNames.remove(name);
                         Main.getInstance().saveConfig();
+                        privatedChests.get(chest).remove(name);
                         passed = true;
                         break;
                     }
@@ -264,7 +273,6 @@ public class LocketteManager {
                 break;
             }
         }
-        reloadChests();
         return passed;
     }
 
@@ -295,6 +303,36 @@ public class LocketteManager {
             return (DoubleChest)holder;
         }
         return null;
+    }
+
+    /* Door things */
+    public ConfigurationSection getDoorPath(Block door){
+        Location doorLoc = new Location(door.getWorld(), door.getX(), door.getY(), door.getZ());
+        ConfigurationSection doorPath = Main.getInstance().getConfig().getConfigurationSection("lockette-data.doors");
+        for(String doorNum : doorPath.getKeys(false)){
+            Location storedLoc = new Location(Bukkit.getWorld(doorPath.getString(doorNum + ".location.world")), doorPath.getInt(doorNum + ".location.x"), doorPath.getInt(doorNum + ".location.y"), doorPath.getInt(doorNum + ".location.z"));
+            if(doorLoc.equals(storedLoc)){
+                doorPath = Main.getInstance().getConfig().getConfigurationSection("lockette-data.doors." + doorNum);
+                break;
+            }
+        }
+        return doorPath;
+    }
+
+    public void newPrivateDoor(Block door){
+
+    }
+
+    public void removePrivateDoor(Block door){
+
+    }
+
+    public void doesPlayerOwnDoor(Block door, Player player){
+
+    }
+
+    public void isPlayerAddedToDoor(Block door, Player player){
+
     }
 
 }
