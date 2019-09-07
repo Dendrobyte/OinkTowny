@@ -62,7 +62,6 @@ public class RegionsManager {
             return;
         }
         UUID claimerID = claimer.getUniqueId();
-        addRegionClaim(claimerID, chunk);
 
         // Check if they can claim another chunk
         // TODO: This should become dynamic over time... so each player has a different base chunk claim. For now, it'll be teamwork!
@@ -87,6 +86,8 @@ public class RegionsManager {
         }
 
         // Add the claim region and cache it
+        addRegionClaim(claimerID, chunk);
+        currentClaims += 1;
         claimer.sendMessage(prefix + "Chunk has been claimed! " + ChatColor.GOLD + ChatColor.BOLD + "Claimed chunks: " + currentClaims + "/" + limit);
         claimer.sendMessage(prefix + ChatColor.GRAY + "To unclaim a chunk, use " + ChatColor.GOLD + "/ot unclaim");
         mainInstance.saveRegionsConfig();
@@ -125,6 +126,30 @@ public class RegionsManager {
         }
         System.out.println(prefix + "All regions have been successfully cached!");
         mainInstance.saveRegionsConfig();
+    }
+
+    ArrayList<Player> bypassEnabled = new ArrayList<>(2);
+    public void enableBypassForAdmin(Player admin){
+        if(!bypassEnabled.contains(admin)){
+            bypassEnabled.add(admin);
+            admin.sendMessage(prefix + ChatColor.RED + "You are now bypassing claims. Retype command to disable.");
+        } else {
+            bypassEnabled.remove(admin);
+            admin.sendMessage(prefix + ChatColor.RED + "You are now no longer bypassing claims.");
+        }
+    }
+    public boolean bypassEnabled(Player player){
+        return bypassEnabled.contains(player);
+    }
+
+    public void addAdminRegionClaim(Player admin, Chunk chunk){
+        if(chunkIsClaimed(chunk)){
+            admin.sendMessage(prefix + ChatColor.RED + "This chunk is already claimed!");
+            return;
+        }
+        admin.sendMessage(prefix + "Adding an admin claim...");
+        addRegionClaim(UUID.fromString("00000000-0ad0-0011-1234-444888444888"), chunk);
+        admin.sendMessage(prefix + ChatColor.GREEN + "Admin claim added under the following UUID: " + "> 00000000-0ad0-0011-1234-444888444888");
     }
 
     public void addRegionClaim(UUID playerID, Chunk chunk){

@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,6 +15,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+
+import java.util.ArrayList;
 
 /**
  * OinkTowny created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -31,11 +35,16 @@ public class LocketteChestPlaceBreakListener implements Listener {
         Player player = event.getPlayer();
         Chest chest = (Chest)event.getBlock().getState();
         if(!Main.getInstance().isTownyWorld(player.getWorld().getName())) return;
+        // if(event.getBlockAgainst().getType().equals(Material.CHEST)) return;
         if (lm.getActiveTimers().containsKey(player)) {
             lm.getActiveTimers().get(player).cancel();
             player.sendMessage(prefix + ChatColor.GRAY + "Previous Lockette timer canceled.");
         }
-        player.sendMessage(prefix + ChatColor.AQUA + "If you'd like to private this chest, " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + RIGHT CLICK");
+        if(lm.sendInfoMessage(player)) {
+            player.sendMessage(prefix + ChatColor.AQUA + "To private this chest, " + ChatColor.YELLOW + ChatColor.BOLD + "SNEAK + RIGHT CLICK");
+            lm.getSendInfoMessagePlayers().add(player);
+        }
+
         lm.addActiveChest(chest, player);
     }
 
@@ -50,8 +59,8 @@ public class LocketteChestPlaceBreakListener implements Listener {
         Chest chest = (Chest)event.getBlock().getState();
         if(!lm.isLocketteChest(chest)){
             if(lm.getActiveTimers().containsValue(chest)){
-                player.sendMessage(prefix + "Please wait until the timer expires to break this chest.");
-                event.setCancelled(true);
+                player.sendMessage(prefix + "Chest timer canceled.");
+                lm.getActiveTimers().get(player).cancel();
                 return;
             }
             return;
@@ -62,10 +71,9 @@ public class LocketteChestPlaceBreakListener implements Listener {
             event.setCancelled(true);
             return;
         } else {
-            player.sendMessage(prefix + "This chest is privated. To unprivate it (then break it), " + ChatColor.YELLOW + ChatColor.BOLD + "SHIFT + LEFT CLICK");
+            player.sendMessage(prefix + "This chest is privated. Unprivate to break it with, " + ChatColor.YELLOW + ChatColor.BOLD + "SNEAK + LEFT CLICK");
             event.setCancelled(true);
         }
 
     }
-
 }

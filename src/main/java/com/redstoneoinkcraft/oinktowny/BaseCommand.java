@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 /**
@@ -72,6 +73,7 @@ public class BaseCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.GOLD + "- remove <name>" + ChatColor.DARK_AQUA + " - Remove an existing bundle");
                     player.sendMessage(ChatColor.GOLD + "- give <name>" + ChatColor.DARK_AQUA + " - Give a bundle to yourself");
                     player.sendMessage(ChatColor.GOLD + "- give <bundle> <player>" + ChatColor.DARK_AQUA + " - Give a bundle to a player");
+                    player.sendMessage(ChatColor.GOLD + "- reload" + ChatColor.DARK_AQUA + " - Reload the bundle configuration");
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("create")){
@@ -137,25 +139,28 @@ public class BaseCommand implements CommandExecutor {
                     player.sendMessage(bundleManager.listBundles());
                     return true;
                 }
+                if(args[1].equalsIgnoreCase("reload")){
+                    player.sendMessage(prefix + "Bundle configuration reload command not yet implemented");
+                }
                 else {
                     player.sendMessage(prefix + "Unrecognized argument! \n" + prefix + "To see usages, type " + ChatColor.GOLD + "/ot bundle");
                     return true;
                 }
             }
 
-            /* TOWNYTOKEN STUFF */
+            /* TOWNYTOKEN STUFF
             if(args[0].equalsIgnoreCase("token")){
                 TownyTokenManager ttManager = TownyTokenManager.getInstance();
                 int amt = Integer.parseInt(args[1]);
                 player.getInventory().setItem(0, ttManager.createToken(amt));
                 return true;
-            }
+            } */
 
             /* CLAN/CLAN CHAT STUFF */
             if(args[0].equalsIgnoreCase("clan")){
                 ClanManager cm = ClanManager.getInstance();
                 if(!player.hasPermission("oinktowny.clans")){
-                    player.sendMessage(prefix + "Sorry, you don't have access to do this." + ChatColor.RED + "oinktowny.bundle");
+                    player.sendMessage(prefix + "Sorry, you don't have access to do this." + ChatColor.RED + "oinktowny.clans");
                     return true;
                 }
                 /* Command structure: /oinktowny clan ... */
@@ -263,15 +268,30 @@ public class BaseCommand implements CommandExecutor {
                 }
             }
 
+            RegionsManager regM = RegionsManager.getInstance();
             /* REGION CLAIMING STUFF */
             if(args[0].equalsIgnoreCase("claim")){
-                RegionsManager rm = RegionsManager.getInstance();
-                rm.claimChunk(player);
+                regM.claimChunk(player);
                 return true;
             }
             if(args[0].equalsIgnoreCase("unclaim")){
-                RegionsManager rm = RegionsManager.getInstance();
-                rm.unclaimChunk(player);
+                regM.unclaimChunk(player);
+                return true;
+            }
+            if(args[0].equalsIgnoreCase("adminclaim")){
+                if(!player.hasPermission("oinktowny.claims.admin")) {
+                    player.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Sorry!" + ChatColor.GRAY + " This is an admin only command.");
+                    return true;
+                }
+                regM.addAdminRegionClaim(player, player.getLocation().getChunk());
+                return true;
+            }
+            if(args[0].equalsIgnoreCase("bypassclaims")){
+                if(!player.hasPermission("oinktowny.claims.admin")) {
+                    player.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Sorry!" + ChatColor.GRAY + " This is an admin only command.");
+                    return true;
+                }
+                regM.enableBypassForAdmin(player);
                 return true;
             }
 
@@ -346,7 +366,7 @@ public class BaseCommand implements CommandExecutor {
                 }
             }
 
-            /* ENCHANTMENT STUFF */
+            /* ENCHANTMENT STUFF
             if(args[0].equalsIgnoreCase("enchant")){
                 EnchantmentManager em = EnchantmentManager.getInstance();
                 if(args.length < 3) {
@@ -375,9 +395,9 @@ public class BaseCommand implements CommandExecutor {
                     em.enchantItem(player, EnchantmentManager.DEFLECT, Integer.parseInt(args[2]));
                 }
                 return true;
-            }
+            } */
 
-            /* ARTIFACT STUFF */
+            /* ARTIFACT STUFF
             if(args[0].equalsIgnoreCase("artifact")){
                 ArtifactManager am = ArtifactManager.getInstance();
                 if(args.length == 1){
@@ -407,7 +427,7 @@ public class BaseCommand implements CommandExecutor {
                 }
                 player.sendMessage(prefix + "Here ya go, mate...");
                 return true;
-            }
+            } */
 
             /* RUINS STUFF */
             if(args[0].equalsIgnoreCase("ruins")){
@@ -441,6 +461,18 @@ public class BaseCommand implements CommandExecutor {
                     }
                     player.sendMessage(prefix + "Destroying the " + args[2] + " ruins...");
                     rm.destroyRuins(args[2], player);
+                    return true;
+                }
+            }
+
+            if(args[0].equalsIgnoreCase("reload")){
+                if(player.hasPermission("oinktowny.admin")) {
+                    player.sendMessage(prefix + "Reloading all configuration files...");
+                    Main.getInstance().reloadAllConfigurations();
+                    player.sendMessage(prefix + "All configuration files reloaded!");
+                    return true;
+                } else {
+                    player.sendMessage(prefix + ChatColor.RED + "Sorry, but that's an admin only command!");
                     return true;
                 }
             }

@@ -7,17 +7,55 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactsListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactsListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bettersleep/SleepListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bettersleep/SleepListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/BundleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/BundleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/SignClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/SignClickListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/TreeFellerBreakListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/TreeFellerBreakListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteActiveChestTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteActiveChestTimer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChatListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPlaceBreakListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPlaceBreakListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPrivatedListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPrivatedListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lootdrops/LootdropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lootdrops/LootdropManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/portals/NetherPortalListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/portals/PortalListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/bundles.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundles.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bundles.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bundles.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -57,12 +95,12 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559791622655" />
-    <property name="last_opened_file_path" value="F:/Misc Programming/MC TESTING SERVER (1.14.4)/plugins" />
+    <property name="last_opened_file_path" value="F:/Misc Programming/TakodahStaffServer" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -204,6 +242,25 @@
       <workItem from="1564603276759" duration="417000" />
       <workItem from="1564610346655" duration="9748000" />
       <workItem from="1564620932743" duration="17000" />
+      <workItem from="1564625418423" duration="9048000" />
+      <workItem from="1566962256379" duration="27000" />
+      <workItem from="1566965571303" duration="267000" />
+      <workItem from="1567000592896" duration="754000" />
+      <workItem from="1567015334770" duration="74000" />
+      <workItem from="1567016223438" duration="622000" />
+      <workItem from="1567049205035" duration="2620000" />
+      <workItem from="1567086378099" duration="115000" />
+      <workItem from="1567134931208" duration="3756000" />
+      <workItem from="1567178518780" duration="3525000" />
+      <workItem from="1567280025314" duration="12308000" />
+      <workItem from="1567307833182" duration="110000" />
+      <workItem from="1567353013054" duration="2798000" />
+      <workItem from="1567392961686" duration="1493000" />
+      <workItem from="1567395557148" duration="1891000" />
+      <workItem from="1567454394366" duration="863000" />
+      <workItem from="1567726036509" duration="98000" />
+      <workItem from="1567731939381" duration="599000" />
+      <workItem from="1567822536889" duration="1006000" />
     </task>
     <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
       <created>1538704636495</created>
@@ -380,7 +437,21 @@
       <option name="project" value="LOCAL" />
       <updated>1564614410328</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Double chest support for Lockette. Towny is near!">
+      <created>1564625443211</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1564625443211</updated>
+    </task>
+    <task id="LOCAL-00027" summary="TreeFeller added (recursively)">
+      <created>1566965712497</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1566965712497</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -400,7 +471,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]" />
     <MESSAGE value="Added a crap load of things... Updating for safety lmao." />
     <MESSAGE value="Items no longer can be stolen, emerald block crafting listener added. Better Sleep version also added." />
     <MESSAGE value="Arena creation complete. Skeleton for joining and fighting set up, just need to fill in the meat (tomorrow)." />
@@ -424,6 +494,8 @@
     <MESSAGE value="Bug fixes for arenas and ruins" />
     <MESSAGE value="Two new artifacts added" />
     <MESSAGE value="Huge lockette update, anvils accounted for for artifacts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Huge lockette update, anvils accounted for for artifacts" />
+    <MESSAGE value="Double chest support for Lockette. Towny is near!" />
+    <MESSAGE value="TreeFeller added (recursively)" />
+    <option name="LAST_COMMIT_MESSAGE" value="TreeFeller added (recursively)" />
   </component>
 </project>

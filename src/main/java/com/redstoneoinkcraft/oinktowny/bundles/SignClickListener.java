@@ -44,10 +44,14 @@ public class SignClickListener implements Listener {
         if(!(block.getType().toString().contains("WALL_SIGN"))) return;
         if(!event.getLine(0).equals(ChatColor.stripColor(tag))) return;
         Player player = event.getPlayer();
+        if(!player.hasPermission("oinktowny.admin")){
+            player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "You can not make bundle signs.");
+            return;
+        }
         String line1;
         String line2 = event.getLine(1);
         String line3 = event.getLine(2);
-        // TODO: If the 4th line isn't blank, a player needs permission oinktowny.bundlename (or oinktowny.fourthline) to purchase the bundle
+        // TODO: If the 4th line isn't blank, a player needs permission oinktowny.bundle.name to purchase the bundle
         String line4 = event.getLine(3);
         if(line2.isEmpty()){
             resetLineOne(event, "Please add the bundle name to the second line.");
@@ -75,6 +79,10 @@ public class SignClickListener implements Listener {
         } catch (NumberFormatException exception){
             resetLineOne(event, "Please ensure your number is an integer followed by \'T\'.");
             return;
+        }
+        if(!line4.isEmpty()){
+            String newText = ChatColor.RED + line4.toLowerCase();
+            event.setLine(3, newText);
         }
         player.sendMessage(prefix + ChatColor.GREEN + "Sign for the " + ChatColor.GOLD + line2 + ChatColor.GREEN + " bundle has successfully been created!");
         return;
@@ -116,8 +124,15 @@ public class SignClickListener implements Listener {
             for (int i = 0; i < bundleItems.size(); i++) {
                 bundleInv.setItem(i, bundleItems.get(i));
             }
-            player.sendMessage(prefix + "To buy this bundle, " + ChatColor.GOLD + ChatColor.BOLD + "SHIFT/SNEAK + RIGHT CLICK");
+            player.sendMessage(prefix + "To buy this bundle, " + ChatColor.GOLD + ChatColor.BOLD + "SNEAK + RIGHT CLICK");
         } else if (player.isSneaking()){
+            String permission = wallSign.getLine(3);
+            if(!permission.isEmpty()){
+                if(!player.hasPermission("oinktowny.bundle." + permission)){
+                    player.sendMessage(prefix + "Sorry, you don't have permission for this bundle!");
+                    return;
+                }
+            }
             if(tokenManager.validPurchase(player, bundlePrice)){
                 tokenManager.makeTransaction(player, bundlePrice);
                 bundleManager.giveBundle(bundleName, player);

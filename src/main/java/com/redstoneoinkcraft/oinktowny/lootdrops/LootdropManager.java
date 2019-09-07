@@ -137,13 +137,13 @@ public class LootdropManager {
     private void fillLootContents(Inventory inv){
         ArrayList<ItemStack> finalItems = new ArrayList<>();
         // Get 4 tier one items
-        addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier1"), 4);
+        addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier1"), 6);
 
         // Get 2 tier two items
-        addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier2"), 2);
+        addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier2"), 3);
 
         // Get 1 tier three items
-        addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier3"), 1);
+        addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier3"), 2);
 
         finalItems.add(TownyTokenManager.getInstance().createToken(1)); // Throw in a token for good fun
 

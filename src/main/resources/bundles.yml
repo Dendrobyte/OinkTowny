@@ -6,5 +6,3 @@ sign-tag: Bundle
 # The format is: ITEM_NAME; AMOUNT; name:name on the item; enchants:[ENCHANT_NAME-LVL, ENCHANT_NAME2-LVL]; lore:[Line one, Line two]
 # SPACES AND SEMICOLONS ARE. EXTREMELY. NECESSARY!!!!
 bundles:
-  basic:
-    - IRON_SWORD; 1; name:Basic sword; enchants:[]; lore:[This sword is mighty, It was used by a god]

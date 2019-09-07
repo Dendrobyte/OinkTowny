@@ -16,7 +16,7 @@ import org.bukkit.util.Vector;
  * If you have any questions, reach out to me on Twitter: @Mobkinz78
  * §
  */
-public class NetherPortalListener implements Listener {
+public class PortalListener implements Listener {
 
     Main mainInstance = Main.getInstance();
     String prefix = mainInstance.getPrefix();

@@ -63,14 +63,17 @@ public class LocketteChestPrivatedListener implements Listener {
                     if (lm.playerOwnsChest(player, chest)) {
                         if(!player.isSneaking()) return;
                         // If they own it, tell them how to add people
-                        player.sendMessage(prefix + "If you would like to add players to this chest, remove them, or delete it," + ChatColor.YELLOW + ChatColor.BOLD + " SHIFT + LEFT CLICK");
+                        if(lm.sendInfoMessage(player)) {
+                            player.sendMessage(prefix + "If you would like to add players to this chest, remove them, or delete it," + ChatColor.YELLOW + ChatColor.BOLD + " SNEAK + LEFT CLICK");
+                            lm.getSendInfoMessagePlayers().add(player);
+                        }
                         return;
                     }
                     // Let them open it
                     return;
                 } else {
                     event.setCancelled(true);
-                    player.sendMessage(prefix + ChatColor.RED + "This chest is privately owned, and you are not added!");
+                    player.sendMessage(prefix + ChatColor.RED + "This chest is privately owned.");
                     return;
                 }
             }

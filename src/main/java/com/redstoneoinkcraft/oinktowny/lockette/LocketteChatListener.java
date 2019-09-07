@@ -1,17 +1,12 @@
 package com.redstoneoinkcraft.oinktowny.lockette;
 
-import com.redstoneoinkcraft.oinktowny.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -24,7 +19,7 @@ import java.util.UUID;
 public class LocketteChatListener implements Listener {
 
     private LocketteManager lm = LocketteManager.getInstance();
-    private String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "LocketteEditor" + ChatColor.DARK_GRAY + "]" + ChatColor.YELLOW + " ";
+    private String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "Lockette" + ChatColor.DARK_GRAY + "]" + ChatColor.YELLOW + " ";
 
     @EventHandler
     public void playerEditingChest(AsyncPlayerChatEvent event){
@@ -53,17 +48,24 @@ public class LocketteChatListener implements Listener {
             Chest original = lm.getPlayersEditing().get(player);
             boolean success = lm.addPlayerToChest(original, playerId, playerName);
             if(success) {
+                System.out.println("DUB: " + lm.isDoubleChest(original));
+                System.out.println("SIZE: " + original.getInventory().getSize());
+                System.out.println("HOLDER: " + original.getInventory().getHolder());
                 if(lm.isDoubleChest(original)){
-                    lm.addPlayerToChest(lm.getOtherHalfOfDouble(lm.toDoubleChest(original), original), playerId, playerName);
+                    System.out.println("Double chest addition found.");
+                    boolean test = lm.addPlayerToChest(lm.getOtherHalfOfDouble(lm.toDoubleChest(original), original), playerId, playerName);
+                    if(test) System.out.println("Double chest addition successful"); else System.out.println("Not successful...");
                 }
                 player.sendMessage(prefix + playerName + " has been added to your chest!");
+                Bukkit.getServer().getPlayer(playerName).sendMessage(prefix + ChatColor.GRAY + "You've been added to one of " + player.getName() + "\'s chests.");
+                player.sendMessage(prefix + "Type more names, or \'DONE\' to finish.");
             } else {
-                player.sendMessage(prefix + "Player was not added!");
+                player.sendMessage(prefix + "Player was not added -- They may already be added");
             }
             return;
         }
         else if (message.toUpperCase().contains("REMOVE")){
-            String playerName = message.substring(message.indexOf(" "));
+            String playerName = message.substring(message.indexOf(" ")+1);
             Chest original = lm.getPlayersEditing().get(player);
             boolean removed = lm.removePlayerFromChest(original, playerName);
             if(!removed){
@@ -87,8 +89,8 @@ public class LocketteChatListener implements Listener {
             Chest otherHalf;
             if(lm.isDoubleChest(original)){
                 otherHalf = lm.getOtherHalfOfDouble(lm.toDoubleChest(original), original);
-                lm.removeChest(otherHalf); // Other have taken care of in removeChest method
-
+                lm.removeChest(otherHalf); // Other half taken care of in removeChest method
+                lm.removeChest(original);
             } else {
                 lm.removeChest(original);
             }
@@ -102,10 +104,11 @@ public class LocketteChatListener implements Listener {
             lm.getPlayersEditing().remove(player);
             return;
         } else {
-            player.sendMessage(prefix + "ADD <name> - " + ChatColor.GRAY + "Add a player to the chest you just clicked");
-            player.sendMessage(prefix + "REMOVE <name> - " + ChatColor.GRAY + "Remove a player from the chest you just clicked");
-            player.sendMessage(prefix + "DELETE - " + ChatColor.GRAY + "Unprivate the chest you just clicked");
-            player.sendMessage(prefix + "DONE - " + ChatColor.GRAY + "Leave this edit wizard");
+            player.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "You're still in the editor");
+            player.sendMessage(prefix + "ADD <name> - " + ChatColor.GRAY + "Add a player to your chest");
+            player.sendMessage(prefix + "REMOVE <name> - " + ChatColor.GRAY + "Remove a player from your chest");
+            player.sendMessage(prefix + "DELETE - " + ChatColor.GRAY + "Unprivate the chest");
+            player.sendMessage(prefix + "DONE - " + ChatColor.GRAY + "Leave this editor");
         }
     }
 

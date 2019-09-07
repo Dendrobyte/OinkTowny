@@ -1,5 +1,6 @@
 package com.redstoneoinkcraft.oinktowny;
 
+import com.google.common.base.Charsets;
 import com.redstoneoinkcraft.oinktowny.arenapvp.*;
 import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactsListeners;
 import com.redstoneoinkcraft.oinktowny.bettersleep.SleepListener;
@@ -13,13 +14,11 @@ import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
-import com.redstoneoinkcraft.oinktowny.lockette.LocketteChatListener;
-import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPlaceBreakListener;
-import com.redstoneoinkcraft.oinktowny.lockette.LocketteChestPrivatedListener;
-import com.redstoneoinkcraft.oinktowny.lockette.LocketteManager;
+import com.redstoneoinkcraft.oinktowny.listeners.TreeFellerBreakListener;
+import com.redstoneoinkcraft.oinktowny.lockette.*;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropOpenListener;
-import com.redstoneoinkcraft.oinktowny.portals.NetherPortalListener;
+import com.redstoneoinkcraft.oinktowny.portals.PortalListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import com.redstoneoinkcraft.oinktowny.regions.SuperpickCommand;
@@ -38,7 +37,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 8/17/2018
@@ -89,6 +91,7 @@ public class Main extends JavaPlugin {
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        // Bukkit.getServer().getPluginManager().registerEvents(new TreeFellerBreakListener(), this);
         // Bundle events
         Bukkit.getServer().getPluginManager().registerEvents(new SignClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PreventItemStealListener(), this);
@@ -111,7 +114,7 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantAnvilListener(), this);
         // Portals
-        Bukkit.getServer().getPluginManager().registerEvents(new NetherPortalListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PortalListener(), this);
         // Artifacts
         Bukkit.getServer().getPluginManager().registerEvents(new ArtifactsListeners(), this);
         // Ruins
@@ -120,10 +123,11 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsSignClickListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsEntityDeathListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsPlayerLeaveListeners(), this);
-        // Lockette
+        /* Lockette (Clicking method)
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPlaceBreakListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChestPrivatedListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new LocketteChatListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new LocketteDoorListener(), this); */
 
         // Register Commands
         getCommand("oinktowny").setExecutor(new BaseCommand());
@@ -148,7 +152,7 @@ public class Main extends JavaPlugin {
         EnchantmentManager.registerEnchants();
 
         /* Store Lockette chests in memory */
-        LocketteManager.getInstance().loadChests();
+        // LocketteManager.getInstance().loadChests();
 
         // Finish
         getLogger().log(Level.INFO, "OinkTowny v" + getDescription().getVersion() + " has successfully been enabled!");
@@ -295,6 +299,7 @@ public class Main extends JavaPlugin {
     }
 
     // Bundles config file methods
+    // TODO: Make one method for all creation files nad just pass in what changes. oops.
     public void saveBundlesConfig(){
         saveResource("bundles.yml", true);
         try {
@@ -302,6 +307,12 @@ public class Main extends JavaPlugin {
         } catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void reloadBundlesConfig(){
+        bundlesFile = new File(getDataFolder(), "bundles.yml");
+        bundlesConfig = YamlConfiguration.loadConfiguration(bundlesFile);
+        getLogger().log(Level.INFO, "[OinkTowny] Bundles configuration reloaded!");
     }
 
     public FileConfiguration getBundlesConfig(){
@@ -319,6 +330,12 @@ public class Main extends JavaPlugin {
         }
     }
 
+    public void reloadClansConfig(){
+        clansFile = new File(getDataFolder(), "clans.yml");
+        clansConfig = YamlConfiguration.loadConfiguration(clansFile);
+        getLogger().log(Level.INFO, "[OinkTowny] Clans configuration reloaded!");
+    }
+
     public FileConfiguration getClansConfig(){
         return this.clansConfig;
     }
@@ -332,6 +349,12 @@ public class Main extends JavaPlugin {
         } catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void reloadLootdropsConfig(){
+        lootdropsFile = new File(getDataFolder(), "lootdrops.yml");
+        lootdropsConfig = YamlConfiguration.loadConfiguration(lootdropsFile);
+        getLogger().log(Level.INFO, "[OinkTowny] Lootdrops configuration reloaded!");
     }
 
     public FileConfiguration getLootdropsConfig() {
@@ -351,6 +374,12 @@ public class Main extends JavaPlugin {
         }
     }
 
+    public void reloadRegionsConfig(){
+        regionsFile = new File(getDataFolder(), "regions.yml");
+        regionsConfig = YamlConfiguration.loadConfiguration(regionsFile);
+        getLogger().log(Level.INFO, "[OinkTowny] Regions configuration reloaded!");
+    }
+
     public FileConfiguration getRegionsConfig() {
         return this.regionsConfig;
     }
@@ -366,6 +395,12 @@ public class Main extends JavaPlugin {
         } catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void reloadArenasConfig(){
+        arenasFile = new File(getDataFolder(), "arenas.yml");
+        arenasConfig = YamlConfiguration.loadConfiguration(arenasFile);
+        getLogger().log(Level.INFO, "[OinkTowny] Arenas configuration reloaded!");
     }
 
     public FileConfiguration getArenasConfig() {
@@ -385,11 +420,30 @@ public class Main extends JavaPlugin {
         }
     }
 
+    public void reloadRuinsConfig(){
+        ruinsFile = new File(getDataFolder(), "ruins.yml");
+        ruinsConfig = YamlConfiguration.loadConfiguration(ruinsFile);
+        getLogger().log(Level.INFO, "[OinkTowny] Ruins configuration reloaded!");
+    }
+
     public FileConfiguration getRuinsConfig(){
         return this.ruinsConfig;
     }
     public File getRuinsFile(){
         return this.ruinsFile;
     }
+
+    // Reload all configuration files
+    public void reloadAllConfigurations(){
+        reloadConfig();
+        reloadBundlesConfig();
+        reloadArenasConfig();
+        reloadClansConfig();
+        reloadLootdropsConfig();
+        reloadRuinsConfig();
+        reloadRegionsConfig();
+    }
+
+
 
 }
