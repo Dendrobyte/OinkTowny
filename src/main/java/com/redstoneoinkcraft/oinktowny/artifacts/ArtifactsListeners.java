@@ -93,6 +93,7 @@ public class ArtifactsListeners implements Listener {
         Player player = event.getPlayer();
         // Headlamp
         ItemStack helmet = player.getInventory().getHelmet();
+        if(!am.isItemStackAnArtifact(helmet)) return;
         try {
             if (am.getArtifactType(helmet) == ArtifactType.HEADLAMP) {
                 if(!player.getEyeLocation().getBlock().getType().equals(Material.AIR)) return;

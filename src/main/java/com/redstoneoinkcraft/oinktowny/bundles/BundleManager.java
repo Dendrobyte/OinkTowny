@@ -5,6 +5,7 @@ import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
@@ -42,7 +43,7 @@ public class BundleManager {
 
     public String listBundles(){
         String returnStr = prefix + ChatColor.GOLD + ChatColor.BOLD + "Existing Bundles: " + ChatColor.GREEN;
-        for(String key : Main.getInstance().getBundlesConfig().getConfigurationSection("bundles").getKeys(true)){
+        for(String key : Main.getInstance().getBundlesConfig().getConfigurationSection("bundles").getKeys(false)){
             returnStr += "" + key + ", ";
         }
 
@@ -67,6 +68,8 @@ public class BundleManager {
         Inventory playerInv = player.getInventory();
         int i = 0;
         for(ItemStack item : playerInv.getContents()){
+            if(item == null) continue;
+            if(item.getType().equals(Material.AIR)) continue;
             Main.getInstance().getBundlesConfig().set("bundles." + bundleName + "." + i, item);
             i++;
         }
@@ -82,8 +85,11 @@ public class BundleManager {
         }
         ArrayList<ItemStack> bundleItems = new ArrayList<>();
 
-        for(int i = 0; i <= Main.getInstance().getBundlesConfig().getKeys(false).size(); i++){
-            bundleItems.add(Main.getInstance().getBundlesConfig().getItemStack("bundles." + bundleName + "." + i));
+        ConfigurationSection bundleSection = Main.getInstance().getBundlesConfig().getConfigurationSection("bundles." + bundleName);
+        int numOfItems = bundleSection.getKeys(false).size();
+
+        for(int i = 0; i < numOfItems; i++){
+            bundleItems.add(bundleSection.getItemStack("" + i));
         }
         return bundleItems;
     }

@@ -76,10 +76,10 @@ public class LocketteManager {
     // When players place a chest, they must activate it as private within 30 seconds
     public HashMap<Chest, Player> activeChests = new HashMap<>(2);
     public void addActiveChest(Chest chest, Player player){
-        activeChests.put(chest, player);
         LocketteActiveChestTimer lact = new LocketteActiveChestTimer(chest, player);
         lact.runTaskTimer(Main.getInstance(), 0L, 20L);
         activeTimers.put(player, lact);
+        activeChests.put(chest, player);
     }
     public void removeActiveChest(Chest chest){
         activeChests.remove(chest);
@@ -288,6 +288,14 @@ public class LocketteManager {
         } else {
             return (Chest)doubleChest.getLeftSide();
         }
+    }
+
+    private ArrayList<Player> sendInfoMessagePlayers = new ArrayList<>(2);
+    public boolean sendInfoMessage(Player player){
+        return sendInfoMessagePlayers.contains(player);
+    }
+    public ArrayList<Player> getSendInfoMessagePlayers(){
+        return sendInfoMessagePlayers;
     }
 
     public boolean isDoubleAlreadyPrivated(DoubleChest chest){

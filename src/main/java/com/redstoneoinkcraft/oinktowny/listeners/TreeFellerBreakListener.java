@@ -30,12 +30,14 @@ public class TreeFellerBreakListener implements Listener {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if(itemInHand.getType() == Material.IRON_AXE || itemInHand.getType() == Material.GOLDEN_AXE || itemInHand.getType() == Material.DIAMOND_AXE){
             if(itemInHand.getEnchantments().size() != 0) return;
-            player.sendMessage("" + DARK_GREEN + ITALIC + "Tree Feller activated!");
             int blocksBroken = breakTree(block);
-            int currentHealth = ((Damageable) itemInHand.getItemMeta()).getDamage();
-            ItemMeta meta = itemInHand.getItemMeta();
-            ((Damageable) meta).setDamage(currentHealth + blocksBroken);
-            itemInHand.setItemMeta(meta);
+            if(blocksBroken > 1) {
+                player.sendMessage("" + DARK_GREEN + ITALIC + "Tree Feller activated!");
+                int currentHealth = ((Damageable) itemInHand.getItemMeta()).getDamage();
+                ItemMeta meta = itemInHand.getItemMeta();
+                ((Damageable) meta).setDamage(currentHealth + blocksBroken);
+                itemInHand.setItemMeta(meta);
+            }
         }
     }
 

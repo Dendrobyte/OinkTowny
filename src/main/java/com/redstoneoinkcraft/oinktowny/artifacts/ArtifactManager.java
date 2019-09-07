@@ -40,7 +40,11 @@ public class ArtifactManager {
     private ArtifactManager(){}
 
     public boolean isItemStackAnArtifact(ItemStack is){
-        return is.getEnchantments().containsKey(EnchantmentManager.ARTIFACT);
+        try {
+            return is.getEnchantments().containsKey(EnchantmentManager.ARTIFACT);
+        } catch(NullPointerException e){
+            return false;
+        }
     }
 
     /* General Artifact Commands */

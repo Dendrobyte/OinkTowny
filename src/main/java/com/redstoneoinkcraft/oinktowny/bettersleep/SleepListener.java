@@ -23,8 +23,12 @@ public class SleepListener implements Listener {
 
     @EventHandler
     public void onPlayerSleep(PlayerBedEnterEvent event){
+        // TODO: If you sleep while monsters nearby it counts 1 person as sleeping, so you can spam the bed until it turns to day
         if(!event.getBed().getWorld().getName().equalsIgnoreCase(worldName)) return;
-        if(event.getBed().getWorld().getTime() > 0 && event.getBed().getWorld().getTime() < 16000) return; // Day time check
+        if(event.getBed().getWorld().getTime() > 12000 && event.getBed().getWorld().getTime() < 23000) return; // Day time check
+        if(event.isCancelled()){ // For nearby monsters cancellations
+            return;
+        }
         Player player = event.getPlayer();
         sm.addPlayerSleeping(player);
 
@@ -38,6 +42,7 @@ public class SleepListener implements Listener {
         if(!sm.getAsleepPlayers().contains(player)) sm.getAsleepPlayers().add(player);
         if(sm.getPlayersSleeping() >= threshold){
             event.getPlayer().getWorld().setTime(6000);
+            event.getPlayer().getWorld().setTime(23000);
             for(Player sleepingPlayer : sm.getAsleepPlayers()){
                 sleepingPlayer.sendMessage(prefix + ChatColor.GOLD + "Rise and shine, it's time to get to work!");
             }
@@ -50,10 +55,10 @@ public class SleepListener implements Listener {
     public void onPlayerLeaveBed(PlayerBedLeaveEvent event){
         if(!event.getBed().getWorld().getName().equalsIgnoreCase(worldName)) return;
         if(sm.getAsleepPlayers().contains(event.getPlayer())){
-            sm.removePlayerSleeping(event.getPlayer());
             for(Player player : sm.getAsleepPlayers()){
                 player.sendMessage(prefix + ChatColor.RED + "Someone has left their bed!");
             }
+            sm.removePlayerSleeping(event.getPlayer());
         }
     }
 
