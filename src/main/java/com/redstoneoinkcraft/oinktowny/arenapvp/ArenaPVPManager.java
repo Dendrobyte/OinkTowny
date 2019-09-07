@@ -95,7 +95,7 @@ public class ArenaPVPManager {
         currentArenaInCreation.put(player, new ArenaObj(name));
         player.sendMessage(prefix + "Arena creation has been initiated for arena " + ChatColor.BOLD + name + "!");
         player.sendMessage(prefix + ChatColor.RED + "To leave creation, use /ot arena quit");
-        player.sendMessage(prefix + ChatColor.GREEN + "Please use the creation wand (the stick) to select the " + ChatColor.BOLD + " center (or close to it) of the arena.");
+        player.sendMessage(prefix + ChatColor.GREEN + "Please use the creation wand (the stick) to select the" + ChatColor.BOLD + " center (or close to it) of the arena.");
     }
 
     public ArenaCreationStage getPlayerStage(Player player){
@@ -162,6 +162,11 @@ public class ArenaPVPManager {
         Location loc = getArenaObj(arenaName).getArenaLoc();
         player.teleport(loc);
         player.sendMessage(prefix + "Teleporting to " + arenaName + "...");
+        if(player.isFlying()){
+            player.sendMessage(prefix + ChatColor.ITALIC + "Your flight has been disabled.");
+            player.setFlying(false);
+        }
+        player.setFlying(false);
     }
 
     /* Arena join */

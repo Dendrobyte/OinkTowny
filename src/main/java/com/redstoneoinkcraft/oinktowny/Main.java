@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,6 +88,13 @@ public class Main extends JavaPlugin {
         worldName = getConfig().getString("world-name");
         netherWorldName = getConfig().getString("world-nether");
         endWorldName = getConfig().getString("world-end");
+
+        // Reset the list for Token UBI
+        Calendar cal = Calendar.getInstance();
+        if(cal.DAY_OF_WEEK == 1){
+            // reset
+        }
+        cal = null;
 
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
@@ -299,7 +307,7 @@ public class Main extends JavaPlugin {
     }
 
     // Bundles config file methods
-    // TODO: Make one method for all creation files nad just pass in what changes. oops.
+    // TODO: Make one method for all creation files and just pass in what changes. oops.
     public void saveBundlesConfig(){
         saveResource("bundles.yml", true);
         try {

@@ -66,11 +66,11 @@ public class RegionsManager {
         // Check if they can claim another chunk
         // TODO: This should become dynamic over time... so each player has a different base chunk claim. For now, it'll be teamwork!
         int limit = mainInstance.getRegionsConfig().getInt("base-limit");
-        if(claimer.hasPermission("oinktowny.claims.sponsor")) limit += 1;
-        if(claimer.hasPermission("oinktowny.claims.piglet")) limit += 1;
+        if(claimer.hasPermission("oinktowny.claims.sponsor")) limit += 4;
+        if(claimer.hasPermission("oinktowny.claims.piglet")) limit += 4;
         if(claimer.hasPermission("oinktowny.claims.boar")) limit += 4;
-        if(claimer.hasPermission("oinktowny.claims.spiderpig")) limit += 4;
-        if(claimer.hasPermission("oinktowny.claims.flyingpig")) limit += 6;
+        if(claimer.hasPermission("oinktowny.claims.spiderpig")) limit += 8;
+        if(claimer.hasPermission("oinktowny.claims.flyingpig")) limit += 8;
         if(claimer.hasPermission("oinktowny.claims.octopig")) limit += 12;
         int currentClaims;
         try {
@@ -204,6 +204,17 @@ public class RegionsManager {
         mainInstance.getRegionsConfig().set("chunks." + playerID.toString(), listOfClaims);
         mainInstance.saveRegionsConfig();
         player.sendMessage(prefix + "Your chunk has been successfully unclaimed!");
+    }
+
+    public void listClaims(Player player){
+        UUID playerID = player.getUniqueId();
+        ArrayList<Chunk> playerChunks = getPlayerChunks().get(playerID);
+        player.sendMessage(prefix + ChatColor.GOLD + "Your claims are located at coordinates:");
+        int i = 1;
+        for(Chunk chunk : playerChunks){
+            player.sendMessage("" + ChatColor.GOLD + i + " - " + ChatColor.GRAY + "X: " + chunk.getX() + ", Z: " + chunk.getZ());
+        }
+        player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Pagination yet to be added.");
     }
 
     private boolean isTheirChunk(Player player, Chunk chunk){

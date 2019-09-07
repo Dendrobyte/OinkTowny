@@ -1,6 +1,7 @@
 package com.redstoneoinkcraft.oinktowny.lootdrops;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,12 +22,13 @@ public class LootdropOpenListener implements Listener {
     @EventHandler
     public void onLootdropOpen(PlayerInteractEvent event){
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if(event.getClickedBlock().getType() != Material.CHEST) return;
+        Block block = event.getClickedBlock();
+        if(block.getType() != Material.CHEST) return;
         Chest chest = (Chest) event.getClickedBlock().getState();
         if(!lm.isLootcrate(chest)) return;
         if(lm.lootcrateIsFound(chest)) return;
-        lm.startLootcrateExpiration(chest, 10, event.getPlayer());
         lm.setLootcrateFound(chest, true);
+        lm.startLootcrateExpiration(chest, 10, event.getPlayer());
     }
 
 }

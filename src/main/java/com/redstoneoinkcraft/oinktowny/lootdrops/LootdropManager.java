@@ -75,8 +75,8 @@ public class LootdropManager {
     // Generate random location, then pass into drop loot location
     private Location generateRandomDropLocation(){
         Random random = new Random();
-        int resultX = random.nextInt(x_1);
-        int resultZ = random.nextInt(z_1);
+        int resultX = random.nextInt(2*x_1) - x_1;
+        int resultZ = random.nextInt(2*z_1) - z_1;
         int resultY = generateRandomY(resultX, resultZ);
         return new Location(townyWorld, resultX, resultY, resultZ);
     }
@@ -86,14 +86,15 @@ public class LootdropManager {
         int height = townyWorld.getMaxHeight()-1;
         while(height != 0){
             // Check if the block below is not air starting at the top of the world, that should do it.
-            if(new Location(townyWorld, x, height-1, z).getBlock().getType().equals(Material.AIR)){
+            Location loc = new Location(townyWorld, x, height-1, z);
+            Material blockType = loc.getBlock().getType();
+            if(blockType.equals(Material.AIR) || blockType.equals(Material.WATER) || blockType.equals(Material.GRASS) || blockType.equals(Material.SNOW)){
                 height -= 1;
             } else {
                 // We have a block below where we want to put the chest!
                 return height;
             }
         }
-        System.out.println("It goes all the way down to... the void...");
         return 67; // Return sea level because why not- I don't want to deal with this
     }
 
@@ -130,16 +131,15 @@ public class LootdropManager {
         }
         dropLootChest(player.getLocation());
         player.sendMessage(prefix + "Loot dropping at your location...");
-
     }
 
     // Fill contents of a passed in inventory with random loot
     private void fillLootContents(Inventory inv){
         ArrayList<ItemStack> finalItems = new ArrayList<>();
-        // Get 4 tier one items
-        addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier1"), 6);
+        // Get 3 tier one items
+        addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier1"), 3);
 
-        // Get 2 tier two items
+        // Get 3 tier two items
         addItemsToList(finalItems, mainInstance.getLootdropsConfig().getStringList("tier2"), 3);
 
         // Get 1 tier three items

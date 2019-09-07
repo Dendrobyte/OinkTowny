@@ -7,30 +7,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactsListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactsListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPVPManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaPVPManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/arenapvp/ArenaTimer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bettersleep/SleepListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bettersleep/SleepListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/BundleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/BundleManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/SignClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/SignClickListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/TreeFellerBreakListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/TreeFellerBreakListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteActiveChestTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteActiveChestTimer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChatListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPlaceBreakListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPlaceBreakListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPrivatedListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteChestPrivatedListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lockette/LocketteManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lootdrops/LootdropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lootdrops/LootdropManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/portals/NetherPortalListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/portals/PortalListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lootdrops/LootdropOpenListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/lootdrops/LootdropOpenListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bundles.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bundles.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bundles.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bundles.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/listeners/PlayerJoinWorldListener.class" afterDir="false" />
@@ -100,7 +88,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="application.passwordSafe" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -261,6 +249,11 @@
       <workItem from="1567726036509" duration="98000" />
       <workItem from="1567731939381" duration="599000" />
       <workItem from="1567822536889" duration="1006000" />
+      <workItem from="1567823784902" duration="3188000" />
+      <workItem from="1567827618332" duration="3057000" />
+      <workItem from="1567864082357" duration="3676000" />
+      <workItem from="1567867953926" duration="2031000" />
+      <workItem from="1567871334598" duration="500000" />
     </task>
     <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
       <created>1538704636495</created>
@@ -451,7 +444,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566965712497</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Full version! Some more fixes tonight.">
+      <created>1567823989208</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1567823989209</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -471,7 +471,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added a crap load of things... Updating for safety lmao." />
     <MESSAGE value="Items no longer can be stolen, emerald block crafting listener added. Better Sleep version also added." />
     <MESSAGE value="Arena creation complete. Skeleton for joining and fighting set up, just need to fill in the meat (tomorrow)." />
     <MESSAGE value="ArenaPVP done. Build jar now included in commits." />
@@ -496,6 +495,7 @@
     <MESSAGE value="Huge lockette update, anvils accounted for for artifacts" />
     <MESSAGE value="Double chest support for Lockette. Towny is near!" />
     <MESSAGE value="TreeFeller added (recursively)" />
-    <option name="LAST_COMMIT_MESSAGE" value="TreeFeller added (recursively)" />
+    <MESSAGE value="Full version! Some more fixes tonight." />
+    <option name="LAST_COMMIT_MESSAGE" value="Full version! Some more fixes tonight." />
   </component>
 </project>
