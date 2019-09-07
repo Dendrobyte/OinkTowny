@@ -25,7 +25,6 @@ public class ArenaTimer extends BukkitRunnable {
     @Override
     public void run(){
         if(timer == 0){
-            System.out.println("5: Timer hit zero");
             workingArena.sendPlayersMessage(prefix + ChatColor.GOLD + ChatColor.BOLD + "BEGIN!");
             workingArena.setCanHitEachOther(true);
             Player playerOne = workingArena.getPlayerOne();
@@ -34,10 +33,8 @@ public class ArenaTimer extends BukkitRunnable {
             playerOne.teleport(workingArena.getSpawn_one());
             playerTwo.setVelocity(new Vector(0, 0, 0));
             playerTwo.teleport(workingArena.getSpawn_two());
-            System.out.println("6: Players teleported!");
             playerOne.setHealth(playerOne.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
             playerTwo.setHealth(playerTwo.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
-            System.out.println("8: Arena to be set to running!");
             workingArena.setStatus(ArenaStatus.RUNNING);
             cancel();
             return;

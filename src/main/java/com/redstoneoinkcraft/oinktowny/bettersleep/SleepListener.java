@@ -25,10 +25,10 @@ public class SleepListener implements Listener {
     public void onPlayerSleep(PlayerBedEnterEvent event){
         // TODO: If you sleep while monsters nearby it counts 1 person as sleeping, so you can spam the bed until it turns to day
         if(!event.getBed().getWorld().getName().equalsIgnoreCase(worldName)) return;
-        if(event.getBed().getWorld().getTime() > 12000 && event.getBed().getWorld().getTime() < 23000) return; // Day time check
-        if(event.isCancelled()){ // For nearby monsters cancellations
+        // if(event.getBed().getWorld().getTime() > 12000 && event.getBed().getWorld().getTime() < 23000) return; // Assuming the player can get in a bed, fine by me
+        if(event.isCancelled()){ // For nearby monsters cancellations, or if it's day time.
             return;
-        }
+        } // If it's not canceled, they successfully get in bed
         Player player = event.getPlayer();
         sm.addPlayerSleeping(player);
 

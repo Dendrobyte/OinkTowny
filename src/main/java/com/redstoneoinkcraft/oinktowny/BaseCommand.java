@@ -278,6 +278,10 @@ public class BaseCommand implements CommandExecutor {
                 regM.unclaimChunk(player);
                 return true;
             }
+            if(args[0].equalsIgnoreCase("claimlist")){
+                regM.listClaims(player);
+                return true;
+            }
             if(args[0].equalsIgnoreCase("adminclaim")){
                 if(!player.hasPermission("oinktowny.claims.admin")) {
                     player.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Sorry!" + ChatColor.GRAY + " This is an admin only command.");
@@ -302,7 +306,7 @@ public class BaseCommand implements CommandExecutor {
                     player.sendMessage(prefix + "Sorry, this is an admin-only command.");
                     return true;
                 }
-                if(player.getWorld().getName().equalsIgnoreCase(Main.getInstance().getWorldName())){
+                if(!player.getWorld().getName().equalsIgnoreCase(Main.getInstance().getWorldName())){
                     player.sendMessage(prefix + "Arenas can not be created in this world.");
                     return true;
                 }
