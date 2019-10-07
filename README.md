@@ -15,3 +15,6 @@ When posting a feature, please adhere to the [features template](towny-feature-r
 
 ## Contribution Guidelines <a name = "contribute"></a>
 Coming soon, I just want to get more Towny fixes out of the way first :) If you make a pull request before this section is defined, _please make sure you are doing so from the `develop` branch_
+
+## We don't want you stealing our features...
+but you're free to contribute. Note that we're under the [MIT license](https://opensource.org/licenses/MIT) for OinkTowny.
