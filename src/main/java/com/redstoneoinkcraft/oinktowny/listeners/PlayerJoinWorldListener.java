@@ -11,8 +11,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 8/17/2018
@@ -34,24 +38,22 @@ public class PlayerJoinWorldListener implements Listener {
         player.sendMessage(prefix + ChatColor.GOLD + ChatColor.ITALIC + "Welcome to Towny, " + player.getName() + "!");
 
         // UBI on world teleport
-        Calendar cal = Calendar.getInstance();
-        if(cal.DAY_OF_WEEK == 7){
-            if(cal.WEEK_OF_MONTH == 2 || cal.WEEK_OF_MONTH == 4){ // Modulo was giving me a "will always result in true" thing so here we are.
-                List<String> playersPaid = Main.getInstance().getConfig().getStringList("players-paid");
-                if(playersPaid.contains(player.getUniqueId().toString())){
-                    return; // No way anything else would run either if they had never joined
-                }
-                int tokenAmount = Main.getInstance().getConfig().getInt("ubi-tokens");
-                // Give player tokens
-                player.getInventory().addItem(TownyTokenManager.getInstance().createToken(4));
-                player.sendMessage(prefix + ChatColor.GREEN + ChatColor.ITALIC + "Enjoy your bimonthly " + tokenAmount + " token income, on us!");
-                playersPaid.add(player.getUniqueId().toString());
-                Main.getInstance().getConfig().set("players-paid", playersPaid);
-                Main.getInstance().saveConfig();
-                Main.getInstance().reloadConfig();
-                GiveTokensTimer gtt = new GiveTokensTimer(player, tokenAmount);
-                gtt.runTaskTimer(Main.getInstance(), 20L, 0L);
+        LocalDate date = LocalDate.now();
+        if(date.getDayOfWeek().toString().equalsIgnoreCase("SATURDAY")) {
+            List<String> playersPaid = Main.getInstance().getConfig().getStringList("players-paid");
+            if (playersPaid.contains(player.getUniqueId().toString())) {
+                return; // No way anything else would run either if they had never joined
             }
+            int tokenAmount = Main.getInstance().getConfig().getInt("ubi-tokens");
+            // Give player tokens
+            player.getInventory().addItem(TownyTokenManager.getInstance().createToken(2));
+            player.sendMessage(prefix + ChatColor.GREEN + ChatColor.ITALIC + "Enjoy your bimonthly " + tokenAmount + " token income, on us!");
+            playersPaid.add(player.getUniqueId().toString());
+            Main.getInstance().getConfig().set("players-paid", playersPaid);
+            Main.getInstance().saveConfig();
+            Main.getInstance().reloadConfig();
+            GiveTokensTimer gtt = new GiveTokensTimer(player, tokenAmount);
+            gtt.runTaskTimer(Main.getInstance(), 20L, 0L);
         }
 
         // Any things to set up upon teleportation goes here.

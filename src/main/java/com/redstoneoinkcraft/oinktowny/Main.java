@@ -19,10 +19,7 @@ import com.redstoneoinkcraft.oinktowny.lockette.*;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropOpenListener;
 import com.redstoneoinkcraft.oinktowny.portals.PortalListener;
-import com.redstoneoinkcraft.oinktowny.regions.RegionBlockPlaceBreakListener;
-import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
-import com.redstoneoinkcraft.oinktowny.regions.SuperpickCommand;
-import com.redstoneoinkcraft.oinktowny.regions.SuperpickListeners;
+import com.redstoneoinkcraft.oinktowny.regions.*;
 import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsChatListener;
 import com.redstoneoinkcraft.oinktowny.ruins.RuinsManager;
 import com.redstoneoinkcraft.oinktowny.ruins.creation.RuinsSelectionListener;
@@ -39,7 +36,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -90,11 +89,12 @@ public class Main extends JavaPlugin {
         endWorldName = getConfig().getString("world-end");
 
         // Reset the list for Token UBI
-        Calendar cal = Calendar.getInstance();
-        if(cal.DAY_OF_WEEK == 1){
-            // reset
+        if (LocalDate.now().getDayOfWeek().toString().equalsIgnoreCase("SUNDAY")){
+            Main.getInstance().getConfig().set("players-paid", null);
+            Bukkit.getLogger().log(Level.INFO, "UBI Token List Cleared");
+            Main.getInstance().saveConfig();
+            Main.getInstance().reloadConfig();
         }
-        cal = null;
 
         /* Register Events */
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinWorldListener(), this);
@@ -106,6 +106,7 @@ public class Main extends JavaPlugin {
         // Region events
         Bukkit.getServer().getPluginManager().registerEvents(new SuperpickListeners(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RegionBlockPlaceBreakListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PreventTntInClaimsListener(), this);
         // Clan events
         Bukkit.getServer().getPluginManager().registerEvents(new ClanChatListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ClanUpdateUuidListener(), this);

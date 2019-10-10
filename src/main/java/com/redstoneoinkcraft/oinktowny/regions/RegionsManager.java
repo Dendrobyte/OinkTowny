@@ -9,6 +9,7 @@ import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +92,7 @@ public class RegionsManager {
         claimer.sendMessage(prefix + "Chunk has been claimed! " + ChatColor.GOLD + ChatColor.BOLD + "Claimed chunks: " + currentClaims + "/" + limit);
         claimer.sendMessage(prefix + ChatColor.GRAY + "To unclaim a chunk, use " + ChatColor.GOLD + "/ot unclaim");
         mainInstance.saveRegionsConfig();
+        mainInstance.reloadRegionsConfig();
     }
 
     public void unclaimChunk(Player claimer){
@@ -99,6 +101,14 @@ public class RegionsManager {
             return;
         }
         removeRegionClaim(claimer, claimer.getUniqueId(), claimer.getLocation().getChunk());
+    }
+
+    public void unclaimAllChunks(Player claimer){
+        ArrayList<Chunk> playerChunks = new ArrayList<>(getPlayerChunks().get(claimer.getUniqueId()));
+        for(Chunk chunk : playerChunks){
+            removeRegionClaim(claimer, claimer.getUniqueId(), chunk);
+        }
+        claimer.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "All of your chunks have been cleared.");
     }
 
     // Util methods
@@ -128,7 +138,7 @@ public class RegionsManager {
         mainInstance.saveRegionsConfig();
     }
 
-    ArrayList<Player> bypassEnabled = new ArrayList<>(2);
+    private ArrayList<Player> bypassEnabled = new ArrayList<>(2);
     public void enableBypassForAdmin(Player admin){
         if(!bypassEnabled.contains(admin)){
             bypassEnabled.add(admin);
@@ -138,7 +148,7 @@ public class RegionsManager {
             admin.sendMessage(prefix + ChatColor.RED + "You are now no longer bypassing claims.");
         }
     }
-    public boolean bypassEnabled(Player player){
+    boolean bypassEnabled(Player player){
         return bypassEnabled.contains(player);
     }
 

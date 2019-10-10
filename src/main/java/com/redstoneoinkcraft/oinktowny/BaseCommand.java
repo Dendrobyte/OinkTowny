@@ -278,8 +278,22 @@ public class BaseCommand implements CommandExecutor {
                 regM.unclaimChunk(player);
                 return true;
             }
+            if(args[0].equalsIgnoreCase("unclaimall")){
+                if(args.length == 1) {
+                    player.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "This command will unclaim all of your towny region claims. " +
+                            ChatColor.GRAY + ChatColor.ITALIC + "To confirm this action, type " + ChatColor.YELLOW + ChatColor.ITALIC + "/ot unclaimall confirm");
+                    return true;
+                } else if (args.length == 2){
+                    regM.unclaimAllChunks(player);
+                    return true;
+                }
+            }
             if(args[0].equalsIgnoreCase("claimlist")){
                 regM.listClaims(player);
+                return true;
+            }
+            if(args[0].equalsIgnoreCase("claimmap")){
+                player.sendMessage(prefix + "Bug Mobkinz78 to get this working! :)");
                 return true;
             }
             if(args[0].equalsIgnoreCase("adminclaim")){

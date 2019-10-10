@@ -251,7 +251,7 @@ public class ArenaPVPManager {
         Player playerTwo = workingArena.getPlayerTwo();
         for(Player players : towny.getPlayers()){
             players.sendMessage(prefix + ChatColor.GOLD + ChatColor.BOLD + winner.getName() + ChatColor.getLastColors(prefix) + " with "
-                    + workingArena.getPlayerOne().getHealth() + " health remaining won a Towny Arena battle! " + ChatColor.GRAY + ChatColor.ITALIC + "Huzzah!");
+                    + winner.getHealth() + " health remaining won a Towny Arena battle! " + ChatColor.GRAY + ChatColor.ITALIC + "Huzzah!");
         }
         playersInArenas.remove(playerOne);
         playersInArenas.remove(playerTwo);
