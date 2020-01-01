@@ -287,6 +287,16 @@ public class ClanManager {
         if(playerIDs.contains(player.getUniqueId().toString())) return;
         playerIDs.add(player.getUniqueId().toString());
         clansConfig.set("player-list", playerIDs);
+
+        // Check for duplicates in "stored-players"
+        List<String> storedPlayers = clansConfig.getStringList("stored-players");
+        for(int i = 0; i < storedPlayers.size(); i++){
+            String str = storedPlayers.get(i);
+            if(str.substring(str.indexOf(":")).equalsIgnoreCase(player.getUniqueId().toString())){
+                storedPlayers.set(i, player.getName() + str.substring(str.indexOf(":")));
+            }
+        }
+
         mainInstance.saveClansConfig();
     }
 

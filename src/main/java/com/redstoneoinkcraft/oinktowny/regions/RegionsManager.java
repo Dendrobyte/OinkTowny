@@ -129,7 +129,7 @@ public class RegionsManager {
                 int dataZ = Integer.parseInt(info.substring(info.indexOf(":") + 1));
 
                 Chunk chunkToAdd = Bukkit.getServer().getWorld(mainInstance.getWorldName()).getChunkAt(dataX, dataZ);
-                if (!playerChunks.keySet().contains(playerID)) playerChunks.put(playerID, new ArrayList<Chunk>());
+                if (!playerChunks.keySet().contains(playerID)) playerChunks.put(playerID, new ArrayList<>());
                 playerChunks.get(playerID).add(chunkToAdd);
                 claimedChunks.put(chunkToAdd, playerID);
             }
@@ -218,11 +218,15 @@ public class RegionsManager {
 
     public void listClaims(Player player){
         UUID playerID = player.getUniqueId();
+        if(!getPlayerChunks().containsKey(playerID)){
+            player.sendMessage(prefix + "No claims found!");
+            return;
+        }
         ArrayList<Chunk> playerChunks = getPlayerChunks().get(playerID);
         player.sendMessage(prefix + ChatColor.GOLD + "Your claims are located at coordinates:");
         int i = 1;
         for(Chunk chunk : playerChunks){
-            player.sendMessage("" + ChatColor.GOLD + i + " - " + ChatColor.GRAY + "X: " + chunk.getX() + ", Z: " + chunk.getZ());
+            player.sendMessage("" + ChatColor.GOLD + i + " - " + ChatColor.GRAY + "X: " + chunk.getBlock(8, 64, 8).getX() + ", Z: " + chunk.getBlock(8, 64, 8).getZ());
         }
         player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Pagination yet to be added.");
     }

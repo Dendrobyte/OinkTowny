@@ -88,7 +88,7 @@ public class RegionBlockPlaceBreakListener implements Listener {
 
         // If both players do have a clan, see if they're equal and continue
         // Since the claim isn't necessarily the leader's claim, we check if the clans are equal
-        if(!eventPlayerClan.equals(chunkOwnerClan)){ // TODO: Verify functionality with this equality, otherwise write custom equals or compareTo method
+        if(!eventPlayerClan.getLeaderId().equals(chunkOwnerClan.getLeaderId())){ // TODO: Verify functionality with this equality, otherwise write custom equals or compareTo method
             return false;
         }
         return true;
