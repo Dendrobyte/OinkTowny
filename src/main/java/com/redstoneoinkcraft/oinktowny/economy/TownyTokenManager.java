@@ -1,6 +1,7 @@
 package com.redstoneoinkcraft.oinktowny.economy;
 
 import com.redstoneoinkcraft.oinktowny.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -106,6 +109,29 @@ public class TownyTokenManager {
         player.getInventory().getItem(itemSlot).setAmount(amountInInv-amount);
         player.sendMessage(prefix + ChatColor.GREEN + ChatColor.BOLD + "Transaction successful!");
     }
+
+    /* Code for End of Day Box */
+    private HashMap<Player, Inventory> playerBoxes = new HashMap<>();
+    public HashMap<Player, Inventory> getPlayerBoxes(){
+        return playerBoxes;
+    }
+
+    public void openPlayerBox(Player player){
+        player.sendMessage(prefix + ChatColor.GREEN + ChatColor.ITALIC + "Opening the end of day box...");
+        if(!playerBoxes.containsKey(player)){
+            playerBoxes.put(player, Bukkit.createInventory(player, 18, "" + ChatColor.GREEN + ChatColor.BOLD +"Towny Bank Dropoff Station"));
+        }
+        Inventory pInv = player.openInventory(playerBoxes.get(player)).getTopInventory();
+
+        ItemStack clock = new ItemStack(Material.CLOCK, 1);
+        ItemMeta clockMeta = clock.getItemMeta();
+        clockMeta.setDisplayName("" + ChatColor.GREEN + ChatColor.BOLD + "How Does This Work?");
+        clockMeta.setLore(new ArrayList<>(Arrays.asList("Drop your items in the box!", "Once exiting the box, tokens will be dropped.", "Leftover items will also be dropped.")));
+        clock.setItemMeta(clockMeta);
+        pInv.setItem(17, clock);
+    }
+
+    // Reminder: For the box closing/finishing, if someone is in a box while the timer runs out, close the inventory before clearing/closing.
 
 
 }

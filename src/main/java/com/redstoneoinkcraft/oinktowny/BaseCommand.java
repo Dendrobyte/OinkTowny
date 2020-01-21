@@ -148,7 +148,13 @@ public class BaseCommand implements CommandExecutor {
                 }
             }
 
-            /* TOWNYTOKEN STUFF
+            /* TOWNYTOKEN STUFF */
+            TownyTokenManager ttm = TownyTokenManager.getInstance();
+            if(args[0].equalsIgnoreCase("townybank")) {
+                // TODO: Implement args for 'bank' and 'box'
+                ttm.openPlayerBox(player);
+            }
+            /* For admin usage
             if(args[0].equalsIgnoreCase("token")){
                 TownyTokenManager ttManager = TownyTokenManager.getInstance();
                 int amt = Integer.parseInt(args[1]);

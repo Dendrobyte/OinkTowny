@@ -4,3 +4,6 @@ world-end: towny_end
 starting-tokens: 16
 ubi-tokens: 4
 day-count: 0
+
+# Store item worths for End of Day towny box -- Future plans to dynamically update it
+worth:
