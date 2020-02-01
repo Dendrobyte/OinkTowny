@@ -12,6 +12,7 @@ import com.redstoneoinkcraft.oinktowny.clans.ClanUpdateUuidListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantAnvilListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
+import com.redstoneoinkcraft.oinktowny.economy.TownyBankInvListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
 import com.redstoneoinkcraft.oinktowny.listeners.TreeFellerBreakListener;
@@ -126,6 +127,8 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new PortalListener(), this);
         // Artifacts
         Bukkit.getServer().getPluginManager().registerEvents(new ArtifactsListeners(), this);
+        // Economy
+        Bukkit.getServer().getPluginManager().registerEvents(new TownyBankInvListener(), this);
         // Ruins
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsChatListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RuinsSelectionListener(), this);

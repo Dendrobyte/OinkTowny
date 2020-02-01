@@ -153,6 +153,7 @@ public class BaseCommand implements CommandExecutor {
             if(args[0].equalsIgnoreCase("townybank")) {
                 // TODO: Implement args for 'bank' and 'box'
                 ttm.openPlayerBox(player);
+                return true;
             }
             /* For admin usage
             if(args[0].equalsIgnoreCase("token")){

@@ -6,4 +6,9 @@ ubi-tokens: 4
 day-count: 0
 
 # Store item worths for End of Day towny box -- Future plans to dynamically update it
+# item:X where X is the number of items worth 1 towny token -- Future plans to have a Y parameter for multiple tokens
 worth:
+  - DIAMOND:4
+  - EMERALD:8
+  - REDSTONE:32
+  - LAPIS_LAZULI:16
