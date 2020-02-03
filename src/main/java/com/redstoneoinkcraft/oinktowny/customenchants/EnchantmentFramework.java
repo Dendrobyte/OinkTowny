@@ -1,5 +1,6 @@
 package com.redstoneoinkcraft.oinktowny.customenchants;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -95,5 +96,15 @@ public abstract class EnchantmentFramework extends Enchantment {
 
     @Override
     public boolean isTreasure() { return false; }
+
+
+    // Things for actually obtaining the custom enchantments
+    public Material getIcon() { return Material.STONE ; }
+
+    public String getDescription() { return "No description defined!"; }
+
+    public int getCost(int currentLevel) {
+        return currentLevel * 999;
+    }
 
 }

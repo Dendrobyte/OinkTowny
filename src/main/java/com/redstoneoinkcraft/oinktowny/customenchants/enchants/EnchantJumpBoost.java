@@ -2,6 +2,7 @@ package com.redstoneoinkcraft.oinktowny.customenchants.enchants;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -74,4 +75,8 @@ public class EnchantJumpBoost extends EnchantmentFramework {
     public boolean staysAfterAnvil(){
         return true;
     }
+
+    private Material icon = Material.RABBIT_FOOT;
+
+    private String description = "Jumpy jumpy!";
 }

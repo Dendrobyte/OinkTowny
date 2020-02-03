@@ -1,6 +1,6 @@
 name: OinkTowny
 author: Dendrobyte, Mobkinz78
-version: 1.5b
+version: 1.78b
 main: com.redstoneoinkcraft.oinktowny.Main
 description: OinkTowny plugin made for Oinkcraft's new towny reboot!
 softdepend: [Multiverse-Core]
@@ -35,3 +35,5 @@ permissions:
     description: Allows a player to create an arena join sign
   oinktowny.ruins:
     description: Allows a player to create ruins
+  oinktowny.adminenchant:
+    description: Allows a player to enchant an item via command without levels

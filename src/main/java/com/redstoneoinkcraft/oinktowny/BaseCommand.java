@@ -4,6 +4,7 @@ import com.redstoneoinkcraft.oinktowny.arenapvp.ArenaPVPManager;
 import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactManager;
 import com.redstoneoinkcraft.oinktowny.bundles.BundleManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
+import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.economy.TownyTokenManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
@@ -17,6 +18,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 9/1/2018
@@ -48,6 +50,8 @@ public class BaseCommand implements CommandExecutor {
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny token");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny claim");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny clan");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny dropbox");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny enchant");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny lootdrop" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny arena" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny artifact" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
@@ -150,7 +154,7 @@ public class BaseCommand implements CommandExecutor {
 
             /* TOWNYTOKEN STUFF */
             TownyTokenManager ttm = TownyTokenManager.getInstance();
-            if(args[0].equalsIgnoreCase("townybank")) {
+            if(args[0].equalsIgnoreCase("dropbox")) {
                 // TODO: Implement args for 'bank' and 'box'
                 ttm.openPlayerBox(player);
                 return true;
@@ -391,9 +395,62 @@ public class BaseCommand implements CommandExecutor {
                 }
             }
 
-            /* ENCHANTMENT STUFF
+            // ENCHANTMENT STUFF
             if(args[0].equalsIgnoreCase("enchant")){
                 EnchantmentManager em = EnchantmentManager.getInstance();
+
+                // Default
+                if(args.length == 1) {
+                    player.sendMessage(em.prefix + ChatColor.BOLD + ChatColor.DARK_PURPLE + "Welcome to Towny Enchantments!\n" + ChatColor.GREEN + ChatColor.ITALIC + "What can I brew for you today?");
+                    player.sendMessage(em.prefix + "Use " + ChatColor.DARK_PURPLE + "/ot enchant list" + ChatColor.getLastColors(em.prefix) + " for all available enchantments.");
+                    player.sendMessage(em.prefix + "Then type " + ChatColor.DARK_PURPLE + " /ot enchant <enchantname>" + ChatColor.getLastColors(em.prefix) + ChatColor.ITALIC + " while holding the item you want to enchant.");
+                    return true;
+                }
+
+                // Handle second argument
+                if(args.length >= 2){
+
+                    // List off available enchantments and their short descriptions
+                    if(args[1].equalsIgnoreCase("list")){
+                        // TODO: Pagination and categorization
+                        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                        player.sendMessage(em.prefix + ChatColor.ITALIC + "Getting available enchantments for " + ChatColor.DARK_GREEN + ChatColor.ITALIC + itemInHand.getType() + "...");
+                        boolean availableEnchants = false;
+                        for(EnchantmentFramework enchant : em.getAllCustomEnchantments()){
+                            if(enchant.canEnchantItem(itemInHand)) {
+                                player.sendMessage(enchant.getCustomName() + " - " + enchant.getDescription());
+                                availableEnchants = true;
+                            }
+                        }
+
+                        if(!availableEnchants) {
+                            player.sendMessage(em.prefix + ChatColor.RED + ChatColor.ITALIC + "Sorry!" + ChatColor.GRAY + " No enchants are available for that item");
+                        }
+                        return true;
+                    }
+
+                    // Actual enchantment argument where the argument will be the name of an enchantment
+                    else {
+                        StringBuilder givenEnchantment = new StringBuilder();
+                        for(int i = 1; i < args.length; i++){
+                            givenEnchantment.append(args[i]).append(" ");
+                        }
+                        givenEnchantment = new StringBuilder(givenEnchantment.substring(0, givenEnchantment.length() - 1)); // Get rid of the last space
+                        EnchantmentFramework receivedEnchantment = em.getEnchantmentByName(givenEnchantment.toString());
+                        if(receivedEnchantment == null){
+                            player.sendMessage(em.prefix + ChatColor.RED + ChatColor.ITALIC + "Enchantment not found! " + ChatColor.GRAY + "See " + ChatColor.DARK_PURPLE + "/ot enchant list" + ChatColor.GRAY + " for available enchantments.");
+                            return true;
+                        } else {
+                            // Launch the enchantment inventory
+                            em.openCustomEnchantmentTable(player, receivedEnchantment, player.getInventory().getItemInMainHand(), player.getLevel());
+                            return true;
+                        }
+                    }
+                }
+
+                if(!player.hasPermission("oinktowny.adminenchant")) return true;
+
+                /* Temporary enchantment stuff
                 if(args.length < 3) {
                     player.sendMessage(prefix + "You need 3 args");
                     return true;
@@ -419,8 +476,8 @@ public class BaseCommand implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("deflect")){
                     em.enchantItem(player, EnchantmentManager.DEFLECT, Integer.parseInt(args[2]));
                 }
-                return true;
-            } */
+                return true; */
+            }
 
             /* ARTIFACT STUFF
             if(args[0].equalsIgnoreCase("artifact")){

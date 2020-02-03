@@ -121,7 +121,7 @@ public class TownyTokenManager {
         ItemStack clock = new ItemStack(Material.CLOCK, 1);
         ItemMeta clockMeta = clock.getItemMeta();
         clockMeta.setDisplayName("" + ChatColor.GREEN + ChatColor.BOLD + "How Does This Work?");
-        clockMeta.setLore(new ArrayList<>(Arrays.asList("Drop your items in the box!", "Once exiting the box, tokens and leftover items will be dropped.", ChatColor.RED + "This action cannot be undone.")));
+        clockMeta.setLore(Arrays.asList("Drop your items in the box!", "Once exiting the box, tokens and leftover items will be dropped.", ChatColor.RED + "This action cannot be undone."));
         clock.setItemMeta(clockMeta);
         pInv.setItem(17, clock);
     }

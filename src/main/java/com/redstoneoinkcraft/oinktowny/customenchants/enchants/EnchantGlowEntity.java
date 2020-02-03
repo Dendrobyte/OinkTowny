@@ -2,6 +2,7 @@ package com.redstoneoinkcraft.oinktowny.customenchants.enchants;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -51,7 +52,7 @@ public class EnchantGlowEntity extends EnchantmentFramework {
 
     @Override
     public int getMaxLevel() {
-        return 1;
+        return 4;
     }
 
     @Override
@@ -72,5 +73,13 @@ public class EnchantGlowEntity extends EnchantmentFramework {
     @Override
     public double getEnchantmentChance() {
         return 0;
+    }
+
+    public Material getIcon() { return Material.GLOWSTONE_DUST; }
+
+    public String getDescription() { return "Illuminate your enemies so they can't hide!"; }
+
+    public int getCost(int currentLevel) {
+        return 18;
     }
 }

@@ -3,15 +3,16 @@ package com.redstoneoinkcraft.oinktowny.customenchants;
 import com.redstoneoinkcraft.oinktowny.customenchants.enchants.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -28,6 +29,14 @@ public class EnchantmentManager {
 
     public static EnchantmentManager getInstance() {
         return instance;
+    }
+
+    public static String prefix = "" + ChatColor.BLACK + "{" + ChatColor.DARK_PURPLE + "Towny Enchants" + ChatColor.BLACK + "}" + ChatColor.GRAY + " ";
+
+    // All available enchantments stored for use within the plugin
+    private static ArrayList<EnchantmentFramework> allCustomEnchantments = new ArrayList<>(8);
+    public ArrayList<EnchantmentFramework> getAllCustomEnchantments(){
+        return allCustomEnchantments;
     }
 
     /* Constants
@@ -54,6 +63,7 @@ public class EnchantmentManager {
         registerCustomEnchantment(DEFLECT);
         registerCustomEnchantment(DOG_MASTER);
         registerCustomEnchantment(NECROMANCER);
+        registerCustomEnchantment(RUST);
         Bukkit.getLogger().log(Level.INFO, "[OinkTowny] All enchantments have been loaded!");
     }
     /* Register and inject all enchantments to the server, the return is the result of the registration */
@@ -66,6 +76,9 @@ public class EnchantmentManager {
 
             // Actual enchantment registration
             Enchantment.registerEnchantment(enchantment);
+
+            // Go ahead and throw it in the arraylist
+            allCustomEnchantments.add(enchantment);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             Bukkit.getLogger().log(Level.WARNING, "[OinKTowny] Enchants: Field value failure! Did you reload the server? If so, you should be fine.");
         } catch (IllegalStateException e) {
@@ -73,22 +86,101 @@ public class EnchantmentManager {
         }
     }
 
-    /* For the command usage */
-    public void enchantItem(Player player, EnchantmentFramework enchantment, int level){
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        if(enchantment.canEnchantItem(itemInHand)){
-            ItemMeta itemMeta = itemInHand.getItemMeta();
-            itemMeta.addEnchant(enchantment, level, true);
-
-            String loreAddition = "" + ChatColor.GOLD + enchantment.getCustomName() + ", Level " + level;
-            List<String> newLore = new ArrayList<>();
-            newLore.add(loreAddition);
-            itemMeta.setLore(newLore);
-            itemInHand.setItemMeta(itemMeta);
-            player.sendMessage("[Enchants]: Enchantment added!");
-        } else {
-            player.sendMessage("[Enchants]: You can not enchant this item!");
+    /* Helper method to add enchantment to the lore */
+    public void addCustomEnchantmentLore(ItemStack item, ItemMeta meta, String enchantmentName, int level){
+        // TODO: Convert to roman numeral for levels 1 thru 5
+        String loreAddition = "" + ChatColor.YELLOW + ChatColor.ITALIC + enchantmentName + " - Level " + level;
+        List<String> lore = meta.getLore();
+        if(lore == null){
+            lore = new ArrayList<>(1);
         }
+        lore.add(loreAddition);
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+    }
+
+    /* To add an enchantment on to an item */
+    public void addEnchantmentToItem(ItemStack itemToEnchant, EnchantmentFramework enchantment, int level){
+        if(enchantment.canEnchantItem(itemToEnchant)){
+            ItemMeta itemMeta = itemToEnchant.getItemMeta();
+            assert itemMeta != null;
+            itemMeta.addEnchant(enchantment, level, true);
+            itemToEnchant.setItemMeta(itemMeta);
+            addCustomEnchantmentLore(itemToEnchant, itemMeta, enchantment.getCustomName(), level);
+        }
+    }
+
+    /* Get an Enchantment by name, if possible */
+    public EnchantmentFramework getEnchantmentByName(String name){
+        for(EnchantmentFramework enchant : allCustomEnchantments){
+            if(enchant.getCustomName().toLowerCase().equalsIgnoreCase(name)){
+                return enchant;
+            }
+        }
+
+        return null;
+    }
+
+    private HashMap<Player, Inventory> activePlayerCustomEnchantInventories = new HashMap<>(2);
+    public HashMap<Player, Inventory> getActivePlayerCustomEnchantInventories(){
+        return activePlayerCustomEnchantInventories;
+    }
+
+    /* Open the custom enchantment GUI */
+    public void openCustomEnchantmentTable(Player player, EnchantmentFramework enchant, ItemStack itemToEnchant, int level){
+        if(!enchant.canEnchantItem(itemToEnchant)){
+            player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Sorry!" + ChatColor.GRAY + " That enchantment can not be applied to this item.");
+            return;
+        }
+
+        // Inventory setup
+        Inventory inv = Bukkit.createInventory(null, InventoryType.WORKBENCH);
+
+        // Top row: Left will be cancel, middle will be current item, right will be confirm
+        ItemStack cancel = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        ItemMeta cancelMeta = cancel.getItemMeta();
+        cancelMeta.setDisplayName("" + ChatColor.DARK_RED + ChatColor.BOLD + "CANCEL");
+        cancel.setItemMeta(cancelMeta);
+        inv.setItem(1, cancel);
+
+        ItemStack item = itemToEnchant;
+        inv.setItem(2, item);
+
+        ItemStack confirm = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
+        ItemMeta confirmMeta = confirm.getItemMeta();
+        confirmMeta.setDisplayName("" + ChatColor.GREEN + ChatColor.BOLD + "CONFIRM");
+        confirm.setItemMeta(confirmMeta);
+        inv.setItem(3, confirm);
+
+        // Middle and bottom row (4 through 8): Available enchantment levels (5 max anyway)
+        for (int i = 1; i <= enchant.getMaxLevel(); i++){
+            inv.setItem(i + 3, makeEnchantBook(enchant, i, enchant.getCost(i)));
+        }
+
+        // Bottom right - Paper with instructions
+        ItemStack instructions = new ItemStack(Material.PAPER, 1);
+        ItemMeta instructionsMeta = instructions.getItemMeta();
+        instructionsMeta.setDisplayName("" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "INSTRUCTIONS");
+        instructionsMeta.setLore(Arrays.asList("Select the desired enchantment level.", "Your item will update on the right side of the inventory.", "Make sure you have enough levels!"));
+        instructions.setItemMeta(instructionsMeta);
+        inv.setItem(9, instructions);
+
+        player.openInventory(inv);
+        activePlayerCustomEnchantInventories.put(player, inv);
+
+        // The rest is handled in CustomEnchantInvListener -- Enchantment is just added to original item, stored in the top middle, each time a player updates it.
+    }
+
+    // Make a book for the enchantment inventory
+    public ItemStack makeEnchantBook(EnchantmentFramework enchant, int level, int cost){
+        String enchantmentName = enchant.getCustomName();
+        ItemStack book = new ItemStack(Material.BOOK, 1);
+        ItemMeta bookMeta = book.getItemMeta();
+        bookMeta.setDisplayName("" + ChatColor.LIGHT_PURPLE + ChatColor.MAGIC + "k" + ChatColor.BOLD + ChatColor.GOLD + enchantmentName + ChatColor.LIGHT_PURPLE + ChatColor.MAGIC + "k");
+        bookMeta.setLore(Arrays.asList("Level: " + level, "" + ChatColor.GREEN + cost + " Levels"));
+        book.setItemMeta(bookMeta);
+
+        return book;
     }
 
     /* Enchantment specific methods */

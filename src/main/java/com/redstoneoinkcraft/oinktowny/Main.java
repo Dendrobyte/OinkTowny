@@ -9,6 +9,7 @@ import com.redstoneoinkcraft.oinktowny.bundles.SignClickListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanChatListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanUpdateUuidListener;
+import com.redstoneoinkcraft.oinktowny.customenchants.utils.CustomEnchantInvListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantAnvilListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
@@ -123,6 +124,7 @@ public class Main extends JavaPlugin {
         // Enchantments
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantAnvilListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new CustomEnchantInvListener(), this);
         // Portals
         Bukkit.getServer().getPluginManager().registerEvents(new PortalListener(), this);
         // Artifacts
