@@ -74,7 +74,7 @@ public class EnchantNecromancer extends EnchantmentFramework {
 
     public Material getIcon() { return Material.ZOMBIE_HEAD; }
 
-    public String getDescription() { return "Spawn monsters when you hit something!"; }
+    public String getDescription() { return "Spawn monsters when you hit something! (10% chance)"; }
 
     public int getCost(int currentLevel) {
         return 45;

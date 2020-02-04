@@ -88,7 +88,6 @@ public class EnchantmentManager {
 
     /* Helper method to add enchantment to the lore */
     public void addCustomEnchantmentLore(ItemStack item, ItemMeta meta, String enchantmentName, int level){
-        // TODO: Convert to roman numeral for levels 1 thru 5
         String loreAddition = "" + ChatColor.YELLOW + ChatColor.ITALIC + enchantmentName + " - Level " + level;
         List<String> lore = meta.getLore();
         if(lore == null){
@@ -104,6 +103,9 @@ public class EnchantmentManager {
         if(enchantment.canEnchantItem(itemToEnchant)){
             ItemMeta itemMeta = itemToEnchant.getItemMeta();
             assert itemMeta != null;
+            if(itemMeta.getEnchants().containsKey(enchantment)){
+                itemMeta.removeEnchant(enchantment);
+            }
             itemMeta.addEnchant(enchantment, level, true);
             itemToEnchant.setItemMeta(itemMeta);
             addCustomEnchantmentLore(itemToEnchant, itemMeta, enchantment.getCustomName(), level);
@@ -130,6 +132,10 @@ public class EnchantmentManager {
     public void openCustomEnchantmentTable(Player player, EnchantmentFramework enchant, ItemStack itemToEnchant, int level){
         if(!enchant.canEnchantItem(itemToEnchant)){
             player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Sorry!" + ChatColor.GRAY + " That enchantment can not be applied to this item.");
+            return;
+        }
+        if(itemToEnchant.getEnchantments().containsKey(enchant)){
+            player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Sorry!" + ChatColor.GRAY + " That item already has that enchantment.");
             return;
         }
 
@@ -190,10 +196,13 @@ public class EnchantmentManager {
         Random rand = new Random();
         int odds = rand.nextInt(100);
         if(level == 1){
-            return odds > 0 && odds < 11;
+            return odds < 20;
         }
         if(level == 2){
-            return odds > 0 && odds < 21;
+            return odds < 30;
+        }
+        if(level == 3){
+            return odds < 40;
         }
         return false;
     }

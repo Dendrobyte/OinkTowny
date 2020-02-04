@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -47,6 +48,14 @@ public class SuperpickListeners implements Listener {
             rm.toggleSuperpick(player);
             player.sendMessage(prefix + "(You teleported into a different world)");
         }
+    }
+
+    @EventHandler // Remove them from the superpick list if they die
+    public void onPlayerDeathWithSuperick(PlayerDeathEvent event){
+        Player player = event.getEntity();
+        if(!rm.isSuperpick(player)) return;
+        rm.toggleSuperpick(player);
+        player.sendMessage(prefix + "(You died... take a breath and try again!)");
     }
 
     @EventHandler // Immediately break block if activated and if holding pick

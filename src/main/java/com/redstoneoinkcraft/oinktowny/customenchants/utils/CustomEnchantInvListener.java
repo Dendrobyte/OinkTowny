@@ -72,6 +72,7 @@ public class CustomEnchantInvListener implements Listener {
                     player.getInventory().setItemInMainHand(inv.getItem(0));
                     player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 5, 5);
                     player.playSound(player.getLocation(), Sound.ENTITY_WITCH_CELEBRATE, 10, 5);
+                    player.sendMessage(em.prefix + "Majik!");
                 } else {
                     player.playSound(player.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 5, 5);
                     player.sendMessage(em.prefix + "Insufficient amount of levels!");

@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,6 +38,8 @@ public class EnchantListeners implements Listener {
     private EnchantmentManager em = EnchantmentManager.getInstance();
 
     private Set<UUID> prevPlayersOnGround = Sets.newHashSet(); // For the jump thing
+
+    Random rand = new Random(); // For generating odds
 
     /* General required enchantment listeners */
     @EventHandler
@@ -93,6 +96,8 @@ public class EnchantListeners implements Listener {
         }
     } */
 
+    // TODO: Make a method that replaces "itemStack.getEnchantments().containsKey()" -- Does the same thing under the hood but may be a bit cleaner
+
     @EventHandler
     public void enchantOnEntityHit(EntityDamageByEntityEvent event){
         /* GLOBAL USAGE */
@@ -107,12 +112,11 @@ public class EnchantListeners implements Listener {
             try {
                 ItemStack chestplate = player.getInventory().getChestplate();
                 if (chestplate.getEnchantments().containsKey(EnchantmentManager.CONVERSION)) {
-                    player.sendMessage("conversion enchantment!");
                     boolean converts = em.calculateConversion(chestplate.getEnchantments().get(EnchantmentManager.CONVERSION));
                     if (converts) {
                         event.setCancelled(true);
-                        player.sendTitle(null, "" + ChatColor.DARK_RED + "<3", 10, 40, 10);
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2.0f, 4.0f);
+                        player.sendTitle("", "" + ChatColor.DARK_RED + "<3", 20, 10, 20);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2.0f, 1.0f);
                         if (player.getHealth() + damage >= 20.0) {
                             player.setHealth(20.0);
                         } else {
@@ -131,17 +135,17 @@ public class EnchantListeners implements Listener {
             Player player = (Player) damager;
             Entity victim = damaged;
             ItemStack sword = player.getInventory().getItemInMainHand();
-            player.sendMessage("Enchantments are: " + sword.getEnchantments().toString());
             if (sword.getEnchantments().containsKey(EnchantmentManager.GLOW_STRIKE)) {
                 damaged.setGlowing(true);
                 EnchantTimer et = new EnchantTimer(10, damaged);
                 et.runTaskTimer(Main.getInstance(), 0, 20L);
             }
 
-            // TODO: Give these odds of 5% but add levels that increase those odds (cost will grow pretty impressively)
-            // TODO: Make a method that replaces "itemStack.getEnchantments().containsKey()" -- Does the same thing under the hood but may be a bit cleaner
-            /* Dog master enchantment -- 5% chance of spawning at level 1*/
+            /* Dog master enchantment -- 10% chance of spawning at level 1*/
             if (sword.getEnchantments().containsKey(EnchantmentManager.DOG_MASTER)){
+                int odds = rand.nextInt(100);
+                System.out.println("DOG ODDS: " + odds);
+                if(odds >= 5) return;
                 Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
                 wolf.setAdult();
                 wolf.setAngry(true);
@@ -149,20 +153,27 @@ public class EnchantListeners implements Listener {
                 wolf.setCustomName("" + ChatColor.GOLD + ChatColor.BOLD + player.getName() + "'s Summoned Wolf");
                 wolf.setOwner(player);
                 if(victim instanceof LivingEntity)  wolf.setTarget((LivingEntity)victim);
+                player.sendMessage("" + ChatColor.DARK_GREEN + ChatColor.ITALIC + "WOOF!");
                 // TODO: Kill wolves after a certain time
             }
 
-            /* Necromancer enchantment */
+            /* Necromancer enchantment  -- 20% chance of spawning*/
             if(sword.getEnchantments().containsKey(EnchantmentManager.NECROMANCER)){
+                int odds = rand.nextInt(100);
+                System.out.println("NECRO ODDS: " + odds);
+                if(odds >= 10) return;
                 Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
                 if(victim instanceof LivingEntity)  zombie.setTarget((LivingEntity)victim);
                 zombie.setCustomName("" + ChatColor.DARK_PURPLE + ChatColor.BOLD + player.getName() + "'s Summoned Zombie");
                 zombie.setHealth(1);
+                player.sendMessage("" + ChatColor.DARK_PURPLE + ChatColor.ITALIC + "*zombie noises*");
             }
 
             /* Rust Enchantment */
             if(sword.getEnchantments().containsKey(EnchantmentManager.RUST)){
-                // TODO: Give odds of 20%
+                int odds = rand.nextInt(100);
+                System.out.println("RUST ODDS: " + odds);
+                if(odds >= 10) return;
                 if(victim instanceof LivingEntity) ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20*4, 1));
                 // This is towny, so no pvp... hitter.sendMessage("Poisoned!");
             }
