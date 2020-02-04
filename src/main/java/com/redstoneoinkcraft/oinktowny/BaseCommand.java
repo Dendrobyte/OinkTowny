@@ -403,7 +403,7 @@ public class BaseCommand implements CommandExecutor {
                 if(args.length == 1) {
                     player.sendMessage(em.prefix + ChatColor.BOLD + ChatColor.DARK_PURPLE + "Welcome to Towny Enchantments!\n" + ChatColor.GREEN + ChatColor.ITALIC + "What can I brew for you today?");
                     player.sendMessage(em.prefix + "Use " + ChatColor.DARK_PURPLE + "/ot enchant list" + ChatColor.getLastColors(em.prefix) + " for all available enchantments.");
-                    player.sendMessage(em.prefix + "Then type " + ChatColor.DARK_PURPLE + " /ot enchant <enchantname>" + ChatColor.getLastColors(em.prefix) + ChatColor.ITALIC + " while holding the item you want to enchant.");
+                    player.sendMessage(em.prefix + "Then type " + ChatColor.DARK_PURPLE + " /ot enchant <enchantment name>" + ChatColor.getLastColors(em.prefix) + ChatColor.ITALIC + " while holding the item you want to enchant.");
                     return true;
                 }
 
@@ -414,17 +414,18 @@ public class BaseCommand implements CommandExecutor {
                     if(args[1].equalsIgnoreCase("list")){
                         // TODO: Pagination and categorization
                         ItemStack itemInHand = player.getInventory().getItemInMainHand();
-                        player.sendMessage(em.prefix + ChatColor.ITALIC + "Getting available enchantments for " + ChatColor.DARK_GREEN + ChatColor.ITALIC + itemInHand.getType() + "...");
+                        player.sendMessage(em.prefix + "Available enchantments for " + ChatColor.DARK_GREEN + ChatColor.ITALIC + itemInHand.getType() + ":");
                         boolean availableEnchants = false;
+                        String listPrefix = "" + ChatColor.BLACK + "- " + ChatColor.DARK_GREEN;
                         for(EnchantmentFramework enchant : em.getAllCustomEnchantments()){
                             if(enchant.canEnchantItem(itemInHand)) {
-                                player.sendMessage(enchant.getCustomName() + " - " + enchant.getDescription());
+                                player.sendMessage( listPrefix +  enchant.getCustomName() + ChatColor.GRAY + " - " + enchant.getDescription());
                                 availableEnchants = true;
                             }
                         }
 
                         if(!availableEnchants) {
-                            player.sendMessage(em.prefix + ChatColor.RED + ChatColor.ITALIC + "Sorry!" + ChatColor.GRAY + " No enchants are available for that item");
+                            player.sendMessage(em.prefix + ChatColor.RED + ChatColor.ITALIC + "Sorry!" + ChatColor.GRAY + " No enchantments are available for that item.");
                         }
                         return true;
                     }

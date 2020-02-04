@@ -52,7 +52,7 @@ public class EnchantGlowEntity extends EnchantmentFramework {
 
     @Override
     public int getMaxLevel() {
-        return 4;
+        return 1;
     }
 
     @Override

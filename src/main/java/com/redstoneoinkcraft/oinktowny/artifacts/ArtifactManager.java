@@ -71,7 +71,8 @@ public class ArtifactManager {
             String name = ChatColor.stripColor(item.getItemMeta().getDisplayName()).toUpperCase();
             name = name.replaceAll(" ", "_");
             return ArtifactType.valueOf(name);
-        } catch (NullPointerException e){
+        } catch (NullPointerException | IllegalArgumentException e){
+            // IAE occurs if the item isn't an artifact... *finger guns*
             return null;
         }
     }

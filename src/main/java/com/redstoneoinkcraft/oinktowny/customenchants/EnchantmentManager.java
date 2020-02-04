@@ -31,7 +31,7 @@ public class EnchantmentManager {
         return instance;
     }
 
-    public static String prefix = "" + ChatColor.BLACK + "{" + ChatColor.DARK_PURPLE + "Towny Enchants" + ChatColor.BLACK + "}" + ChatColor.GRAY + " ";
+    public static String prefix = "" + ChatColor.BLACK + ChatColor.BOLD + "(" + ChatColor.DARK_GREEN + "TownyEnchant" + ChatColor.BLACK + ChatColor.BOLD + ")" + ChatColor.GRAY + " ";
 
     // All available enchantments stored for use within the plugin
     private static ArrayList<EnchantmentFramework> allCustomEnchantments = new ArrayList<>(8);

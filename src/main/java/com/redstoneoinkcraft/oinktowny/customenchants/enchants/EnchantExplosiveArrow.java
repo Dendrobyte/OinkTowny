@@ -69,4 +69,12 @@ public class EnchantExplosiveArrow extends EnchantmentFramework {
     public double getEnchantmentChance() {
         return 0;
     }
+
+    public Material getIcon() { return Material.TNT; }
+
+    public String getDescription() { return "BOOM! [Doesn't break blocks]"; }
+
+    public int getCost(int currentLevel) {
+        return 29;
+    }
 }

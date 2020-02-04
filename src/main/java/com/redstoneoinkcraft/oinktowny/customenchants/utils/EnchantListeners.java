@@ -52,6 +52,7 @@ public class EnchantListeners implements Listener {
             Player player = event.getPlayer();
             if(player.getInventory().getBoots() == null) return;
             if(player.getInventory().getBoots().getEnchantments().containsKey(EnchantmentManager.JUMP_BOOST)) {
+                player.sendMessage("jumpy jumpy!");
                 int jumpLevel = player.getInventory().getBoots().getEnchantmentLevel(EnchantmentManager.JUMP_BOOST);
                 player.setVelocity(new Vector(player.getVelocity().getX(), player.getVelocity().getY() + jumpLevel, player.getVelocity().getZ()));
             }
@@ -103,12 +104,14 @@ public class EnchantListeners implements Listener {
         if(damaged instanceof Player){
             Player player = (Player) damaged;
             /* Conversion Enchantment - Converts damage to health */
-            ItemStack chestplate = player.getInventory().getChestplate();
             try {
+                ItemStack chestplate = player.getInventory().getChestplate();
                 if (chestplate.getEnchantments().containsKey(EnchantmentManager.CONVERSION)) {
+                    player.sendMessage("conversion enchantment!");
                     boolean converts = em.calculateConversion(chestplate.getEnchantments().get(EnchantmentManager.CONVERSION));
                     if (converts) {
                         event.setCancelled(true);
+                        player.sendTitle(null, "" + ChatColor.DARK_RED + "<3", 10, 40, 10);
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2.0f, 4.0f);
                         if (player.getHealth() + damage >= 20.0) {
                             player.setHealth(20.0);
@@ -128,15 +131,17 @@ public class EnchantListeners implements Listener {
             Player player = (Player) damager;
             Entity victim = damaged;
             ItemStack sword = player.getInventory().getItemInMainHand();
+            player.sendMessage("Enchantments are: " + sword.getEnchantments().toString());
             if (sword.getEnchantments().containsKey(EnchantmentManager.GLOW_STRIKE)) {
                 damaged.setGlowing(true);
                 EnchantTimer et = new EnchantTimer(10, damaged);
                 et.runTaskTimer(Main.getInstance(), 0, 20L);
             }
 
-            // TODO: Give these odds of 10%
-            /* Dog master enchantment */
-            if(player.getInventory().getItemInMainHand().containsEnchantment(EnchantmentManager.DOG_MASTER)){
+            // TODO: Give these odds of 5% but add levels that increase those odds (cost will grow pretty impressively)
+            // TODO: Make a method that replaces "itemStack.getEnchantments().containsKey()" -- Does the same thing under the hood but may be a bit cleaner
+            /* Dog master enchantment -- 5% chance of spawning at level 1*/
+            if (sword.getEnchantments().containsKey(EnchantmentManager.DOG_MASTER)){
                 Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
                 wolf.setAdult();
                 wolf.setAngry(true);
@@ -148,7 +153,7 @@ public class EnchantListeners implements Listener {
             }
 
             /* Necromancer enchantment */
-            if(player.getInventory().getItemInMainHand().containsEnchantment(EnchantmentManager.NECROMANCER)){
+            if(sword.getEnchantments().containsKey(EnchantmentManager.NECROMANCER)){
                 Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
                 if(victim instanceof LivingEntity)  zombie.setTarget((LivingEntity)victim);
                 zombie.setCustomName("" + ChatColor.DARK_PURPLE + ChatColor.BOLD + player.getName() + "'s Summoned Zombie");
@@ -156,10 +161,10 @@ public class EnchantListeners implements Listener {
             }
 
             /* Rust Enchantment */
-            if(player.getInventory().getItemInMainHand().containsEnchantment(EnchantmentManager.RUST)){
+            if(sword.getEnchantments().containsKey(EnchantmentManager.RUST)){
                 // TODO: Give odds of 20%
-                if(victim instanceof LivingEntity) ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20*4, 2));
-                // hitter.sendMessage(Poisoned!);
+                if(victim instanceof LivingEntity) ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20*4, 1));
+                // This is towny, so no pvp... hitter.sendMessage("Poisoned!");
             }
         }
 

@@ -76,7 +76,11 @@ public class EnchantJumpBoost extends EnchantmentFramework {
         return true;
     }
 
-    private Material icon = Material.RABBIT_FOOT;
+    public Material getIcon() { return Material.TNT; }
 
-    private String description = "Jumpy jumpy!";
+    public String getDescription() { return "Enhanced jumping!"; }
+
+    public int getCost(int currentLevel) {
+        return 15 + (int)(5.4*currentLevel);
+    }
 }

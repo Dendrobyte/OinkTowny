@@ -71,11 +71,11 @@ public class EnchantRust extends EnchantmentFramework {
         return 0;
     }
 
-    public Material getIcon(){
-        return Material.WOODEN_SWORD;
-    }
+    public Material getIcon() { return Material.WOODEN_SWORD; }
 
-    public String getDescription(){
-        return "Chance to poison your enemies!";
+    public String getDescription() { return "Potentially poison your enemies!"; }
+
+    public int getCost(int currentLevel) {
+        return 23;
     }
 }

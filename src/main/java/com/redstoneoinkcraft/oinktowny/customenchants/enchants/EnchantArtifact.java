@@ -2,6 +2,8 @@ package com.redstoneoinkcraft.oinktowny.customenchants.enchants;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -67,5 +69,13 @@ public class EnchantArtifact extends EnchantmentFramework {
     @Override
     public double getEnchantmentChance() {
         return 0;
+    }
+
+    public Material getIcon() { return Material.TOTEM_OF_UNDYING; }
+
+    public String getDescription() { return "" + ChatColor.RED + "(Not actually an enchantment- you'll gain nothing)"; }
+
+    public int getCost(int currentLevel) {
+        return 999;
     }
 }

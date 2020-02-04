@@ -2,6 +2,7 @@ package com.redstoneoinkcraft.oinktowny.customenchants.enchants;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -67,5 +68,13 @@ public class EnchantDeflect extends EnchantmentFramework {
     @Override
     public double getEnchantmentChance() {
         return 20;
+    }
+
+    public Material getIcon() { return Material.ARROW; }
+
+    public String getDescription() { return "Deflect incoming projectiles! (Chance increases with level)"; }
+
+    public int getCost(int currentLevel) {
+        return 20 + (int)(2.1*currentLevel);
     }
 }

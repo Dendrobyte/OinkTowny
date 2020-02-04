@@ -3,6 +3,7 @@ package com.redstoneoinkcraft.oinktowny.customenchants.enchants;
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -69,5 +70,13 @@ public class EnchantNecromancer extends EnchantmentFramework {
     @Override
     public double getEnchantmentChance() {
         return 0;
+    }
+
+    public Material getIcon() { return Material.ZOMBIE_HEAD; }
+
+    public String getDescription() { return "Spawn monsters when you hit something!"; }
+
+    public int getCost(int currentLevel) {
+        return 45;
     }
 }

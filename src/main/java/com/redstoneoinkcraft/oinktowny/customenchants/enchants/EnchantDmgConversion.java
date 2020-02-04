@@ -2,6 +2,8 @@ package com.redstoneoinkcraft.oinktowny.customenchants.enchants;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -41,7 +43,7 @@ public class EnchantDmgConversion extends EnchantmentFramework {
 
     @Override
     public int getMaxLevel() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -72,5 +74,13 @@ public class EnchantDmgConversion extends EnchantmentFramework {
     @Override
     public double getEnchantmentChance() {
         return 0;
+    }
+
+    public Material getIcon() { return Material.GOLDEN_APPLE; }
+
+    public String getDescription() { return "Convert damage to health! (Chance increases with level)" + ChatColor.RED + ChatColor.BOLD + "Mark hasn't fully tested this one..."; }
+
+    public int getCost(int currentLevel) {
+        return 24 + (int)(6.2*currentLevel);
     }
 }
