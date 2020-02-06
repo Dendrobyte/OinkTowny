@@ -102,7 +102,7 @@ public class TownyTokenManager {
         }
         int amountInInv = player.getInventory().getItem(itemSlot).getAmount();
         player.getInventory().getItem(itemSlot).setAmount(amountInInv-amount);
-        player.sendMessage(prefix + ChatColor.GREEN + ChatColor.BOLD + "Transaction successful!");
+        player.sendMessage(prefix + ChatColor.GREEN + "Transaction successful!");
     }
 
     /* Code for End of Day Box */
@@ -126,6 +126,18 @@ public class TownyTokenManager {
         pInv.setItem(17, clock);
     }
 
+    // Print the worth from config
+    public void printWorthList(Player player){
+        player.sendMessage(ChatColor.DARK_GRAY + "-+" + ChatColor.GREEN + " Dropbox Exchange Rate " + ChatColor.DARK_GRAY + "+-");
+
+        List<String> worthList = Main.getInstance().getConfig().getStringList("worth");
+        for(String str : worthList){
+            player.sendMessage("" + ChatColor.GREEN + str.substring(0, str.indexOf(":")) + ChatColor.GOLD + " x" + str.substring(str.indexOf(":")+1));
+        }
+
+        player.sendMessage("" + ChatColor.DARK_GRAY + ChatColor.ITALIC + "Each \'ITEM x#\' is worth 1 Towny Token");
+    }
+
     // For every item in the chest, check if it has a worth from the worth config
     public void calculateItems(ArrayList<ItemStack> items, Player owner) {
         // Get the worth from configuration
@@ -138,8 +150,36 @@ public class TownyTokenManager {
         ArrayList<String> receiptLore = new ArrayList<>(items.size());
         receiptLore.add("" + ChatColor.GREEN + ChatColor.BOLD + "TOWNY BANK RECEIPT"); // TODO: For fun, make the receipt number a 4 digit randomized number.
 
+        // Load items into a ArrayList to work with in case items exceed amount of 64
+        ArrayList<ItemStack> listOfItems = new ArrayList<>(4);
+        // HashMap to store the amounts
+        HashMap<ItemStack, Integer> amountsOfItems = new HashMap<>(4);
+
+        // Iterate through and make sure there are no duplicates
+        for (ItemStack itemInChest : items) {
+            // Store amount for future use
+            int prevAmountOfCurrent = itemInChest.getAmount();
+            itemInChest.setAmount(1);
+
+            if (listOfItems.contains(itemInChest)) {
+                int indexOfExistingItem = listOfItems.indexOf(itemInChest);
+                ItemStack existingItem = listOfItems.get(indexOfExistingItem);
+
+                int prevStoredAmount = amountsOfItems.get(itemInChest);
+                amountsOfItems.put(existingItem, prevStoredAmount + prevAmountOfCurrent);
+            } else {
+                listOfItems.add(itemInChest);
+                amountsOfItems.put(itemInChest, prevAmountOfCurrent);
+            }
+        }
+
+        // Reset the amounts to the correct number
+        for(ItemStack item : listOfItems){
+            item.setAmount(amountsOfItems.get(item));
+        }
+
         // Compare each item (big oof at the nested for loop)
-        for(ItemStack itemInInv : items){
+        for(ItemStack itemInInv : listOfItems){
             boolean match = false;
             for(String str : worthList){
                 Material itemName = Objects.requireNonNull(Material.getMaterial(str.substring(0, str.indexOf(':'))));
@@ -175,11 +215,12 @@ public class TownyTokenManager {
 
     private void dropTransferItems(Player owner, int tokenNumber, ArrayList<ItemStack> leftoverItems){
         if (leftoverItems.size() == 1) { // Just the receipt in the list
-            owner.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Nothing in the box!");
+            owner.sendMessage(prefix + ChatColor.RED + "Nothing in the box!");
             return;
         }
         else if(tokenNumber == 0){
-            owner.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Nothing was worth anything. " + ChatColor.GRAY + "Dropping the rest of your items here.");
+            owner.sendMessage(prefix + ChatColor.RED + "Nothing was worth anything. " + ChatColor.GRAY + "Dropping the rest of your items here.");
+            return;
         } else {
             owner.sendMessage(prefix + ChatColor.GOLD + "Now dropping " + ChatColor.GREEN + ChatColor.BOLD + tokenNumber + " token(s)" + ChatColor.GOLD + " and your leftover items...");
             owner.getWorld().dropItem(owner.getLocation(), createToken(tokenNumber));
@@ -187,6 +228,7 @@ public class TownyTokenManager {
 
         // Drop remaining items
         for(ItemStack is : leftoverItems){
+            if(is.getAmount() == 0) continue;
             owner.getWorld().dropItem(owner.getLocation(), is);
         }
 

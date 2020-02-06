@@ -97,15 +97,12 @@ public class ClanManager {
         clansConfig.set("player-info." + playerId, null);
 
         // Remove all other members
-        // TODO: Test this with other people/accounts
         int clanId = playerClans.get(player.getUniqueId()).getId();
         for(String memberId : clansConfig.getConfigurationSection("player-info").getKeys(false)){
-            System.out.println("1: " + memberId);
             if(clansConfig.getInt("player-info." + memberId + ".clan-id") == clanId) {
                 clansConfig.set("player-info." + memberId, null);
                 playerClans.remove(UUID.fromString(memberId));
             }
-            System.out.println("2: Removed " + memberId);
             playerIDs.remove(memberId);
         }
 
@@ -208,9 +205,10 @@ public class ClanManager {
             return;
         }
 
-        playerClans.remove(kicked.getUniqueId());
+        UUID kickedID = kicked.getUniqueId();
+        playerClans.remove(kickedID);
 
-        clansConfig.set("player-info." + kicked, null);
+        clansConfig.set("player-info." + kickedID.toString(), null);
         updateConfigPlayerList(kicked);
         kicked.sendMessage(prefix + "You have been kicked from " + Bukkit.getPlayer(clan.getLeaderId()).getName() + "'s clan!");
         kicker.sendMessage(prefix + "You have kicked " + kicked.getName() + " from your clan.");
@@ -268,7 +266,6 @@ public class ClanManager {
             // Add them in the hashmap
             playerClans.put(addPlayerID, currentClan);
         }
-        System.out.println(prefix + "All clans have been successfully cached!");
         mainInstance.saveClansConfig();
     }
 
@@ -281,7 +278,6 @@ public class ClanManager {
         return result;
     }
 
-    // TODO: Implementation needs to be tested
     private void updateConfigPlayerList(Player player){
         List<String> playerIDs = clansConfig.getStringList("player-list");
         if(playerIDs.contains(player.getUniqueId().toString())) return;
@@ -320,7 +316,6 @@ public class ClanManager {
 
     public ClanObj getPlayerClanID(UUID playerID){
         if(playerHasClanID(playerID)) return playerClans.get(playerID);
-        // System.out.println("Player does not have a clan!");
         return null;
     }
 
@@ -341,20 +336,17 @@ public class ClanManager {
     // Incredibly poor optimization, but it won't be used often so for now I'm leaving it. Sorry :( I'll make use of the cache method with this one
     private ArrayList<String> getClanMembers(ClanObj clan){
         ArrayList<String> returnList = new ArrayList<>();
-        List<String> storedPlayers = Main.getInstance().getClansConfig().getStringList("stored-players");
-        HashMap<String, String> idToName = new HashMap<>(); // UUID, Name
+        List<String> storedPlayers = Main.getInstance().getClansConfig().getStringList("player-list");
         for(String str : storedPlayers){
-            idToName.put(str.substring(str.indexOf(":")+1), str.substring(0, str.indexOf(":")));
-        }
-        for(UUID id : clan.getMemberIds()){
-            returnList.add(idToName.get(id.toString()));
-        }
+            UUID currentID = UUID.fromString(str);
+            if(getPlayerClanID(currentID).equals(clan)) returnList.add(Bukkit.getServer().getOfflinePlayer(currentID).getName());
+       }
         return returnList;
     }
 
     public void createClanListScoreboard(Player player){
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = board.registerNewObjective(player.getName(), "", ChatColor.DARK_AQUA + player.getName() + "'s Clan Members");
+        Objective objective = board.registerNewObjective(player.getName(), "", "" + ChatColor.AQUA + ChatColor.BOLD + "Clan Members");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         ArrayList<String> clanMembersToList = getClanMembers(getPlayerClan(player));
         for(int i = 0; i < clanMembersToList.size(); i++){

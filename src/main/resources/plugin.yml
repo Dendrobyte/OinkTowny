@@ -1,6 +1,6 @@
 name: OinkTowny
 author: Dendrobyte, Mobkinz78
-version: 1.79b
+version: 1.87b
 main: com.redstoneoinkcraft.oinktowny.Main
 description: OinkTowny plugin made for Oinkcraft's new towny reboot!
 softdepend: [Multiverse-Core]

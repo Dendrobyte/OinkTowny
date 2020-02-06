@@ -50,7 +50,7 @@ public class BaseCommand implements CommandExecutor {
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny token");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny claim");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny clan");
-                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny dropbox");
+                player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny dropbox [worth/list]");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny enchant");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny lootdrop" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
                 player.sendMessage(prefix + ChatColor.GOLD + "/oinktowny arena" + ChatColor.DARK_RED + ChatColor.BOLD + " ADMIN COMMAND");
@@ -155,6 +155,12 @@ public class BaseCommand implements CommandExecutor {
             /* TOWNYTOKEN STUFF */
             TownyTokenManager ttm = TownyTokenManager.getInstance();
             if(args[0].equalsIgnoreCase("dropbox")) {
+                if(args.length > 1){
+                    if(args[1].equalsIgnoreCase("worth") || args[1].equalsIgnoreCase("list")){
+                        ttm.printWorthList(player);
+                        return true;
+                    }
+                }
                 // TODO: Implement args for 'bank' and 'box'
                 ttm.openPlayerBox(player);
                 return true;
@@ -401,7 +407,7 @@ public class BaseCommand implements CommandExecutor {
 
                 // Default
                 if(args.length == 1) {
-                    player.sendMessage(em.prefix + ChatColor.BOLD + ChatColor.DARK_PURPLE + "Welcome to Towny Enchantments!\n" + ChatColor.GREEN + ChatColor.ITALIC + "What can I brew for you today?");
+                    player.sendMessage(em.prefix + ChatColor.BOLD + ChatColor.DARK_PURPLE + "Welcome to Towny Enchantments!\n" + ChatColor.DARK_GREEN + ChatColor.ITALIC + "What can I brew for you today?");
                     player.sendMessage(em.prefix + "Use " + ChatColor.DARK_PURPLE + "/ot enchant list" + ChatColor.getLastColors(em.prefix) + " for all available enchantments.");
                     player.sendMessage(em.prefix + "Then type " + ChatColor.DARK_PURPLE + " /ot enchant <enchantment name>" + ChatColor.getLastColors(em.prefix) + ChatColor.ITALIC + " while holding the item you want to enchant.");
                     return true;
@@ -450,34 +456,6 @@ public class BaseCommand implements CommandExecutor {
                 }
 
                 if(!player.hasPermission("oinktowny.adminenchant")) return true;
-
-                /* Temporary enchantment stuff
-                if(args.length < 3) {
-                    player.sendMessage(prefix + "You need 3 args");
-                    return true;
-                }
-                if(args[1].equalsIgnoreCase("jump")){
-                    em.enchantItem(player, EnchantmentManager.JUMP_BOOST, Integer.parseInt(args[2]));
-                }
-                if(args[1].equalsIgnoreCase("glow")){
-                    em.enchantItem(player, EnchantmentManager.GLOW_STRIKE, Integer.parseInt(args[2]));
-                }
-                if(args[1].equalsIgnoreCase("convert")){
-                    em.enchantItem(player, EnchantmentManager.CONVERSION, Integer.parseInt(args[2]));
-                }
-                if(args[1].equalsIgnoreCase("explode")){
-                    em.enchantItem(player, EnchantmentManager.EXPLOSIVE_ARROWS, Integer.parseInt(args[2]));
-                }
-                if(args[1].equalsIgnoreCase("dogmaster")){
-                    em.enchantItem(player, EnchantmentManager.DOG_MASTER, Integer.parseInt(args[2]));
-                }
-                if(args[1].equalsIgnoreCase("necromancer")){
-                    em.enchantItem(player, EnchantmentManager.NECROMANCER, Integer.parseInt(args[2]));
-                }
-                if(args[1].equalsIgnoreCase("deflect")){
-                    em.enchantItem(player, EnchantmentManager.DEFLECT, Integer.parseInt(args[2]));
-                }
-                return true; */
             }
 
             /* ARTIFACT STUFF

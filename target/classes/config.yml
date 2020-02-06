@@ -8,7 +8,16 @@ day-count: 0
 # Store item worths for End of Day towny box -- Future plans to dynamically update it
 # item:X where X is the number of items worth 1 towny token -- Future plans to have a Y parameter for multiple tokens
 worth:
-  - DIAMOND:4
-  - EMERALD:8
-  - REDSTONE:32
+  - DIAMOND:8
+  - EMERALD:6
+  - REDSTONE:28
   - LAPIS_LAZULI:16
+  - PORKCHOP:20
+  - BEEF:30
+  - CHICKEN:64
+  - LEATHER:16
+  - IRON_BLOCK:6
+  - GOLD_BLOCK:8
+  - SLIME_BALL:16
+  - ENDER_PEARL:24
+  - CARROT:64

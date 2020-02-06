@@ -3,17 +3,23 @@
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
       <artifact name="OinkTowny:jar" />
+      <artifact name="OinkTownyBuild:jar" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/clans/ClanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/clans/ClanManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/clans/ClanObj.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/clans/ClanObj.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/EnchantmentManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantNecromancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantNecromancer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantRust.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/enchants/EnchantRust.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/CustomEnchantInvListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/CustomEnchantInvListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/economy/TownyTokenManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/economy/TownyTokenManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/BaseCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -265,7 +271,9 @@
       <workItem from="1580737634125" duration="65000" />
       <workItem from="1580757278690" duration="610000" />
       <workItem from="1580809546807" duration="3463000" />
-      <workItem from="1580826787715" duration="3285000" />
+      <workItem from="1580826787715" duration="3420000" />
+      <workItem from="1580846254176" duration="3202000" />
+      <workItem from="1580982765595" duration="8290000" />
     </task>
     <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
       <created>1538704636495</created>
@@ -505,7 +513,14 @@
       <option name="project" value="LOCAL" />
       <updated>1580813013473</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Enchantment odds added, default worth list, superpick fixed. Ready for update!">
+      <created>1580830316188</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1580830316188</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -525,7 +540,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixes for issues 4 thru 6!" />
     <MESSAGE value="Fixes for the arenas and lootdrop issues." />
     <MESSAGE value="Arena, lootdrops, and custom enchants in bundles all functional." />
     <MESSAGE value="Nether portal functionality working as intended" />
@@ -550,6 +564,7 @@
     <MESSAGE value="Towny box stuff finalized! Just need to change args and add to help menu." />
     <MESSAGE value="Enchantments now obtainable via command! Will update command syntax and args a little later and in the future I'll make a gui system (maybe?) but first... custom anvil and book support!" />
     <MESSAGE value="Enchantments spruced up, just need to add odds for those that need them :D" />
-    <option name="LAST_COMMIT_MESSAGE" value="Enchantments spruced up, just need to add odds for those that need them :D" />
+    <MESSAGE value="Enchantment odds added, default worth list, superpick fixed. Ready for update!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Enchantment odds added, default worth list, superpick fixed. Ready for update!" />
   </component>
 </project>

@@ -31,7 +31,7 @@ public class EnchantmentManager {
         return instance;
     }
 
-    public static String prefix = "" + ChatColor.BLACK + ChatColor.BOLD + "(" + ChatColor.DARK_GREEN + "TownyEnchant" + ChatColor.BLACK + ChatColor.BOLD + ")" + ChatColor.GRAY + " ";
+    public static String prefix = "" + ChatColor.DARK_GRAY + "[" + ChatColor.DARK_PURPLE + "TownyEnchant" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " ";
 
     // All available enchantments stored for use within the plugin
     private static ArrayList<EnchantmentFramework> allCustomEnchantments = new ArrayList<>(8);
@@ -105,6 +105,14 @@ public class EnchantmentManager {
             assert itemMeta != null;
             if(itemMeta.getEnchants().containsKey(enchantment)){
                 itemMeta.removeEnchant(enchantment);
+                List<String> newLore = itemMeta.getLore();
+                assert newLore != null;
+                for(String str : newLore){
+                    if(str.toLowerCase().contains(enchantment.getCustomName().toLowerCase())){
+                        newLore.remove(str);
+                        itemMeta.setLore(newLore);
+                    }
+                }
             }
             itemMeta.addEnchant(enchantment, level, true);
             itemToEnchant.setItemMeta(itemMeta);
@@ -135,7 +143,7 @@ public class EnchantmentManager {
             return;
         }
         if(itemToEnchant.getEnchantments().containsKey(enchant)){
-            player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Sorry!" + ChatColor.GRAY + " That item already has that enchantment.");
+            player.sendMessage("" + ChatColor.RED + ChatColor.ITALIC + "Sorry!" + ChatColor.GRAY + " That item already has that enchantment.");
             return;
         }
 

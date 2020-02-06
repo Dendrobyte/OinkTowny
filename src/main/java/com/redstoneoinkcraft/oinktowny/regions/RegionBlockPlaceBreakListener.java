@@ -1,10 +1,12 @@
 package com.redstoneoinkcraft.oinktowny.regions;
 
+import com.google.gson.stream.JsonToken;
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanObj;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -72,26 +74,29 @@ public class RegionBlockPlaceBreakListener implements Listener {
     private boolean canPlayerEdit(Chunk eventChunk, Player editor){
         if(!rm.chunkIsClaimed(eventChunk)) return true;
 
-        // If the player is not in a clan, or the chunk owner has no clan, cancel the event
-        ClanObj eventPlayerClan = cm.getPlayerClanID(editor.getUniqueId());
-        // ChunkOwner shouldn't be false, since we've reached this block- where the chunk is definitely claimed
-        UUID chunkOwnerID = rm.getClaimedChunks().get(eventChunk);
-        // If the player has no clan, check if it's their chunk.
-        if(eventPlayerClan == null){
-            if(chunkOwnerID.equals(editor.getUniqueId())){
-                return true;
-            } else {
-                return false; // Not the claim owner
-            }
-        }
-        ClanObj chunkOwnerClan = cm.getPlayerClanID(chunkOwnerID);
+        UUID editorID = editor.getUniqueId();
 
-        // If both players do have a clan, see if they're equal and continue
-        // Since the claim isn't necessarily the leader's claim, we check if the clans are equal
-        if(!eventPlayerClan.getLeaderId().equals(chunkOwnerClan.getLeaderId())){ // TODO: Verify functionality with this equality, otherwise write custom equals or compareTo method
-            return false;
+        // Ignoring clans, check if it's the owner
+        if(rm.getClaimedChunks().get(eventChunk).equals(editorID)) {
+            return true;
         }
-        return true;
+
+        // If the player is not in a clan, or the chunk owner has no clan, cancel the event
+        ClanObj eventPlayerClan = cm.getPlayerClanID(editorID);
+        if(eventPlayerClan == null){
+            // If they own it then go for it. If they're not in a clan, don't worry about it.
+            return rm.getClaimedChunks().get(eventChunk).equals(editorID);
+        }
+
+        // Now we have a player who is in a clan trying to edit a chun that is not their own
+        UUID chunkOwnerID = rm.getClaimedChunks().get(eventChunk);
+
+        // If the claim owner doesn't have a clan, then cancel the event since clearly no one else would be able to edit it
+        ClanObj chunkOwnerClan = cm.getPlayerClanID(chunkOwnerID);
+        if(chunkOwnerClan == null) return false;
+
+        // Now the player is in a clan and the chunk owner is also in a clan. Let's check if they are in the same clan. If so, we're good! Otherwise, block the access
+        return eventPlayerClan.equals(chunkOwnerClan);
     }
 
 

@@ -45,4 +45,8 @@ public class ClanObj {
         return "Clan " + id + "'s leader is " + leader + " and contains members: " + members.toString();
     }
 
+    public boolean equals(ClanObj clan){
+        return clan.getId() == id;
+    }
+
 }

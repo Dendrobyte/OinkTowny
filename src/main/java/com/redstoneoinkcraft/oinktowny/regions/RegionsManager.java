@@ -25,7 +25,7 @@ public class RegionsManager {
 
     // TODO: Support for multiple worlds.
     // Right now, regions are cached based on overworld chunks. Make subregions in the config?
-    // Would need to update [world name of claim, subcategorie in configuration, chunks per world...]
+    // Would need to update [world name of claim, subcategories in configuration, chunks per world...]
 
     private static RegionsManager instance = new RegionsManager();
     private Main mainInstance = Main.getInstance();
@@ -135,21 +135,24 @@ public class RegionsManager {
             }
         }
         System.out.println(prefix + "All regions have been successfully cached!");
+        System.out.println("Player Chunks: " + playerChunks);
+        System.out.println("Claimed Chunks: " + claimedChunks);
         mainInstance.saveRegionsConfig();
     }
 
-    private ArrayList<Player> bypassEnabled = new ArrayList<>(2);
+    private Player bypassEnabled = null;
     public void enableBypassForAdmin(Player admin){
-        if(!bypassEnabled.contains(admin)){
-            bypassEnabled.add(admin);
+        if(bypassEnabled == null || !bypassEnabled.equals(admin)){
+            bypassEnabled = admin;
             admin.sendMessage(prefix + ChatColor.RED + "You are now bypassing claims. Retype command to disable.");
         } else {
-            bypassEnabled.remove(admin);
+            bypassEnabled = null;
             admin.sendMessage(prefix + ChatColor.RED + "You are now no longer bypassing claims.");
         }
     }
     boolean bypassEnabled(Player player){
-        return bypassEnabled.contains(player);
+        if(bypassEnabled == null) return false;
+        return bypassEnabled.equals(player);
     }
 
     public void addAdminRegionClaim(Player admin, Chunk chunk){
@@ -227,6 +230,7 @@ public class RegionsManager {
         int i = 1;
         for(Chunk chunk : playerChunks){
             player.sendMessage("" + ChatColor.GOLD + i + " - " + ChatColor.GRAY + "X: " + chunk.getBlock(8, 64, 8).getX() + ", Z: " + chunk.getBlock(8, 64, 8).getZ());
+            i++;
         }
         player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Pagination yet to be added.");
     }
