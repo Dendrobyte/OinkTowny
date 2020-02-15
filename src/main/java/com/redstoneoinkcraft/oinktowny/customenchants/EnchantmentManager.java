@@ -214,4 +214,18 @@ public class EnchantmentManager {
         }
         return false;
     }
+
+    // Calculate level for jump boost boots
+    public int getJumpBoostLevel(ItemStack boots){
+        ItemMeta meta = boots.getItemMeta();
+        String fullString = null;
+        for(String str : meta.getLore()){
+            if(ChatColor.stripColor(str).substring(0, 10).equalsIgnoreCase("jump boost")){
+                fullString = str;
+                break;
+            }
+        }
+        if(fullString == null) return 0;
+        return Integer.parseInt(fullString.substring(fullString.length()-1));
+    }
 }

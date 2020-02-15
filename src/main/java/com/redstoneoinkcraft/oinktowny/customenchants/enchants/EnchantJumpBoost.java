@@ -81,6 +81,6 @@ public class EnchantJumpBoost extends EnchantmentFramework {
     public String getDescription() { return "Enhanced jumping!"; }
 
     public int getCost(int currentLevel) {
-        return 15 + (int)(5.4*currentLevel);
+        return 15 + (int)(12.4*currentLevel);
     }
 }

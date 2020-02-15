@@ -41,12 +41,6 @@ public class EnchantListeners implements Listener {
 
     Random rand = new Random(); // For generating odds
 
-    /* General required enchantment listeners */
-    @EventHandler
-    public void itemPlacedInTable(PrepareItemEnchantEvent event){
-        // TODO: This is killing me inside
-    }
-
     /* For the actual enchantments */
 
     @EventHandler
@@ -55,8 +49,9 @@ public class EnchantListeners implements Listener {
             Player player = event.getPlayer();
             if(player.getInventory().getBoots() == null) return;
             if(player.getInventory().getBoots().getEnchantments().containsKey(EnchantmentManager.JUMP_BOOST)) {
-                player.sendMessage("jumpy jumpy!");
-                int jumpLevel = player.getInventory().getBoots().getEnchantmentLevel(EnchantmentManager.JUMP_BOOST);
+                double jumpLevel = em.getJumpBoostLevel(player.getInventory().getBoots()) * .2;
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE); // In case they already have it one
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 80, 10));
                 player.setVelocity(new Vector(player.getVelocity().getX(), player.getVelocity().getY() + jumpLevel, player.getVelocity().getZ()));
             }
         }
