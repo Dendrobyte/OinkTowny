@@ -1,0 +1,21 @@
+# Items MUST be formatted MATERIAL,AMOUNT with no spaces
+# Item materials MUST be formatted according to Spigot: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+tier1:
+  - BREAD,4
+  - OAK_LOG,16
+tier2:
+  - LAPIS_LAZULI,16
+  - REDSTONE,3
+tier3:
+  - DIAMOND,6
+  - OBSIDIAN,3
+
+# The following bounds are restricted from the world location of "0"
+# In other words, the restriction is the absolute value of the given number
+# i.e. x-bound of 200 would restrict on the x-axis between -200 and 200
+# y bound exists because the item will pick some air block above level 40 and below level 80 with a block below it and no block above it.
+x-bound: 100
+z-bound: 100
+
+# How many MINUTES between each crate drop?
+drop-interval: 70
