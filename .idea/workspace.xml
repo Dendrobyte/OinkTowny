@@ -7,7 +7,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/ChunkCoords.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/OinkTowny_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/OinkTowny_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/BaseCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/BundleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/bundles/BundleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/artifacts/ArtifactManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/bundles/BundleManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/bundles/BundleManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +78,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559791622655" />
-    <property name="last_opened_file_path" value="F:/Misc Programming/TakodahStaffServer" />
+    <property name="last_opened_file_path" value="F:/Misc Programming/MC TESTING SERVER (1.15)/plugins" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -263,7 +274,10 @@
       <workItem from="1580982765595" duration="9013000" />
       <workItem from="1581250902323" duration="8000" />
       <workItem from="1581774136439" duration="3170000" />
-      <workItem from="1582493700525" duration="611000" />
+      <workItem from="1582493700525" duration="811000" />
+      <workItem from="1582798561908" duration="286000" />
+      <workItem from="1583597349198" duration="1387000" />
+      <workItem from="1585078060404" duration="4546000" />
     </task>
     <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
       <created>1538704636495</created>
@@ -524,7 +538,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581777384012</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="I never pushed these :o">
+      <created>1582494634296</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1582494634296</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -544,7 +565,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Nether portal functionality working as intended" />
     <MESSAGE value="Artifacts!" />
     <MESSAGE value=".8a - Artifact framework done (more or less), jackhammer fixed and functional." />
     <MESSAGE value="Arrows now canceled in PvP, some ruins progress." />
@@ -569,6 +589,7 @@
     <MESSAGE value="Enchantment odds added, default worth list, superpick fixed. Ready for update!" />
     <MESSAGE value="Fixes to dropbox and massive patches to claims and clans" />
     <MESSAGE value="Jump boost fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Jump boost fix" />
+    <MESSAGE value="I never pushed these :o" />
+    <option name="LAST_COMMIT_MESSAGE" value="I never pushed these :o" />
   </component>
 </project>

@@ -39,16 +39,15 @@ public class RegionsManager {
 
     /* Chunk claiming related things */
     // Variables
-    private HashMap<UUID, ArrayList<Chunk>> playerChunks = new HashMap<>();
-    private HashMap<Chunk, UUID> claimedChunks = new HashMap<>();
+    private HashMap<UUID, ArrayList<ChunkCoords>> playerChunks = new HashMap<>();
+    private HashMap<ChunkCoords, UUID> claimedChunks = new HashMap<>();
 
-    public HashMap<UUID, ArrayList<Chunk>> getPlayerChunks(){
+    public HashMap<UUID, ArrayList<ChunkCoords>> getPlayerChunks(){
         return playerChunks;
     }
-    public HashMap<Chunk, UUID> getClaimedChunks(){
+    public HashMap<ChunkCoords, UUID> getClaimedChunks(){
         return claimedChunks;
     }
-
     private ClanManager cm = ClanManager.getInstance();
 
     // Methods
@@ -100,13 +99,13 @@ public class RegionsManager {
             claimer.sendMessage(prefix + "Claims are not enabled in this world!");
             return;
         }
-        removeRegionClaim(claimer, claimer.getUniqueId(), claimer.getLocation().getChunk());
+        removeRegionClaim(claimer, claimer.getUniqueId(), ChunkCoords.createChunkCoords(claimer.getLocation().getChunk()));
     }
 
     public void unclaimAllChunks(Player claimer){
-        ArrayList<Chunk> playerChunks = new ArrayList<>(getPlayerChunks().get(claimer.getUniqueId()));
-        for(Chunk chunk : playerChunks){
-            removeRegionClaim(claimer, claimer.getUniqueId(), chunk);
+        ArrayList<ChunkCoords> playerChunks = new ArrayList<>(getPlayerChunks().get(claimer.getUniqueId()));
+        for(ChunkCoords chunkCoords : playerChunks){
+            removeRegionClaim(claimer, claimer.getUniqueId(), chunkCoords);
         }
         claimer.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "All of your chunks have been cleared.");
     }
@@ -129,14 +128,13 @@ public class RegionsManager {
                 int dataZ = Integer.parseInt(info.substring(info.indexOf(":") + 1));
 
                 Chunk chunkToAdd = Bukkit.getServer().getWorld(mainInstance.getWorldName()).getChunkAt(dataX, dataZ);
+                ChunkCoords chunkCoordsToAdd = ChunkCoords.createChunkCoords(chunkToAdd);
                 if (!playerChunks.keySet().contains(playerID)) playerChunks.put(playerID, new ArrayList<>());
-                playerChunks.get(playerID).add(chunkToAdd);
-                claimedChunks.put(chunkToAdd, playerID);
+                playerChunks.get(playerID).add(chunkCoordsToAdd);
+                claimedChunks.put(chunkCoordsToAdd, playerID);
             }
         }
         System.out.println(prefix + "All regions have been successfully cached!");
-        System.out.println("Player Chunks: " + playerChunks);
-        System.out.println("Claimed Chunks: " + claimedChunks);
         mainInstance.saveRegionsConfig();
     }
 
@@ -174,23 +172,24 @@ public class RegionsManager {
         }
         String chunkCoords = chunk.getX() + ":" + chunk.getZ();
         listOfClaims.add(chunkCoords);
+        ChunkCoords metaChunkCoords = ChunkCoords.createChunkCoords(chunk);
 
         // Cache and add to file
-        claimedChunks.put(chunk, playerID);
-        if(!playerChunks.keySet().contains(playerID)) playerChunks.put(playerID, new ArrayList<Chunk>());
-        playerChunks.get(playerID).add(chunk);
+        claimedChunks.put(metaChunkCoords, playerID);
+        if(!playerChunks.keySet().contains(playerID)) playerChunks.put(playerID, new ArrayList<ChunkCoords>());
+        playerChunks.get(playerID).add(metaChunkCoords);
         mainInstance.getRegionsConfig().set("chunks." + playerID.toString(), listOfClaims);
         mainInstance.saveRegionsConfig();
     }
 
-    public void removeRegionClaim(Player player, UUID playerID, Chunk chunk){
+    public void removeRegionClaim(Player player, UUID playerID, ChunkCoords chunkCoords){
         if(!playerChunks.containsKey(playerID)){
             player.sendMessage(prefix + "You don't have any claims!");
             return;
         }
 
-        if(!isTheirChunk(player, chunk)) {
-            if(claimedChunks.containsKey(chunk)){
+        if(!isTheirChunk(player, chunkCoords)) {
+            if(claimedChunks.containsKey(chunkCoords)){
                 player.sendMessage(prefix + "You do not own this chunk.");
                 return;
             } else {
@@ -200,16 +199,15 @@ public class RegionsManager {
         }
 
         List<String> listOfClaims = mainInstance.getRegionsConfig().getStringList("chunks." + playerID.toString());
-        int chunkX = chunk.getX();
-        int chunkZ = chunk.getZ();
+        int chunkX = chunkCoords.getX();
+        int chunkZ = chunkCoords.getZ();
         for(String data : listOfClaims){
             int dataX = Integer.parseInt(data.substring(0, data.indexOf(":")));
             int dataZ = Integer.parseInt(data.substring(data.indexOf(":")+1));
             if(chunkX == dataX && chunkZ == dataZ){
                 listOfClaims.remove(data);
-                Chunk toRemove = player.getWorld().getChunkAt(dataX, dataZ);
-                claimedChunks.remove(chunk);
-                playerChunks.get(playerID).remove(chunk);
+                removeFromClaimedChunks(chunkCoords);
+                removeFromPlayerChunks(playerID, chunkCoords);
                 break;
             }
         }
@@ -219,29 +217,47 @@ public class RegionsManager {
         player.sendMessage(prefix + "Your chunk has been successfully unclaimed!");
     }
 
+    private void removeFromClaimedChunks(ChunkCoords coords){
+        for(ChunkCoords cc : claimedChunks.keySet()){
+            if(cc.equals(coords)){
+                claimedChunks.remove(cc);
+                break;
+            }
+        }
+    }
+
+    private void removeFromPlayerChunks(UUID playerID, ChunkCoords coords){
+        for(ChunkCoords cc : playerChunks.get(playerID)){
+            if(cc.equals(coords)){
+                playerChunks.get(playerID).remove(cc);
+                break;
+            }
+        }
+    }
+
     public void listClaims(Player player){
         UUID playerID = player.getUniqueId();
         if(!getPlayerChunks().containsKey(playerID)){
             player.sendMessage(prefix + "No claims found!");
             return;
         }
-        ArrayList<Chunk> playerChunks = getPlayerChunks().get(playerID);
+        ArrayList<ChunkCoords> playerChunks = getPlayerChunks().get(playerID);
         player.sendMessage(prefix + ChatColor.GOLD + "Your claims are located at coordinates:");
         int i = 1;
-        for(Chunk chunk : playerChunks){
-            player.sendMessage("" + ChatColor.GOLD + i + " - " + ChatColor.GRAY + "X: " + chunk.getBlock(8, 64, 8).getX() + ", Z: " + chunk.getBlock(8, 64, 8).getZ());
+        for(ChunkCoords chunkCoords : playerChunks){
+            player.sendMessage("" + ChatColor.GOLD + i + " - " + ChatColor.GRAY + "X: " + chunkCoords.getX() + ", Z: " + chunkCoords.getZ());
             i++;
         }
         player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Pagination yet to be added.");
     }
 
-    private boolean isTheirChunk(Player player, Chunk chunk){
+    private boolean isTheirChunk(Player player, ChunkCoords chunkCoords){
         boolean isTheirChunk = false;
         List<String> playersChunks = mainInstance.getRegionsConfig().getStringList("chunks." + player.getUniqueId());
         for(String chunkInfo : playersChunks){
             int chunkInfoX = Integer.parseInt(chunkInfo.substring(0, chunkInfo.indexOf(":")));
             int chunkInfoZ = Integer.parseInt(chunkInfo.substring(chunkInfo.indexOf(":")+1));
-            if(chunkInfoX == chunk.getX() && chunkInfoZ == chunk.getZ()){
+            if(chunkInfoX == chunkCoords.getX() && chunkInfoZ == chunkCoords.getZ()){
                 isTheirChunk = true;
                 break;
             }
@@ -251,7 +267,13 @@ public class RegionsManager {
     }
 
     public boolean chunkIsClaimed(Chunk chunk){
-        return claimedChunks.keySet().contains(chunk);
+        ChunkCoords chunkCoords = ChunkCoords.createChunkCoords(chunk);
+        System.out.println("CC: " + chunkCoords);
+        System.out.println("claimed chunks keyset: " + claimedChunks.keySet());
+        for(ChunkCoords cc : claimedChunks.keySet()){
+            if(cc.equals(chunkCoords)) return true;
+        }
+        return false;
     }
 
     /* Superpick related things */
@@ -274,8 +296,9 @@ public class RegionsManager {
     /* Artifact Checks */
     public boolean containsClaimedBlock(ArrayList<Block> blocks, Player player){
         for(Block b : blocks){
-            if(instance.getClaimedChunks().containsKey(b.getChunk())){
-                UUID chunkOwner = instance.getClaimedChunks().get(b.getChunk());
+            ChunkCoords bCoords = ChunkCoords.createChunkCoords(b.getChunk());
+            if(instance.getClaimedChunks().containsKey(bCoords)){
+                UUID chunkOwner = instance.getClaimedChunks().get(bCoords);
                 ClanObj clan = cm.getPlayerClanID(chunkOwner);
                 if(!clan.getMemberIds().contains(player.getUniqueId())){
                     return true;

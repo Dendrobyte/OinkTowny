@@ -246,6 +246,7 @@ public class ArtifactManager {
     }
 
     public boolean isHeadlampTorch(Player player, Block block){
+        if(player == null || block == null) return false;
         return torchReplacements.get(player).equals(block);
     }
 

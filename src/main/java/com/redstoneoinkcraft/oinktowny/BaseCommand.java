@@ -244,7 +244,6 @@ public class BaseCommand implements CommandExecutor {
                     cm.leaveClan(player);
                     return true;
                 }
-                // TODO: Toggle on/off permanently
                 // TODO: Check members of someone else's clan for 10 seconds
                 if(args[1].equalsIgnoreCase("list")){
                     if(!cm.playerHasClan(player)){

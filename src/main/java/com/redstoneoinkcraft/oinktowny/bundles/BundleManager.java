@@ -95,15 +95,28 @@ public class BundleManager {
     }
 
     public void giveBundle(String bundleName, Player player){
-        // TODO: If there isn't enough space, drop it on the ground and warn them, or cancel the command and warn them (preferable)
+        boolean fullInv = false;
         for(ItemStack is : getBundle(bundleName, player)){
             ItemStack[] invContents = player.getInventory().getContents();
-            for(int i = 0; i < player.getInventory().getSize(); i++){
-                if(invContents[i] == null){
-                    player.getInventory().setItem(i, is);
-                    break;
+
+            // As long as their inventory isn't full, put items in inventory
+            if(!fullInv) {
+                for (int i = 0; i < player.getInventory().getSize(); i++) {
+                    if (invContents[i] == null) {
+                        player.getInventory().setItem(i, is);
+                        break;
+                    }
+                    if (i >= 36) {
+                        fullInv = true;
+                    }
                 }
+            } else {
+                // Otherwise, drop the item
+                player.getWorld().dropItem(player.getLocation(), is);
             }
+        }
+        if(fullInv){
+            player.sendMessage(prefix + ChatColor.RED + ChatColor.ITALIC + "Your inventory was full so extra items were dropped around you.");
         }
     }
 }
