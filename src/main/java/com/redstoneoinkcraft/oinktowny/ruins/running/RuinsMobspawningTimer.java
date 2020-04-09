@@ -86,14 +86,12 @@ public class RuinsMobspawningTimer extends BukkitRunnable {
         }
         if (delay <= 0) {
             if(entities.size() == 0){
-                System.out.println("2: tick!");
                 this.cancel();
             }
             spawnMob();
             delay = rand.nextInt(5)+1;
         }
         delay--;
-        System.out.println("5: " + delay);
 
     }
 

@@ -48,9 +48,6 @@ public class LocketteChatListener implements Listener {
             Chest original = lm.getPlayersEditing().get(player);
             boolean success = lm.addPlayerToChest(original, playerId, playerName);
             if(success) {
-                System.out.println("DUB: " + lm.isDoubleChest(original));
-                System.out.println("SIZE: " + original.getInventory().getSize());
-                System.out.println("HOLDER: " + original.getInventory().getHolder());
                 if(lm.isDoubleChest(original)){
                     System.out.println("Double chest addition found.");
                     boolean test = lm.addPlayerToChest(lm.getOtherHalfOfDouble(lm.toDoubleChest(original), original), playerId, playerName);

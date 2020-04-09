@@ -268,8 +268,6 @@ public class RegionsManager {
 
     public boolean chunkIsClaimed(Chunk chunk){
         ChunkCoords chunkCoords = ChunkCoords.createChunkCoords(chunk);
-        System.out.println("CC: " + chunkCoords);
-        System.out.println("claimed chunks keyset: " + claimedChunks.keySet());
         for(ChunkCoords cc : claimedChunks.keySet()){
             if(cc.equals(chunkCoords)) return true;
         }

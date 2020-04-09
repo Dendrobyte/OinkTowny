@@ -139,7 +139,6 @@ public class EnchantListeners implements Listener {
             /* Dog master enchantment -- 10% chance of spawning at level 1*/
             if (sword.getEnchantments().containsKey(EnchantmentManager.DOG_MASTER)){
                 int odds = rand.nextInt(100);
-                System.out.println("DOG ODDS: " + odds);
                 if(odds >= 5) return;
                 Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
                 wolf.setAdult();
@@ -155,7 +154,6 @@ public class EnchantListeners implements Listener {
             /* Necromancer enchantment  -- 20% chance of spawning*/
             if(sword.getEnchantments().containsKey(EnchantmentManager.NECROMANCER)){
                 int odds = rand.nextInt(100);
-                System.out.println("NECRO ODDS: " + odds);
                 if(odds >= 10) return;
                 Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
                 if(victim instanceof LivingEntity)  zombie.setTarget((LivingEntity)victim);
@@ -167,7 +165,6 @@ public class EnchantListeners implements Listener {
             /* Rust Enchantment */
             if(sword.getEnchantments().containsKey(EnchantmentManager.RUST)){
                 int odds = rand.nextInt(100);
-                System.out.println("RUST ODDS: " + odds);
                 if(odds >= 10) return;
                 if(victim instanceof LivingEntity) ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20*4, 1));
                 // This is towny, so no pvp... hitter.sendMessage("Poisoned!");

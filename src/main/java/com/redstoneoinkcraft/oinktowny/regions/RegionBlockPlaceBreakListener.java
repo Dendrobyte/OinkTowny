@@ -49,7 +49,8 @@ public class RegionBlockPlaceBreakListener implements Listener {
         if(rm.bypassEnabled(player)){
             return;
         }
-        if(!canPlayerEdit(event.getBlock().getChunk(), player)){
+        System.out.println("2");
+        if(!canPlayerEdit(event.getBlock().getLocation().getChunk(), player)){
             event.setCancelled(true);
             player.sendMessage(prefix + "You are not in the proper clan to edit this claim.");
         }
@@ -71,14 +72,24 @@ public class RegionBlockPlaceBreakListener implements Listener {
         }
     }
 
-    private boolean canPlayerEdit(Chunk eventChunk, Player editor){
-        if(!rm.chunkIsClaimed(eventChunk)) return true;
+    private boolean canPlayerEdit(Chunk eventChunkData, Player editor){
+        if(!rm.chunkIsClaimed(eventChunkData)) return true;
 
         UUID editorID = editor.getUniqueId();
+        ChunkCoords eventChunk = ChunkCoords.createChunkCoords(eventChunkData);
 
         // Ignoring clans, check if it's the owner
-        if(rm.getClaimedChunks().get(eventChunk).equals(editorID)) {
-            return true;
+        System.out.println("Claimed chunks keyset: " + rm.getClaimedChunks().keySet());
+        System.out.println("eventChunk: " + eventChunk);
+        System.out.println("isInClaims: " + rm.getClaimedChunks().get(eventChunk));
+        System.out.println("contains? " + rm.getClaimedChunks().containsKey(eventChunk));
+        for(ChunkCoords cc : rm.getClaimedChunks().keySet()){
+            if(cc.equals(eventChunk)){
+                if(rm.getClaimedChunks().get(cc).equals(editorID)){
+                    return true;
+                }
+                break;
+            }
         }
 
         // If the player is not in a clan, or the chunk owner has no clan, cancel the event
@@ -88,7 +99,7 @@ public class RegionBlockPlaceBreakListener implements Listener {
             return rm.getClaimedChunks().get(eventChunk).equals(editorID);
         }
 
-        // Now we have a player who is in a clan trying to edit a chun that is not their own
+        // Now we have a player who is in a clan trying to edit a chunk that is not their own
         UUID chunkOwnerID = rm.getClaimedChunks().get(eventChunk);
 
         // If the claim owner doesn't have a clan, then cancel the event since clearly no one else would be able to edit it
