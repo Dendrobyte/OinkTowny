@@ -79,10 +79,6 @@ public class RegionBlockPlaceBreakListener implements Listener {
         ChunkCoords eventChunk = ChunkCoords.createChunkCoords(eventChunkData);
 
         // Ignoring clans, check if it's the owner
-        System.out.println("Claimed chunks keyset: " + rm.getClaimedChunks().keySet());
-        System.out.println("eventChunk: " + eventChunk);
-        System.out.println("isInClaims: " + rm.getClaimedChunks().get(eventChunk));
-        System.out.println("contains? " + rm.getClaimedChunks().containsKey(eventChunk));
         for(ChunkCoords cc : rm.getClaimedChunks().keySet()){
             if(cc.equals(eventChunk)){
                 if(rm.getClaimedChunks().get(cc).equals(editorID)){
