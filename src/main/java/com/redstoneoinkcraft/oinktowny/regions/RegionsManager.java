@@ -193,7 +193,7 @@ public class RegionsManager {
                 player.sendMessage(prefix + "You do not own this chunk.");
                 return;
             } else {
-                player.sendMessage(prefix + "This chunk is not claimed");
+                player.sendMessage(prefix + "This chunk isn't yours to unclaim, or it has not been claimed.");
                 return;
             }
         }

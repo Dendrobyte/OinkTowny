@@ -1,6 +1,5 @@
 package com.redstoneoinkcraft.oinktowny;
 
-import com.google.common.base.Charsets;
 import com.redstoneoinkcraft.oinktowny.arenapvp.*;
 import com.redstoneoinkcraft.oinktowny.artifacts.ArtifactsListeners;
 import com.redstoneoinkcraft.oinktowny.bettersleep.SleepListener;
@@ -16,8 +15,6 @@ import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.economy.TownyBankInvListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerDeathListener;
 import com.redstoneoinkcraft.oinktowny.listeners.PlayerJoinWorldListener;
-import com.redstoneoinkcraft.oinktowny.listeners.TreeFellerBreakListener;
-import com.redstoneoinkcraft.oinktowny.lockette.*;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropOpenListener;
 import com.redstoneoinkcraft.oinktowny.portals.PortalListener;
@@ -36,13 +33,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 8/17/2018
@@ -108,7 +100,7 @@ public class Main extends JavaPlugin {
         // Region events
         Bukkit.getServer().getPluginManager().registerEvents(new SuperpickListeners(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new RegionBlockPlaceBreakListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new PreventTntInClaimsListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PreventTntAndCreepersListener(), this);
         // Clan events
         Bukkit.getServer().getPluginManager().registerEvents(new ClanChatListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new ClanUpdateUuidListener(), this);
