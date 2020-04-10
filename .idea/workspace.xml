@@ -7,10 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/PreventTntInClaimsListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/PreventTntAndCreepersListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/PreventTntInClaimsListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -273,7 +272,7 @@
       <workItem from="1586027640322" duration="186000" />
       <workItem from="1586028291359" duration="147000" />
       <workItem from="1586443538134" duration="8559000" />
-      <workItem from="1586524286225" duration="1041000" />
+      <workItem from="1586524286225" duration="1230000" />
     </task>
     <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
       <created>1538704636495</created>
@@ -562,7 +561,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586465076385</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Update claim message, prevent all creeper explosion (block) damage">
+      <created>1586525448858</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1586525448858</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -582,7 +588,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Some misc fixes, but mainly ruins basic is up and running!" />
     <MESSAGE value="idk just making sure things are up to date" />
     <MESSAGE value="New enchantments, fix to jump boost enchant" />
     <MESSAGE value="Lockette all coded in. Need to test. No double chest support (yet)" />
@@ -607,6 +612,7 @@
     <MESSAGE value="Claims now stored as ChunkCoords versus chunks to avoid issues with unloading upon relogging. Bundles now drop items if inventory is full." />
     <MESSAGE value="Claims fixed pt 102413" />
     <MESSAGE value="Claims fixed pt 102413.5 -- Removed debugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Claims fixed pt 102413.5 -- Removed debugs" />
+    <MESSAGE value="Update claim message, prevent all creeper explosion (block) damage" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update claim message, prevent all creeper explosion (block) damage" />
   </component>
 </project>

@@ -49,7 +49,6 @@ public class RegionBlockPlaceBreakListener implements Listener {
         if(rm.bypassEnabled(player)){
             return;
         }
-        System.out.println("2");
         if(!canPlayerEdit(event.getBlock().getLocation().getChunk(), player)){
             event.setCancelled(true);
             player.sendMessage(prefix + "You are not in the proper clan to edit this claim.");
