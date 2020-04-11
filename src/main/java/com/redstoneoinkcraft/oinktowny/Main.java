@@ -9,6 +9,7 @@ import com.redstoneoinkcraft.oinktowny.clans.ClanChatListener;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
 import com.redstoneoinkcraft.oinktowny.clans.ClanUpdateUuidListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.CustomEnchantInvListener;
+import com.redstoneoinkcraft.oinktowny.customenchants.utils.CustomWolfDeathListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantAnvilListener;
 import com.redstoneoinkcraft.oinktowny.customenchants.utils.EnchantListeners;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
@@ -117,8 +118,9 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantAnvilListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new CustomEnchantInvListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new CustomWolfDeathListener(), this);
         // Portals
-        Bukkit.getServer().getPluginManager().registerEvents(new PortalListener(), this);
+        // Bukkit.getServer().getPluginManager().registerEvents(new PortalListener(), this);
         // Artifacts
         Bukkit.getServer().getPluginManager().registerEvents(new ArtifactsListeners(), this);
         // Economy

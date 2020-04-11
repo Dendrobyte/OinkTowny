@@ -18,6 +18,10 @@ import org.bukkit.util.Vector;
  */
 public class PortalListener implements Listener {
 
+    /* THIS IS NO LONGER IN USE!
+     * There should be some default way to manage portal usage outside of this plugin.
+     */
+
     Main mainInstance = Main.getInstance();
     String prefix = mainInstance.getPrefix();
 

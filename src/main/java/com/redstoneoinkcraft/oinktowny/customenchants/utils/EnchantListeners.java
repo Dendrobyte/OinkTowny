@@ -57,40 +57,6 @@ public class EnchantListeners implements Listener {
         }
     }
 
-    /* I never want to see this again if the statistics thing works
-    @EventHandler
-    public void enchantOnPlayerMove(PlayerMoveEvent event) {
-        /* Jumping check
-         * Taken from: https://bukkit.org/threads/detect-player-jump.445415/
-        Player player = event.getPlayer();
-        if (player.getVelocity().getY() > 0) {
-            double jumpVelocity = (double) 0.42F;
-            if (player.hasPotionEffect(PotionEffectType.JUMP)) {
-                jumpVelocity += (double) ((float) (player.getPotionEffect(PotionEffectType.JUMP).getAmplifier() + 1) * 0.1F);
-            }
-            if (event.getPlayer().getLocation().getBlock().getType() != Material.LADDER && prevPlayersOnGround.contains(player.getUniqueId())) {
-                if (!player.isOnGround() && Double.compare(player.getVelocity().getY(), jumpVelocity) == 0) {
-                    // Enchantment check
-                    ItemStack boots = player.getInventory().getBoots();
-                    try {
-                        if (boots.getEnchantments().isEmpty()) return;
-                        if (boots.getEnchantments().containsKey(EnchantmentManager.JUMP_BOOST)) {
-                            int level = boots.getEnchantments().get(EnchantmentManager.JUMP_BOOST);
-                            player.setVelocity(player.getVelocity().setY(player.getVelocity().getY() + ((double)level/8)));
-                        }
-                    } catch(NullPointerException e){
-                        // I hate doing this, but I have no idea why I can't cancel the check earlier.
-                    }
-                }
-            }
-        }
-        if (player.isOnGround()) {
-            prevPlayersOnGround.add(player.getUniqueId());
-        } else {
-            prevPlayersOnGround.remove(player.getUniqueId());
-        }
-    } */
-
     // TODO: Make a method that replaces "itemStack.getEnchantments().containsKey()" -- Does the same thing under the hood but may be a bit cleaner
 
     @EventHandler
@@ -110,7 +76,7 @@ public class EnchantListeners implements Listener {
                     boolean converts = em.calculateConversion(chestplate.getEnchantments().get(EnchantmentManager.CONVERSION));
                     if (converts) {
                         event.setCancelled(true);
-                        player.sendTitle("", "" + ChatColor.DARK_RED + "<3", 20, 10, 20);
+                        // Removed by request; player.sendTitle("", "" + ChatColor.DARK_RED + "<3", 20, 10, 20);
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2.0f, 1.0f);
                         if (player.getHealth() + damage >= 20.0) {
                             player.setHealth(20.0);
@@ -147,7 +113,6 @@ public class EnchantListeners implements Listener {
                 wolf.setCustomName("" + ChatColor.GOLD + ChatColor.BOLD + player.getName() + "'s Summoned Wolf");
                 wolf.setOwner(player);
                 if(victim instanceof LivingEntity)  wolf.setTarget((LivingEntity)victim);
-                player.sendMessage("" + ChatColor.DARK_GREEN + ChatColor.ITALIC + "WOOF!");
                 // TODO: Kill wolves after a certain time
             }
 
@@ -211,14 +176,12 @@ public class EnchantListeners implements Listener {
                 ItemStack chestplate = damaged.getInventory().getChestplate();
                 ItemStack leggings = damaged.getInventory().getLeggings();
                 if(chestplate.getEnchantments().containsKey(EnchantmentManager.DEFLECT) || leggings.getEnchantments().containsKey(EnchantmentManager.DEFLECT)){
-                    Vector v = proj.getVelocity();
-
                     Projectile newProj = (Projectile) damaged.getWorld().spawnEntity(damaged.getLocation(), proj.getType());
                     newProj.setShooter(damaged);
                     newProj.setVelocity(proj.getVelocity().rotateAroundY(180));
                 }
             } catch (NullPointerException e){
-                return; // Not wearing any armor
+                // Not wearing any armor
             }
         }
     }

@@ -7,8 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/CustomWolfDeathListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/portals/PortalListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/portals/PortalListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -273,7 +277,7 @@
       <workItem from="1586443538134" duration="8559000" />
       <workItem from="1586524286225" duration="1230000" />
       <workItem from="1586532026338" duration="62000" />
-      <workItem from="1586636045766" duration="549000" />
+      <workItem from="1586636045766" duration="2433000" />
     </task>
     <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
       <created>1538704636495</created>
@@ -576,7 +580,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586532061305</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Cancel break/place in non-Towny worlds. Clan adjustment.">
+      <created>1586636628045</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1586636628045</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -596,7 +607,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="New enchantments, fix to jump boost enchant" />
     <MESSAGE value="Lockette all coded in. Need to test. No double chest support (yet)" />
     <MESSAGE value="Lockette tested and working with one player." />
     <MESSAGE value="Ruins fixes, multiple monster spawn locations added" />
@@ -621,6 +631,7 @@
     <MESSAGE value="Claims fixed pt 102413.5 -- Removed debugs" />
     <MESSAGE value="Update claim message, prevent all creeper explosion (block) damage" />
     <MESSAGE value="Another debug removed- apologies" />
-    <option name="LAST_COMMIT_MESSAGE" value="Another debug removed- apologies" />
+    <MESSAGE value="Cancel break/place in non-Towny worlds. Clan adjustment." />
+    <option name="LAST_COMMIT_MESSAGE" value="Cancel break/place in non-Towny worlds. Clan adjustment." />
   </component>
 </project>
