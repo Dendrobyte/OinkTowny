@@ -33,6 +33,9 @@ public class RegionBlockPlaceBreakListener implements Listener {
 
     @EventHandler
     public void onBreakInRegion(BlockBreakEvent event){
+        if(!event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase(mainInstance.getWorldName())){
+            return;
+        }
         Player player = event.getPlayer();
         if(rm.bypassEnabled(player)){
             return;
@@ -45,6 +48,9 @@ public class RegionBlockPlaceBreakListener implements Listener {
 
     @EventHandler
     public void onPlaceInRegion(BlockPlaceEvent event){
+        if(!event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase(mainInstance.getWorldName())){
+            return;
+        }
         Player player = event.getPlayer();
         if(rm.bypassEnabled(player)){
             return;
@@ -71,6 +77,7 @@ public class RegionBlockPlaceBreakListener implements Listener {
         }
     }
 
+    // Method is always inverted but namesake is kept for readability
     private boolean canPlayerEdit(Chunk eventChunkData, Player editor){
         if(!rm.chunkIsClaimed(eventChunkData)) return true;
 
@@ -91,7 +98,11 @@ public class RegionBlockPlaceBreakListener implements Listener {
         ClanObj eventPlayerClan = cm.getPlayerClanID(editorID);
         if(eventPlayerClan == null){
             // If they own it then go for it. If they're not in a clan, don't worry about it.
-            return rm.getClaimedChunks().get(eventChunk).equals(editorID);
+            for(ChunkCoords cc : rm.getClaimedChunks().keySet()){ // I ought to make this a method...
+                if(cc.equals(eventChunk)){
+                    return rm.getClaimedChunks().get(cc).equals(editorID);
+                }
+            }
         }
 
         // Now we have a player who is in a clan trying to edit a chunk that is not their own
