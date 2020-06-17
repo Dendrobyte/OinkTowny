@@ -217,6 +217,35 @@ public class RegionsManager {
         player.sendMessage(prefix + "Your chunk has been successfully unclaimed!");
     }
 
+    public void forceUnclaim(Player sender, ChunkCoords chunkCoords){
+        for(ChunkCoords cc : getClaimedChunks().keySet()){ // I ought to make this a method...
+            if(cc.equals(chunkCoords)){
+                chunkCoords = cc;
+                break;
+            }
+        }
+        UUID playerID = getClaimedChunks().get(chunkCoords);
+
+        // Repeat the chunk removal process
+        List<String> listOfClaims = mainInstance.getRegionsConfig().getStringList("chunks." + playerID.toString());
+        int chunkX = chunkCoords.getX();
+        int chunkZ = chunkCoords.getZ();
+        for(String data : listOfClaims){
+            int dataX = Integer.parseInt(data.substring(0, data.indexOf(":")));
+            int dataZ = Integer.parseInt(data.substring(data.indexOf(":")+1));
+            if(chunkX == dataX && chunkZ == dataZ){
+                listOfClaims.remove(data);
+                removeFromClaimedChunks(chunkCoords);
+                removeFromPlayerChunks(playerID, chunkCoords);
+                break;
+            }
+        }
+
+        mainInstance.getRegionsConfig().set("chunks." + playerID.toString(), listOfClaims);
+        mainInstance.saveRegionsConfig();
+        sender.sendMessage(prefix + "You have unclaimed a chunk claimed by " + Bukkit.getServer().getOfflinePlayer(playerID).getName());
+    }
+
     private void removeFromClaimedChunks(ChunkCoords coords){
         for(ChunkCoords cc : claimedChunks.keySet()){
             if(cc.equals(coords)){

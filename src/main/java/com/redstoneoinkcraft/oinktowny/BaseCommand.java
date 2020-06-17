@@ -8,10 +8,12 @@ import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentFramework;
 import com.redstoneoinkcraft.oinktowny.customenchants.EnchantmentManager;
 import com.redstoneoinkcraft.oinktowny.economy.TownyTokenManager;
 import com.redstoneoinkcraft.oinktowny.lootdrops.LootdropManager;
+import com.redstoneoinkcraft.oinktowny.regions.ChunkCoords;
 import com.redstoneoinkcraft.oinktowny.regions.RegionsManager;
 import com.redstoneoinkcraft.oinktowny.ruins.RuinsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,6 +21,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78 or ByteKangaroo) on 9/1/2018
@@ -39,6 +44,10 @@ public class BaseCommand implements CommandExecutor {
         }
         Player player = (Player) sender;
         if(command.getName().equalsIgnoreCase("oinktowny")){
+            if(!Main.getInstance().isTownyWorld(player.getWorld().getName())){
+                player.sendMessage(prefix + "You are not in a towny world.");
+                return true;
+            }
             if(args.length == 0){
                 player.sendMessage(prefix + "No arguments provided! " + ChatColor.GOLD + "/oinktowny help");
                 return true;
@@ -328,6 +337,39 @@ public class BaseCommand implements CommandExecutor {
                 regM.enableBypassForAdmin(player);
                 return true;
             }
+            if(args[0].equalsIgnoreCase("checkclaim")){
+                if(!player.hasPermission("oinktowny.claims.admin")) {
+                    player.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Sorry!" + ChatColor.GRAY + " This is an admin only command.");
+                    return true;
+                }
+                if(!regM.chunkIsClaimed(player.getLocation().getChunk())){
+                    player.sendMessage(prefix + "This chunk is not claimed.");
+                    return true;
+                }
+
+                // This code is becoming uncontrollable... I've used this in a lot of places... yikes
+                ChunkCoords current = ChunkCoords.createChunkCoords(player.getLocation().getChunk());
+                for(ChunkCoords cc : regM.getClaimedChunks().keySet()){ // I ought to make this a method...
+                    if(cc.equals(current)){
+                        current = cc;
+                        break;
+                    }
+                }
+                UUID chunkOwnerID = regM.getClaimedChunks().get(current);
+                String name = Bukkit.getServer().getOfflinePlayer(chunkOwnerID).getName();
+                player.sendMessage(prefix + "Chunk owner: " + ChatColor.DARK_GREEN + ChatColor.BOLD + name);
+                return true;
+            }
+            // Seriously unruly command management... :(
+            if(args[0].equalsIgnoreCase("forceunclaim")){
+                if(!player.hasPermission("oinktowny.claims.admin")) {
+                    player.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Sorry!" + ChatColor.GRAY + " This is an admin only command.");
+                    return true;
+                }
+                regM.forceUnclaim(player, ChunkCoords.createChunkCoords(player.getLocation().getChunk()));
+                Bukkit.getLogger().log(Level.INFO, "A player by the name of " + player.getName() + " has forcefully unclaimed a chunk.");
+                return true;
+            }
 
             /* ARENAS STUFF */
             if(args[0].equalsIgnoreCase("arena")){
@@ -402,6 +444,9 @@ public class BaseCommand implements CommandExecutor {
 
             // ENCHANTMENT STUFF
             if(args[0].equalsIgnoreCase("enchant")){
+                if(!Main.getInstance().isTownyWorld(player.getWorld().getName())){
+                    return true;
+                }
                 EnchantmentManager em = EnchantmentManager.getInstance();
 
                 // Default

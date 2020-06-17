@@ -1,12 +1,10 @@
 package com.redstoneoinkcraft.oinktowny.customenchants.utils;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
  * OinkTowny created/started by markb (Mobkinz78/Dendrobyte)
@@ -17,7 +15,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class CustomWolfDeathListener implements Listener {
 
     @EventHandler
-    public void onDogTamerWolfDeath(EntityDamageByEntityEvent event){
+    public void onDogTamerWolfDeath(EntityDamageEvent event){
         if(event.getEntity() instanceof Wolf){
             Wolf wolf = (Wolf) event.getEntity();
             if(!wolf.isTamed()) return;

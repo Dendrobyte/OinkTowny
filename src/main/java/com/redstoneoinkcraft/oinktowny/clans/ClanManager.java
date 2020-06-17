@@ -306,7 +306,6 @@ public class ClanManager {
             if(clan.getId() == id) returnClan = clan;
         }
         if(returnClan != null) return returnClan;
-        System.out.println("Clan does not exist!");
         return null;
     }
 

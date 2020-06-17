@@ -106,6 +106,12 @@ public class RegionBlockPlaceBreakListener implements Listener {
         }
 
         // Now we have a player who is in a clan trying to edit a chunk that is not their own
+        for(ChunkCoords cc : rm.getClaimedChunks().keySet()){ // I ought to make this a method...
+            if(cc.equals(eventChunk)){
+               eventChunk = cc;
+               break;
+            }
+        }
         UUID chunkOwnerID = rm.getClaimedChunks().get(eventChunk);
 
         // If the claim owner doesn't have a clan, then cancel the event since clearly no one else would be able to edit it

@@ -1,6 +1,6 @@
 name: OinkTowny
 author: Dendrobyte, Mobkinz78
-version: 1.9b
+version: 1.11b
 main: com.redstoneoinkcraft.oinktowny.Main
 description: OinkTowny plugin made for Oinkcraft's new towny reboot!
 softdepend: [Multiverse-Core]
@@ -26,7 +26,7 @@ permissions:
   oinktowny.lootdrop:
     description: Allows a player to trigger a lootdrop either at their location or a random one
   oinktowny.claims.admin:
-    description: Allows to claim admin claims and bypass claims
+    description: Allows to claim admin claims, bypass claims, and see owners of claims.
   oinktowny.claims.x:
     description: Sets limit for how many claims a player has
   oinktowny.create:
