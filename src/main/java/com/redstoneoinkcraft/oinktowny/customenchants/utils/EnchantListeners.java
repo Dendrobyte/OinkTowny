@@ -104,6 +104,7 @@ public class EnchantListeners implements Listener {
 
             /* Dog master enchantment -- 10% chance of spawning at level 1*/
             if (sword.getEnchantments().containsKey(EnchantmentManager.DOG_MASTER)){
+                if(player.isSneaking()) return; // Cancel if someone is sneaking
                 int odds = rand.nextInt(100);
                 if(odds >= 5) return;
                 Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);

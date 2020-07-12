@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -41,10 +42,10 @@ public class SuperpickListeners implements Listener {
     }
 
     @EventHandler // Remove them from the superpick list if they teleport to a different world
-    public void onPlayerTeleport(PlayerTeleportEvent event){
+    public void onPlayerTeleport(PlayerChangedWorldEvent event){
         Player player = event.getPlayer();
         if(!rm.isSuperpick(player)) return;
-        if(event.getFrom().getWorld() != event.getTo().getWorld()){
+        if(!event.getFrom().getName().equalsIgnoreCase(player.getWorld().getName())){
             rm.toggleSuperpick(player);
             player.sendMessage(prefix + "(You teleported into a different world)");
         }
