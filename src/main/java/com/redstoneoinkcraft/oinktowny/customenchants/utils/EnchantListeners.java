@@ -164,7 +164,7 @@ public class EnchantListeners implements Listener {
             if (explosiveArrows.contains(arrow)) {
                 explosiveArrows.remove(arrow);
                 Location loc = arrow.getLocation();
-                loc.getWorld().createExplosion(loc.getBlockX(), loc.getY(), loc.getZ(), 2.0f, false, false);
+                loc.getWorld().createExplosion(loc.getBlockX(), loc.getY(), loc.getZ(), 0.0f, false, false); // Don't do damage to mobs or anything either... oof
             }
         }
         /* Deflection enchantment */

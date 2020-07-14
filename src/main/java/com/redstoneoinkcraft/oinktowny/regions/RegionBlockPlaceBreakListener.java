@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ public class RegionBlockPlaceBreakListener implements Listener {
         if(rm.bypassEnabled(player)){
             return;
         }
-        if(!canPlayerEdit(event.getBlock().getChunk(), player)){
+        if(!rm.canPlayerEdit(event.getBlock().getChunk(), player)){
             event.setCancelled(true);
             player.sendMessage(prefix + "You are not in the proper clan to edit this claim.");
         }
@@ -55,72 +56,25 @@ public class RegionBlockPlaceBreakListener implements Listener {
         if(rm.bypassEnabled(player)){
             return;
         }
-        if(!canPlayerEdit(event.getBlock().getLocation().getChunk(), player)){
+        if(!rm.canPlayerEdit(event.getBlock().getLocation().getChunk(), player)){
             event.setCancelled(true);
             player.sendMessage(prefix + "You are not in the proper clan to edit this claim.");
         }
     }
 
     @EventHandler
-    public void onPlayerOpenChest(PlayerInteractEvent event){
+    public void onPlayerOpenContainer(PlayerInteractEvent event){
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if(event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST || event.getClickedBlock().getType() == Material.CHEST_MINECART ||
-                event.getClickedBlock().getType() == Material.HOPPER || event.getClickedBlock().getType() == Material.HOPPER_MINECART) {
+        if(event.getClickedBlock().getState() instanceof InventoryHolder) {
             Player player = event.getPlayer();
             if(rm.bypassEnabled(player)){
                 return;
             }
-            if(!canPlayerEdit(event.getClickedBlock().getChunk(), player)){
+            if(!rm.canPlayerEdit(event.getClickedBlock().getChunk(), player)){
                 event.setCancelled(true);
                 player.sendMessage(prefix + "You can not access containers in this claim.");
             }
         }
     }
-
-    // Method is always inverted but namesake is kept for readability
-    private boolean canPlayerEdit(Chunk eventChunkData, Player editor){
-        if(!rm.chunkIsClaimed(eventChunkData)) return true;
-
-        UUID editorID = editor.getUniqueId();
-        ChunkCoords eventChunk = ChunkCoords.createChunkCoords(eventChunkData);
-
-        // Ignoring clans, check if it's the owner
-        for(ChunkCoords cc : rm.getClaimedChunks().keySet()){
-            if(cc.equals(eventChunk)){
-                if(rm.getClaimedChunks().get(cc).equals(editorID)){
-                    return true;
-                }
-                break;
-            }
-        }
-
-        // If the player is not in a clan, or the chunk owner has no clan, cancel the event
-        ClanObj eventPlayerClan = cm.getPlayerClanID(editorID);
-        if(eventPlayerClan == null){
-            // If they own it then go for it. If they're not in a clan, don't worry about it.
-            for(ChunkCoords cc : rm.getClaimedChunks().keySet()){ // I ought to make this a method...
-                if(cc.equals(eventChunk)){
-                    return rm.getClaimedChunks().get(cc).equals(editorID);
-                }
-            }
-        }
-
-        // Now we have a player who is in a clan trying to edit a chunk that is not their own
-        for(ChunkCoords cc : rm.getClaimedChunks().keySet()){ // I ought to make this a method...
-            if(cc.equals(eventChunk)){
-               eventChunk = cc;
-               break;
-            }
-        }
-        UUID chunkOwnerID = rm.getClaimedChunks().get(eventChunk);
-
-        // If the claim owner doesn't have a clan, then cancel the event since clearly no one else would be able to edit it
-        ClanObj chunkOwnerClan = cm.getPlayerClanID(chunkOwnerID);
-        if(chunkOwnerClan == null) return false;
-
-        // Now the player is in a clan and the chunk owner is also in a clan. Let's check if they are in the same clan. If so, we're good! Otherwise, block the access
-        return eventPlayerClan.equals(chunkOwnerClan);
-    }
-
 
 }

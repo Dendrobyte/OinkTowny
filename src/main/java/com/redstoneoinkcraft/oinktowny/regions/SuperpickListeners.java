@@ -62,6 +62,7 @@ public class SuperpickListeners implements Listener {
     @EventHandler // Immediately break block if activated and if holding pick
     public void onBlockHit(PlayerInteractEvent event){
         Player player = event.getPlayer();
+        if(!Main.getInstance().isTownyWorld(event.getClickedBlock().getLocation().getWorld().getName())) return;
         if(!rm.isSuperpick(player)) return;
 
         if(event.getAction() != Action.LEFT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND) return;
@@ -71,18 +72,12 @@ public class SuperpickListeners implements Listener {
         if(pick == null) return;
         if (!pick.getType().toString().contains("PICKAXE")) return;
 
-        // Check clan similarity
-        Chunk eventChunk = event.getClickedBlock().getChunk();
-        if(rm.getClaimedChunks().containsKey(eventChunk)){
-            UUID chunkOwner = rm.getClaimedChunks().get(eventChunk);
-            ClanObj clan = cm.getPlayerClanID(chunkOwner);
-            if(!clan.getMemberIds().contains(player.getUniqueId())){
-                player.sendMessage(prefix + "You can not superpick here. The chunk is claimed.");
-                return;
-            }
+        // Check if they can edit there
+        if(!rm.canPlayerEdit(event.getClickedBlock().getChunk(), player)){
+            player.sendMessage(prefix + "You can not superpick here. The chunk is claimed.");
         }
 
-        event.getClickedBlock().breakNaturally();
+        event.getClickedBlock().breakNaturally(new ItemStack(Material.DIAMOND_PICKAXE));
     }
 
 }

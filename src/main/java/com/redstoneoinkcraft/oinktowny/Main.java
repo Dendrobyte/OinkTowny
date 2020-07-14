@@ -116,7 +116,7 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new LootdropOpenListener(), this);
         // Enchantments
         Bukkit.getServer().getPluginManager().registerEvents(new EnchantListeners(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new EnchantAnvilListener(), this);
+        // Bukkit.getServer().getPluginManager().registerEvents(new EnchantAnvilListener(), this); I don't do anything with this (yet) and it might be causing problems
         Bukkit.getServer().getPluginManager().registerEvents(new CustomEnchantInvListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new CustomWolfDeathListener(), this);
         // Portals

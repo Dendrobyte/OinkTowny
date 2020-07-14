@@ -303,6 +303,51 @@ public class RegionsManager {
         return false;
     }
 
+    // Method is always inverted but namesake is kept for readability
+    public boolean canPlayerEdit(Chunk eventChunkData, Player editor){
+        if(!chunkIsClaimed(eventChunkData)) return true;
+
+        UUID editorID = editor.getUniqueId();
+        ChunkCoords eventChunk = ChunkCoords.createChunkCoords(eventChunkData);
+
+        // Ignoring clans, check if it's the owner
+        for(ChunkCoords cc : getClaimedChunks().keySet()){
+            if(cc.equals(eventChunk)){
+                if(getClaimedChunks().get(cc).equals(editorID)){
+                    return true;
+                }
+                break;
+            }
+        }
+
+        // If the player is not in a clan, or the chunk owner has no clan, cancel the event
+        ClanObj eventPlayerClan = cm.getPlayerClanID(editorID);
+        if(eventPlayerClan == null){
+            // If they own it then go for it. If they're not in a clan, don't worry about it.
+            for(ChunkCoords cc : getClaimedChunks().keySet()){ // I ought to make this a method...
+                if(cc.equals(eventChunk)){
+                    return getClaimedChunks().get(cc).equals(editorID);
+                }
+            }
+        }
+
+        // Now we have a player who is in a clan trying to edit a chunk that is not their own
+        for(ChunkCoords cc : getClaimedChunks().keySet()){ // I ought to make this a method...
+            if(cc.equals(eventChunk)){
+                eventChunk = cc;
+                break;
+            }
+        }
+        UUID chunkOwnerID = getClaimedChunks().get(eventChunk);
+
+        // If the claim owner doesn't have a clan, then cancel the event since clearly no one else would be able to edit it
+        ClanObj chunkOwnerClan = cm.getPlayerClanID(chunkOwnerID);
+        if(chunkOwnerClan == null) return false;
+
+        // Now the player is in a clan and the chunk owner is also in a clan. Let's check if they are in the same clan. If so, we're good! Otherwise, block the access
+        return eventPlayerClan.equals(chunkOwnerClan);
+    }
+
     /* Superpick related things */
     private ArrayList<Player> superpickPlayers = new ArrayList<Player>();
 
