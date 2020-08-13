@@ -70,7 +70,7 @@ public class SuperpickListeners implements Listener {
         if(blockType == Material.BEDROCK || blockType == Material.OBSIDIAN) return;
         ItemStack pick = event.getItem();
         if(pick == null) return;
-        if (!pick.getType().toString().contains("PICKAXE")) return;
+        if (!(pick.getType().toString().equals("IRON_PICKAXE") || pick.getType().toString().equals("DIAMOND_PICKAXE"))) return;
 
         // Check if they can edit there
         if(!rm.canPlayerEdit(event.getClickedBlock().getChunk(), player)){
@@ -78,6 +78,7 @@ public class SuperpickListeners implements Listener {
         }
 
         event.getClickedBlock().breakNaturally(new ItemStack(Material.DIAMOND_PICKAXE));
+        // TODO: Do damage to item
     }
 
 }
