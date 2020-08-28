@@ -3,6 +3,7 @@ package com.redstoneoinkcraft.oinktowny.listeners;
 import com.redstoneoinkcraft.oinktowny.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,9 +26,6 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event){
         Player player = event.getEntity();
         if(mainInstance.isTownyWorld(player.getWorld().getName())){
-
-            // Idk if this will fire on time, but it's worth a shot
-            player.teleport(Bukkit.getServer().getWorld(mainInstance.getWorldName()).getSpawnLocation());
 
             boolean found = false;
             for(int i = 0; i < player.getInventory().getSize(); i++){

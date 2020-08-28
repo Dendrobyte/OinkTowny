@@ -7,16 +7,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/OinkTowny_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/OinkTowny_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/PlayerDeathListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/listeners/PlayerDeathListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/customenchants/utils/EnchantListeners.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/listeners/PlayerDeathListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/listeners/PlayerDeathListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/portals/PortalListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/portals/PortalListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionBlockPlaceBreakListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/RegionsManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +74,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559791622655" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="F:/Misc Programming/Minecraft Plugins/MC TESTING SERVER (1.16)/plugins" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -295,14 +293,10 @@
       <workItem from="1595445905941" duration="2000" />
       <workItem from="1595537252144" duration="25000" />
       <workItem from="1597175178201" duration="641000" />
-      <workItem from="1597344183704" duration="1362000" />
-    </task>
-    <task id="LOCAL-00001" summary="StringBuilder added (thanks zaph!) and inventory loading works (iirc). [Will resume after FourFactions]">
-      <created>1538704636495</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1538704636495</updated>
+      <workItem from="1597344183704" duration="2014000" />
+      <workItem from="1598386217896" duration="3664000" />
+      <workItem from="1598559653903" duration="1225000" />
+      <workItem from="1598624134723" duration="420000" />
     </task>
     <task id="LOCAL-00002" summary="Added a crap load of things... Updating for safety lmao.">
       <created>1551811548753</created>
@@ -640,7 +634,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594749869476</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="slight superpick modifications">
+      <created>1597360187929</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1597360187930</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -660,7 +661,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Two new artifacts added" />
     <MESSAGE value="Huge lockette update, anvils accounted for for artifacts" />
     <MESSAGE value="Double chest support for Lockette. Towny is near!" />
     <MESSAGE value="TreeFeller added (recursively)" />
@@ -685,6 +685,7 @@
     <MESSAGE value="Commands world-limited to towny worlds." />
     <MESSAGE value="Superpick world change fix, dog tamer doesn't act when sneaking" />
     <MESSAGE value="A few more small fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="A few more small fixes" />
+    <MESSAGE value="slight superpick modifications" />
+    <option name="LAST_COMMIT_MESSAGE" value="slight superpick modifications" />
   </component>
 </project>

@@ -4,6 +4,7 @@ world-end: towny_end
 starting-tokens: 16
 ubi-tokens: 4
 day-count: 0
+depend
 
 # Store item worths for End of Day towny box -- Future plans to dynamically update it
 # item:X where X is the number of items worth 1 towny token -- Future plans to have a Y parameter for multiple tokens

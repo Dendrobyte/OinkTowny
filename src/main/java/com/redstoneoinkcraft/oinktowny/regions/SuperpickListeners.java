@@ -2,11 +2,8 @@ package com.redstoneoinkcraft.oinktowny.regions;
 
 import com.redstoneoinkcraft.oinktowny.Main;
 import com.redstoneoinkcraft.oinktowny.clans.ClanManager;
-import com.redstoneoinkcraft.oinktowny.clans.ClanObj;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,11 +12,10 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.UUID;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * OinkTowny Features created/started by Mark Bacon (Mobkinz78/Dendrobyte)
@@ -62,7 +58,7 @@ public class SuperpickListeners implements Listener {
     @EventHandler // Immediately break block if activated and if holding pick
     public void onBlockHit(PlayerInteractEvent event){
         Player player = event.getPlayer();
-        if(!Main.getInstance().isTownyWorld(event.getClickedBlock().getLocation().getWorld().getName())) return;
+        // if(!Main.getInstance().isTownyWorld(event.getClickedBlock().getLocation().getWorld().getName())) return;
         if(!rm.isSuperpick(player)) return;
 
         if(event.getAction() != Action.LEFT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND) return;
@@ -77,8 +73,19 @@ public class SuperpickListeners implements Listener {
             player.sendMessage(prefix + "You can not superpick here. The chunk is claimed.");
         }
 
+        // Do damage to pickaxe
+        ItemMeta pickMeta = pick.getItemMeta();
+        Damageable pickDamageable = (Damageable) pickMeta;
+        int currDamage = pickDamageable.getDamage();
+        pickDamageable.setDamage(currDamage+1);
+        pick.setItemMeta((ItemMeta)pickDamageable);
+        if(pick.getType().getMaxDurability()-pickDamageable.getDamage() <= 1){
+            pick.setAmount(0);
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
+        }
+
+        // Break block
         event.getClickedBlock().breakNaturally(new ItemStack(Material.DIAMOND_PICKAXE));
-        // TODO: Do damage to item
     }
 
 }
