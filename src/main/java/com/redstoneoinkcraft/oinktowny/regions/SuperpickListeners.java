@@ -41,10 +41,8 @@ public class SuperpickListeners implements Listener {
     public void onPlayerTeleport(PlayerChangedWorldEvent event){
         Player player = event.getPlayer();
         if(!rm.isSuperpick(player)) return;
-        if(!event.getFrom().getName().equalsIgnoreCase(player.getWorld().getName())){
-            rm.toggleSuperpick(player);
-            player.sendMessage(prefix + "(You teleported into a different world)");
-        }
+        rm.toggleSuperpick(player);
+        player.sendMessage(prefix + "(You teleported into a different world)");
     }
 
     @EventHandler // Remove them from the superpick list if they die
@@ -58,7 +56,7 @@ public class SuperpickListeners implements Listener {
     @EventHandler // Immediately break block if activated and if holding pick
     public void onBlockHit(PlayerInteractEvent event){
         Player player = event.getPlayer();
-        // if(!Main.getInstance().isTownyWorld(event.getClickedBlock().getLocation().getWorld().getName())) return;
+        if(!Main.getInstance().isTownyWorld(event.getClickedBlock().getLocation().getWorld().getName())) return;
         if(!rm.isSuperpick(player)) return;
 
         if(event.getAction() != Action.LEFT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND) return;
@@ -71,6 +69,7 @@ public class SuperpickListeners implements Listener {
         // Check if they can edit there
         if(!rm.canPlayerEdit(event.getClickedBlock().getChunk(), player)){
             player.sendMessage(prefix + "You can not superpick here. The chunk is claimed.");
+            return;
         }
 
         // Do damage to pickaxe
