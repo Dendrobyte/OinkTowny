@@ -56,7 +56,7 @@ public class SuperpickListeners implements Listener {
     @EventHandler // Immediately break block if activated and if holding pick
     public void onBlockHit(PlayerInteractEvent event){
         Player player = event.getPlayer();
-        if(!Main.getInstance().isTownyWorld(event.getClickedBlock().getLocation().getWorld().getName())) return;
+        if(!Main.getInstance().isTownyWorld(player.getWorld().getName())) return;
         if(!rm.isSuperpick(player)) return;
 
         if(event.getAction() != Action.LEFT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND) return;

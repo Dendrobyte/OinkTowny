@@ -7,10 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d77dbdba-b70c-4802-ad6d-8523e7f40d8a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/markb.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/redstoneoinkcraft/oinktowny/regions/SuperpickListeners.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -293,14 +292,9 @@
       <workItem from="1598386217896" duration="3664000" />
       <workItem from="1598559653903" duration="1225000" />
       <workItem from="1598624134723" duration="898000" />
-      <workItem from="1599399043493" duration="1579000" />
-    </task>
-    <task id="LOCAL-00003" summary="Items no longer can be stolen, emerald block crafting listener added. Better Sleep version also added.">
-      <created>1552006448570</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1552006448570</updated>
+      <workItem from="1599399043493" duration="1772000" />
+      <workItem from="1599511572390" duration="28000" />
+      <workItem from="1599512235408" duration="238000" />
     </task>
     <task id="LOCAL-00004" summary="Arena creation complete. Skeleton for joining and fighting set up, just need to fill in the meat (tomorrow).">
       <created>1553217228178</created>
@@ -638,7 +632,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598624590415</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Return added to superpick outside of claims 🤦‍">
+      <created>1599400735964</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1599400735965</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -658,7 +659,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Double chest support for Lockette. Towny is near!" />
     <MESSAGE value="TreeFeller added (recursively)" />
     <MESSAGE value="Full version! Some more fixes tonight." />
     <MESSAGE value="1.2b official. Arenas, token UBI, and more." />
@@ -683,6 +683,7 @@
     <MESSAGE value="A few more small fixes" />
     <MESSAGE value="slight superpick modifications" />
     <MESSAGE value="Last superpick touches" />
-    <option name="LAST_COMMIT_MESSAGE" value="Last superpick touches" />
+    <MESSAGE value="Return added to superpick outside of claims ‍" />
+    <option name="LAST_COMMIT_MESSAGE" value="Return added to superpick outside of claims ‍" />
   </component>
 </project>
